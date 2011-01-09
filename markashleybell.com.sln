@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Web Developer Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "markashleybell.com.Web", "markashleybell.com.Web\markashleybell.com.Web.csproj", "{E558D2EC-C414-4B4D-A33D-F2F4B54B56B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "markashleybell.com.Domain", "markashleybell.com.Domain\markashleybell.com.Domain.csproj", "{A64D8C92-25FE-4C93-99D1-9712B7F4F1F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "markashleybell.com.Tests", "markashleybell.com.Tests\markashleybell.com.Tests.csproj", "{F0FD8BA8-D701-4F61-A200-A646A128B54C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E558D2EC-C414-4B4D-A33D-F2F4B54B56B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E558D2EC-C414-4B4D-A33D-F2F4B54B56B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E558D2EC-C414-4B4D-A33D-F2F4B54B56B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E558D2EC-C414-4B4D-A33D-F2F4B54B56B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A64D8C92-25FE-4C93-99D1-9712B7F4F1F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A64D8C92-25FE-4C93-99D1-9712B7F4F1F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A64D8C92-25FE-4C93-99D1-9712B7F4F1F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A64D8C92-25FE-4C93-99D1-9712B7F4F1F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0FD8BA8-D701-4F61-A200-A646A128B54C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0FD8BA8-D701-4F61-A200-A646A128B54C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0FD8BA8-D701-4F61-A200-A646A128B54C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0FD8BA8-D701-4F61-A200-A646A128B54C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

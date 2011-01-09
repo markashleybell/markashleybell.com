@@ -1,0 +1,50 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /> - Mark Ashley Bell, Web Designer/Developer</title>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+        <meta http-equiv="content-language" content="en-gb" />
+        <link rel="shortcut icon" href="/content/img/site/favicon.ico" />
+        <link rel="openid.server" href="http://www.myopenid.com/server" />
+        <link rel="openid.delegate" href="http://markb.myopenid.com/" />
+        <link rel="openid2.local_id" href="http://markb.myopenid.com" />
+        <link rel="openid2.provider" href="http://www.myopenid.com/server" />
+        <meta http-equiv="X-XRDS-Location" content="http://www.myopenid.com/xrds?username=markb.myopenid.com" />
+        <meta name="description" content="" />
+        <link href="/content/css/screen.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="/content/css/prettify.css" />
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script type="text/javascript" src="/scripts/prettify/prettify.js"></script>
+        <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
+    </head>
+    <body>
+       <div id="header">
+            <p><%= Html.ActionLink("Mark Ashley Bell, Web Designer/Developer", "Index", "Main")%><a href="/"></a></p>
+            <ul>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/articles/">Articles</a></li>
+                <li><a href="/jquery/">jQuery Plugins</a></li>
+            </ul>
+            <div class="clr">&nbsp;</div>
+       </div>
+        <div id="content">
+    
+             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+    
+        </div>
+        <div class="clr">&nbsp;</div>
+        
+        <%if(!Convert.ToBoolean(ConfigurationManager.AppSettings["LocalTestMode"])){%>
+        <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+            try {
+                var pageTracker = _gat._getTracker("UA-10947465-1");
+                pageTracker._trackPageview();
+            } catch (err) { }</script>
+        <%}%>
+    </body>
+</html>
