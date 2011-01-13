@@ -17,8 +17,6 @@ namespace markashleybell.com.Web.Controllers
         {
             var articles = _articleRepository.GetAll().Map();
 
-
-
             return View(articles);
         }
 

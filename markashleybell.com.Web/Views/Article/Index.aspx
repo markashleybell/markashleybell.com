@@ -9,12 +9,16 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h1>Index</h1>
+    <h1>Articles</h1>
+
+    <ul>
 
     <% foreach(var article in Model) { %>
 
-    <%= article.Title %><br />
+    <li><a href="/articles/<%= article.Slug%>/"><%= article.Title%></a> <span><%= article.Published.ToString("dddd, d MMMM yyyy HH:mm")%></span> <span><%= article.SummaryMarkdown%></span></li>
 
     <% } %>
+
+    </ul>
 
 </asp:Content>

@@ -7,7 +7,7 @@
 
 <configuration>
     <connectionStrings>
-        <add name="Db" connectionString="Data Source=|DataDirectory|mab201992.sdf" providerName="System.Data.SqlServerCe.4.0" />
+        <add name="Db" connectionString="Data Source=c:\yourdbpath\mab201992.sdf" providerName="System.Data.SqlServerCe.4.0" />
     </connectionStrings>
     <appSettings>
         <add key="LocalTestMode" value="true"/>

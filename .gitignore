@@ -50,4 +50,4 @@ ClientBin
 stylecop.*
 ~$*
 *.dbmdl
-*.live
+Web.config
