@@ -44,8 +44,8 @@ li span { display: block; color: #999999; font-size: 0.8em; }
 .clr { clear: both; overflow: hidden; height: 100px; }
 #header .clr, #commentform .clr { height: 1px; }
 
-.invalid { background-color: #f8c0c0; }
-.validationmsg { padding-left: 10px; color: #cc0000; }
+.input-validation-error { background-color: #f8c0c0; }
+.field-validation-error { padding-left: 10px; color: #cc0000; }
 
 #home { margin-right: 270px; }
 #twitter { position: absolute; top: 140px; right: 95px; }

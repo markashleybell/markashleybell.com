@@ -14,7 +14,7 @@ namespace markashleybell.com.Web.Infrastructure
     public class NinjectControllerFactory : DefaultControllerFactory
     {
         // The kernel is the thing that can supply object instances
-        private IKernel kernel = new StandardKernel(new NippyNormansServices());
+        private IKernel kernel = new StandardKernel(new NinjectConfig());
 
         protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
         {
@@ -23,14 +23,20 @@ namespace markashleybell.com.Web.Infrastructure
             return (IController)kernel.Get(controllerType);
         }
 
-        private class NippyNormansServices : NinjectModule
+        private class NinjectConfig : NinjectModule
         {
             public override void Load()
             {
-                // Configuration here
-                Bind<IArticleRepository>()
-                    .To<ArticleRepository>()
+                Bind<IUnitOfWork>()
+                    .To<UnitOfWork>()
+                    .InRequestScope()
                     .WithConstructorArgument("databaseFactory", new DbFactory());
+
+                Bind<IArticleRepository>()
+                    .To<ArticleRepository>();
+
+                Bind<ICommentRepository>()
+                    .To<CommentRepository>();
             }
         }
     }

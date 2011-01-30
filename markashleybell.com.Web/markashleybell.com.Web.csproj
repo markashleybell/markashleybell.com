@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Data.Entity.CTP, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="Ninject">
       <HintPath>..\..\..\Lib\Ninject\2.1.0.92\Ninject.dll</HintPath>
     </Reference>
@@ -88,6 +88,7 @@
     <Content Include="Content\Css\screen.css" />
     <Content Include="Content\Img\Site\favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\comment.js" />
     <Content Include="Scripts\e.js" />
     <Content Include="Scripts\prettify\lang-apollo.js" />
     <Content Include="Scripts\prettify\lang-css.js" />
@@ -105,13 +106,11 @@
     <Content Include="Scripts\prettify\prettify.js" />
     <Content Include="Views\Article\Article.aspx" />
     <Content Include="Views\Article\Index.aspx" />
+    <Content Include="Views\Main\About.aspx" />
     <Content Include="Views\Main\Index.aspx" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
+    <Content Include="Views\Main\JQuery.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
   </ItemGroup>

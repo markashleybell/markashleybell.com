@@ -15,7 +15,7 @@
 
     <% foreach(var article in Model) { %>
 
-    <li><a href="/articles/<%= article.Slug%>/"><%= article.Title%></a> <span><%= article.Published.ToString("dddd, d MMMM yyyy HH:mm")%></span> <span><%= article.SummaryMarkdown%></span></li>
+    <li><a href="/articles/<%= article.Slug%>"><%= article.Title%></a> <span><%= article.Published.ToString("dddd, d MMMM yyyy HH:mm")%></span> <span><%= article.SummaryMarkdown%></span></li>
 
     <% } %>
 

@@ -16,5 +16,14 @@ namespace markashleybell.com.Web.Controllers
             return View();
         }
 
+        public ActionResult About()
+        {
+            return View();
+        }
+
+        public ActionResult JQuery()
+        {
+            return View();
+        }
     }
 }

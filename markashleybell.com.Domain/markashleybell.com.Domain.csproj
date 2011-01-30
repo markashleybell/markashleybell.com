@@ -31,7 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Data.Entity.CTP, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,12 +42,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IArticleRepository.cs" />
+    <Compile Include="Abstract\ICommentRepository.cs" />
     <Compile Include="Abstract\IDbFactory.cs" />
     <Compile Include="Abstract\IRepository.cs" />
+    <Compile Include="Abstract\IUnitOfWork.cs" />
     <Compile Include="Abstract\RepositoryBase.cs" />
     <Compile Include="Concrete\ArticleRepository.cs" />
+    <Compile Include="Concrete\CommentRepository.cs" />
     <Compile Include="Concrete\Db.cs" />
     <Compile Include="Concrete\DbFactory.cs" />
+    <Compile Include="Concrete\UnitOfWork.cs" />
     <Compile Include="Entities\Article.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Extensions\Disposable.cs" />

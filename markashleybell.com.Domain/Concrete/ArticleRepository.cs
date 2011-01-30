@@ -9,39 +9,16 @@ namespace markashleybell.com.Domain.Concrete
 {
     public class ArticleRepository : RepositoryBase<Article>, IArticleRepository
     {
-        public ArticleRepository(IDbFactory databaseFactory) : base(databaseFactory) { }
+        public ArticleRepository(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
-        public IEnumerable<Article> GetAll()
+        public Article Get(int id)
         {
-            return base.Db.Articles.ToList();
-        }
-
-        public Article GetById(int id)
-        {
-            return base.Db.Articles.Where(x => x.ArticleID == id).FirstOrDefault();
+            return base.Get(id);
         }
 
         public Article GetByUrl(string url)
         {
-            return base.Db.Articles.Where(x => x.Slug == url).FirstOrDefault();
-        }
-
-        public int Save(Article article)
-        {
-            base.Db.Articles.Add(article);
-            base.Db.Commit();
-
-            return article.ArticleID;
-        }
-
-        public int Delete(Article article)
-        {
-            // int id = 
-
-            base.Db.Articles.Remove(article);
-            base.Db.Commit();
-
-            return article.ArticleID;
+            return base.Query(x => x.Slug == url).FirstOrDefault();
         }
     }
 }

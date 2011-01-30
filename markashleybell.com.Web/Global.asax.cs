@@ -7,6 +7,7 @@ using System.Web.Routing;
 using markashleybell.com.Web.Infrastructure;
 using markashleybell.com.Domain.Concrete;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Database;
 
 namespace markashleybell.com.Web
 {
@@ -23,6 +24,18 @@ namespace markashleybell.com.Web
                 null, // Route name
                 "testdata", // URL with parameters
                 new { controller = "Article", action = "CreateTestData" } // Parameter defaults
+            );
+
+            routes.MapRoute(
+                null, // Route name
+                "about", // URL with parameters
+                new { controller = "Main", action = "About" } // Parameter defaults
+            );
+
+            routes.MapRoute(
+                null, // Route name
+                "jquery", // URL with parameters
+                new { controller = "Main", action = "JQuery" } // Parameter defaults
             );
 
             routes.MapRoute(
@@ -51,7 +64,7 @@ namespace markashleybell.com.Web
 
             RegisterRoutes(RouteTable.Routes);
 
-            Database.SetInitializer<Db>(new DbInitializer());
+            DbDatabase.SetInitializer<Db>(new DbInitializer());
 
             ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
         }

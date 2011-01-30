@@ -24,17 +24,22 @@ namespace markashleybell.com.Web.Infrastructure
                 Updated = article.Updated
             };
 
-            foreach(Comment comment in article.Comments) {
-                model.Comments.Add(new CommentViewModel {
-                    CommentID = comment.CommentID,
-                    AuthorName = comment.AuthorName,
-                    Email = comment.Email,
-                    Url = comment.Url,
-                    Body = comment.Body,
-                    BodyMarkdown = comment.BodyMarkdown,
-                    Published = comment.Published,
-                    Updated = comment.Updated
-                });
+            if (article.Comments != null)
+            {
+                foreach (Comment comment in article.Comments)
+                {
+                    model.Comments.Add(new CommentViewModel
+                    {
+                        CommentID = comment.CommentID,
+                        AuthorName = comment.AuthorName,
+                        Email = comment.Email,
+                        Url = comment.Url,
+                        Body = comment.Body,
+                        BodyMarkdown = comment.BodyMarkdown,
+                        Published = comment.Published,
+                        Updated = comment.Updated
+                    });
+                }
             }
 
             return model;

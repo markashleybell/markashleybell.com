@@ -21,5 +21,7 @@ namespace markashleybell.com.Web.Models
         public DateTime Updated { get; set; }
 
         public List<CommentViewModel> Comments = new List<CommentViewModel>();
+
+        public CommentViewModel NewComment { get; set; }
     }
 }

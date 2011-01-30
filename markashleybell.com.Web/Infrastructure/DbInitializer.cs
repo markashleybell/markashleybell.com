@@ -5,10 +5,11 @@ using System.Web;
 using System.Data.Entity.Infrastructure;
 using markashleybell.com.Domain.Concrete;
 using markashleybell.com.Domain.Entities;
+using System.Data.Entity.Database;
 
 namespace markashleybell.com.Web.Infrastructure
 {
-    public class DbInitializer : RecreateDatabaseIfModelChanges<Db>
+    public class DbInitializer : DropCreateDatabaseIfModelChanges<Db>
     {
         protected override void Seed(Db context)
         {
@@ -56,7 +57,7 @@ namespace markashleybell.com.Web.Infrastructure
                 SummaryMarkdown = "<p>This is a summary.</p>",
                 Body = "This is the test article 2 text.",
                 BodyMarkdown = "<p>This is the test article 2 text.</p>",
-                Slug = "test-article",
+                Slug = "test-article-2",
                 Published = DateTime.Now,
                 Updated = DateTime.Now,
                 Comments = new List<Comment> 

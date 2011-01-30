@@ -9,11 +9,15 @@ namespace markashleybell.com.Web.Controllers
 {
     public class BaseController : Controller
     {
+        protected IUnitOfWork _unitOfWork;
         protected IArticleRepository _articleRepository;
+        protected ICommentRepository _commentRepository;
 
-        public BaseController(IArticleRepository articleRepository)
+        public BaseController(IUnitOfWork unitOfWork, IArticleRepository articleRepository, ICommentRepository commentRepository)
         {
+            _unitOfWork = unitOfWork;
             _articleRepository = articleRepository;
+            _commentRepository = commentRepository;
         }
     }
 }
