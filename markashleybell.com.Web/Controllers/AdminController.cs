@@ -21,34 +21,27 @@ namespace markashleybell.com.Web.Controllers
             return View(articles);
         }
 
-        //
-        // GET: /Admin/Create
-
         public ActionResult Create()
         {
             return View();
         } 
 
-        //
-        // POST: /Admin/Create
-
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ArticleViewModel model)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            var now = DateTime.Now;
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            model.Published = now;
+            model.Updated = now;
+
+            var article = model.Map();
+
+            _articleRepository.Add(article);
+
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Edit", new { id = article.ArticleID });
         }
-        
-        //
-        // GET: /Admin/Edit/5
  
         public ActionResult Edit(int id)
         {

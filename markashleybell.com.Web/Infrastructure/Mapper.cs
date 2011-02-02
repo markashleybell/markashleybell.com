@@ -9,6 +9,43 @@ namespace markashleybell.com.Web.Infrastructure
 {
     public static class Mapper
     {
+        public static Article Map(this ArticleViewModel article)
+        {
+            var model = new Article
+            {
+                ArticleID = article.ArticleID,
+                Title = article.Title,
+                Author = article.Author,
+                Summary = article.Summary,
+                SummaryMarkdown = article.SummaryMarkdown,
+                Body = article.Body,
+                BodyMarkdown = article.BodyMarkdown,
+                Slug = article.Slug,
+                Published = article.Published,
+                Updated = article.Updated
+            };
+
+            if (article.Comments != null)
+            {
+                foreach (CommentViewModel comment in article.Comments)
+                {
+                    model.Comments.Add(new Comment
+                    {
+                        CommentID = comment.CommentID,
+                        AuthorName = comment.AuthorName,
+                        Email = comment.Email,
+                        Url = comment.Url,
+                        Body = comment.Body,
+                        BodyMarkdown = comment.BodyMarkdown,
+                        Published = comment.Published,
+                        Updated = comment.Updated
+                    });
+                }
+            }
+
+            return model;
+        }
+
         public static ArticleViewModel Map(this Article article)
         {
             var model = new ArticleViewModel {
