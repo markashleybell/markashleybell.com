@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
     $('#commentform').submit(function () {
+
+        return true;
+
         var requiredFields = ['NewComment_AuthorName', 'NewComment_Email', 'NewComment_Body', 'z7sfd602nlwi'];
         var valid = true;
         $(this).find('span.validationmsg').remove();

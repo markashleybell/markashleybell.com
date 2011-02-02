@@ -1,0 +1,22 @@
+﻿@model List<markashleybell.com.Web.Models.ArticleViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Main.cshtml";
+}
+
+@section content {
+
+    <h1>Articles</h1>
+
+    <ul>
+
+    @foreach(var article in Model) {
+
+        <li><a href="/articles/@article.Slug">@article.Title</a> <span>@article.Published.ToString("dddd, d MMMM yyyy HH:mm")</span> <span>@(new HtmlString(article.SummaryMarkdown))</span></li>
+
+    }
+
+    </ul>
+
+}

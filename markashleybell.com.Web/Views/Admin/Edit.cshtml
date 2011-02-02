@@ -1,0 +1,109 @@
+﻿@model markashleybell.com.Web.Models.ArticleViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+
+@section content {
+
+    <h2>Edit</h2>
+
+    @using (Html.BeginForm()) {
+        
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>ArticleViewModel</legend>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ArticleID)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.ArticleID)
+                @Html.ValidationMessageFor(model => model.ArticleID)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Title)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Title)
+                @Html.ValidationMessageFor(model => model.Title)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Author)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Author)
+                @Html.ValidationMessageFor(model => model.Author)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Summary)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Summary)
+                @Html.ValidationMessageFor(model => model.Summary)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.SummaryMarkdown)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.SummaryMarkdown)
+                @Html.ValidationMessageFor(model => model.SummaryMarkdown)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Body)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Body)
+                @Html.ValidationMessageFor(model => model.Body)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.BodyMarkdown)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.BodyMarkdown)
+                @Html.ValidationMessageFor(model => model.BodyMarkdown)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Slug)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Slug)
+                @Html.ValidationMessageFor(model => model.Slug)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Published)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Published)
+                @Html.ValidationMessageFor(model => model.Published)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Updated)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Updated)
+                @Html.ValidationMessageFor(model => model.Updated)
+            </div>
+
+            <p>
+                <input type="submit" value="Save" />
+            </p>
+        </fieldset>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+}
