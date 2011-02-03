@@ -29,6 +29,7 @@ namespace markashleybell.com.Web.Infrastructure
             protected override void Configure()
             {
                 Mapper.CreateMap<Article, ArticleViewModel>();
+                Mapper.CreateMap<Article, ArticleDetailPageViewModel>();
                 Mapper.CreateMap<Comment, CommentViewModel>();
 
                 /*
@@ -51,6 +52,7 @@ namespace markashleybell.com.Web.Infrastructure
             protected override void Configure()
             {
                 Mapper.CreateMap<ArticleViewModel, Article>();
+                Mapper.CreateMap<ArticleDetailPageViewModel, Article>();
                 Mapper.CreateMap<CommentViewModel, Comment>();
 
                 /*

@@ -7,16 +7,23 @@ using markashleybell.com.Web.Infrastructure;
 using markashleybell.com.Domain.Abstract;
 using markashleybell.com.Domain.Entities;
 using markashleybell.com.Web.Models;
+using AutoMapper;
+using MarkdownSharp;
 
 namespace markashleybell.com.Web.Controllers
 {
     public class AdminController : BaseController
     {
-        public AdminController(IUnitOfWork unitOfWork, IArticleRepository articleRepository, ICommentRepository commentRepository) : base(unitOfWork, articleRepository, commentRepository) { }
+        private Markdown _md;
+
+        public AdminController(IUnitOfWork unitOfWork, IArticleRepository articleRepository, ICommentRepository commentRepository) : base(unitOfWork, articleRepository, commentRepository) 
+        {
+            _md = new Markdown();
+        }
 
         public ActionResult Index()
         {
-            var articles = _articleRepository.All().Map();
+            var articles = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(_articleRepository.All());
 
             return View(articles);
         }
@@ -32,7 +39,9 @@ namespace markashleybell.com.Web.Controllers
             model.Published = (model.Published != null && model.Published != DateTime.MinValue) ? model.Published : DateTime.Now;
             model.Updated = model.Published;
 
-            var article = model.Map();
+            model.BodyHtml = _md.Transform(model.Body);
+
+            var article = Mapper.Map<ArticleViewModel, Article>(model);
 
             _articleRepository.Add(article);
 
@@ -43,7 +52,7 @@ namespace markashleybell.com.Web.Controllers
  
         public ActionResult Edit(int id)
         {
-            var article = _articleRepository.Get(id).Map();
+            var article = Mapper.Map<Article, ArticleViewModel>(_articleRepository.Get(id));
 
             return View(article);
         }
@@ -53,7 +62,17 @@ namespace markashleybell.com.Web.Controllers
         {
             var article = _articleRepository.Get(model.ArticleID);
 
-            article.MapFrom(model);
+            article.Slug = model.Slug;
+            article.Author = model.Author;
+
+            article.Published = (model.Published != null && model.Published != DateTime.MinValue) ? model.Published : DateTime.Now;
+            article.Updated = DateTime.Now;
+
+            article.Title = model.Title;
+            article.Summary = model.Summary;
+            article.SummaryHtml = _md.Transform(model.Summary);
+            article.Body = model.Body;
+            article.BodyHtml = _md.Transform(model.Body);
 
             _unitOfWork.Commit();
 

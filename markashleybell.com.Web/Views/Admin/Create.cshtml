@@ -15,14 +15,6 @@
             <legend>ArticleViewModel</legend>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.ArticleID)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.ArticleID)
-                @Html.ValidationMessageFor(model => model.ArticleID)
-            </div>
-
-            <div class="editor-label">
                 @Html.LabelFor(model => model.Title)
             </div>
             <div class="editor-field">
@@ -71,6 +63,7 @@
             </div>
 
             <p>
+                @Html.HiddenFor(model => model.ArticleID)
                 <input type="submit" value="Create" />
             </p>
         </fieldset>

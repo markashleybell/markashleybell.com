@@ -8,16 +8,22 @@ using markashleybell.com.Domain.Abstract;
 using markashleybell.com.Domain.Entities;
 using markashleybell.com.Web.Models;
 using AutoMapper;
+using MarkdownSharp;
 
 namespace markashleybell.com.Web.Controllers
 {
     public class ArticleController : BaseController
     {
-        public ArticleController(IUnitOfWork unitOfWork, IArticleRepository articleRepository, ICommentRepository commentRepository) : base(unitOfWork, articleRepository, commentRepository) { }
+        private Markdown _md;
+
+        public ArticleController(IUnitOfWork unitOfWork, IArticleRepository articleRepository, ICommentRepository commentRepository) : base(unitOfWork, articleRepository, commentRepository) 
+        {
+            _md = new Markdown();
+        }
 
         public ActionResult Index()
         {
-            var articles = _articleRepository.All();
+            var articles = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(_articleRepository.All());
 
             return View(articles);
         }
@@ -30,9 +36,38 @@ namespace markashleybell.com.Web.Controllers
             if (article == null)
                 return Redirect("/pagenotfound");
 
-            var viewModel = Mapper.Map<Article, ArticleViewModel>(article);
+            var viewModel = Mapper.Map<Article, ArticleDetailPageViewModel>(article);
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Article(ArticleDetailPageViewModel model)
+        {
+            var article = _articleRepository.Get(model.ArticleID);
+
+            if (article == null)
+                return Redirect("/pagenotfound");
+
+            var newComment = model.Comment;
+
+            if (!ModelState.IsValid)
+            {
+                model = Mapper.Map<Article, ArticleDetailPageViewModel>(article);
+                return View(model);
+            }
+
+            newComment.Published = DateTime.Now;
+            newComment.Updated = newComment.Published;
+            newComment.BodyHtml = _md.Transform(newComment.Body);
+
+            var comment = Mapper.Map<CommentViewModel, Comment>(newComment);
+
+            article.Comments.Add(comment);
+
+            _unitOfWork.Commit();
+
+            return Redirect("/articles/" + article.Slug);
         }
     }
 }

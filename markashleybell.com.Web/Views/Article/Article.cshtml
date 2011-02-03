@@ -1,4 +1,4 @@
-﻿@model markashleybell.com.Web.Models.ArticleViewModel
+﻿@model markashleybell.com.Web.Models.ArticleDetailPageViewModel
 
 @{
     ViewBag.Title = "Article";
@@ -31,7 +31,34 @@
         
     }
     
-    @Html.Partial("CommentForm", new CommentViewModel { ArticleID = Model.ArticleID })
+    @using (Html.BeginForm("Article", "Article", FormMethod.Post, new { id = "commentform" }))
+    {
+
+        <h2>Add your comment</h2>
+
+        <p>@Html.LabelFor(x => x.Comment.AuthorName)<br />
+        @Html.TextBoxFor(x => x.Comment.AuthorName)
+        @Html.ValidationMessageFor(x => x.Comment.AuthorName)</p>
+
+        <p>@Html.LabelFor(x => x.Comment.Email)<br />
+        @Html.TextBoxFor(x => x.Comment.Email)
+        @Html.ValidationMessageFor(x => x.Comment.Email)</p>
+
+        <p>@Html.LabelFor(x => x.Comment.Url)<br />
+        @Html.TextBoxFor(x => x.Comment.Url)</p>
+
+        <p>@Html.LabelFor(x => x.Comment.Body)<br />
+        @Html.TextAreaFor(x => x.Comment.Body)
+        @Html.ValidationMessageFor(x => x.Comment.Body)</p>
+
+        <p><label id="captcha" for="z7sfd602nlwi">If you have 2 octopi, how many tentacles will they have?</label> &nbsp;<input type="text" size="5" id="z7sfd602nlwi" name="z7sfd602nlwi" value="" /></p>
+
+        <div class="clr">&nbsp;</div>
+
+        <p>@Html.HiddenFor(x => x.ArticleID)
+        <input id="commentsubmit" type="submit" value="Submit Comment" /></p>
+
+    }
 
     <script type="text/javascript" src="/scripts/comment.js"></script>
     <script type="text/javascript">
