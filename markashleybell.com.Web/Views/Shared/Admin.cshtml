@@ -21,9 +21,7 @@
        <div id="header">
             <p>@Html.ActionLink("Mark Ashley Bell, Web Designer/Developer", "Index", "Main")</p>
             <ul>
-                <li><a href="/about/">About</a></li>
-                <li><a href="/articles/">Articles</a></li>
-                <li><a href="/jquery/">jQuery Plugins</a></li>
+                <li><a href="/Admin">Articles</a></li>
             </ul>
             <div class="clr">&nbsp;</div>
        </div>
@@ -33,18 +31,6 @@
     
         </div>
         <div class="clr">&nbsp;</div>
-        
-        @if(!Convert.ToBoolean(ConfigurationManager.AppSettings["LocalTestMode"])) {
-        <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-        </script>
-        <script type="text/javascript">
-            try {
-                var pageTracker = _gat._getTracker("UA-10947465-1");
-                pageTracker._trackPageview();
-            } catch (err) { }</script>
-        }
     </body>
 </html>
 

@@ -12,6 +12,7 @@ using MarkdownSharp;
 
 namespace markashleybell.com.Web.Controllers
 {
+    [Authorize]
     public class AdminController : BaseController
     {
         private Markdown _md;

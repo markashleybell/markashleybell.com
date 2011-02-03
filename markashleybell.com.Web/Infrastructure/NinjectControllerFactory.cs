@@ -8,6 +8,8 @@ using Ninject.Modules;
 using System.Configuration;
 using markashleybell.com.Domain.Concrete;
 using markashleybell.com.Domain.Abstract;
+using markashleybell.com.Web.Abstract;
+using markashleybell.com.Web.Concrete;
 
 namespace markashleybell.com.Web.Infrastructure
 {
@@ -37,6 +39,9 @@ namespace markashleybell.com.Web.Infrastructure
 
                 Bind<ICommentRepository>()
                     .To<CommentRepository>();
+
+                Bind<IFormsAuthenticationProvider>()
+                    .To<FormsAuthenticationProvider>();
             }
         }
     }
