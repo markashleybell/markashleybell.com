@@ -50,4 +50,5 @@ ClientBin
 stylecop.*
 ~$*
 *.dbmdl
-Web.config
+Auth.config
+Db.config

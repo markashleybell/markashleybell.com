@@ -147,6 +147,8 @@
     <Content Include="Views\Admin\Create.cshtml" />
     <Content Include="Views\Shared\CommentForm.cshtml" />
     <Content Include="Views\Account\LogOn.cshtml" />
+    <Content Include="Db.config" />
+    <Content Include="Auth.config" />
     <None Include="Web.config.live">
       <SubType>Designer</SubType>
     </None>
