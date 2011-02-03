@@ -11,6 +11,8 @@ namespace markashleybell.com.Web.Models
     {
         public int CommentID { get; set; }
 
+        public int ArticleID { get; set; }
+
         [Required]
         [DisplayName("Your Name")]
         public string AuthorName { get; set; }
@@ -21,11 +23,9 @@ namespace markashleybell.com.Web.Models
         [Required(ErrorMessage="You must enter a comment")]
         [DisplayName("Comment (you can format comments with Markdown)")]
         public string Body { get; set; }
-        public string BodyMarkdown { get; set; }
+        public string BodyHtml { get; set; }
 
         public DateTime Published { get; set; }
         public DateTime Updated { get; set; }
-
-        public ArticleViewModel Article { get; set; }
     }
 }

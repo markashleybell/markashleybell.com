@@ -31,41 +31,5 @@ namespace markashleybell.com.Web.Controllers
 
             return View(article.Map());
         }
-
-        [HttpPost]
-        public ActionResult Article(ArticleViewModel model)
-        {
-            var article = _articleRepository.Get(model.ArticleID);
-
-            if (!ModelState.IsValid)
-            {
-                var a = article.Map();
-
-                model.Title = a.Title;
-                model.Author = a.Author;
-                model.BodyMarkdown = a.BodyMarkdown;
-                model.Published = a.Published;
-                model.Comments = a.Comments.ToList();
-
-                return View(model);
-            }
-
-            var now = DateTime.Now;
-
-            article.Comments.Add(new Comment {
-                Article = article,
-                AuthorName = model.NewComment.AuthorName,
-                Email = model.NewComment.Email,
-                Url = model.NewComment.Url,
-                Body = model.NewComment.Body,
-                BodyMarkdown = model.NewComment.Body,
-                Published = now,
-                Updated = now
-            });
-
-            _unitOfWork.Commit();
-
-            return RedirectToAction("Article", new { url = model.Slug });
-        }
     }
 }

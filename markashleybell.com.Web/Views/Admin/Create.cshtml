@@ -42,32 +42,16 @@
                 @Html.LabelFor(model => model.Summary)
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.Summary)
+                @Html.TextAreaFor(model => model.Summary)
                 @Html.ValidationMessageFor(model => model.Summary)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.SummaryMarkdown)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.SummaryMarkdown)
-                @Html.ValidationMessageFor(model => model.SummaryMarkdown)
             </div>
 
             <div class="editor-label">
                 @Html.LabelFor(model => model.Body)
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.Body)
+                @Html.TextAreaFor(model => model.Body)
                 @Html.ValidationMessageFor(model => model.Body)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.BodyMarkdown)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.BodyMarkdown)
-                @Html.ValidationMessageFor(model => model.BodyMarkdown)
             </div>
 
             <div class="editor-label">
@@ -84,14 +68,6 @@
             <div class="editor-field">
                 @Html.EditorFor(model => model.Published)
                 @Html.ValidationMessageFor(model => model.Published)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Updated)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Updated)
-                @Html.ValidationMessageFor(model => model.Updated)
             </div>
 
             <p>

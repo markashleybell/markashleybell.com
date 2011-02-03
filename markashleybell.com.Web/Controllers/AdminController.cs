@@ -29,10 +29,8 @@ namespace markashleybell.com.Web.Controllers
         [HttpPost]
         public ActionResult Create(ArticleViewModel model)
         {
-            var now = DateTime.Now;
-
-            model.Published = now;
-            model.Updated = now;
+            model.Published = (model.Published != null && model.Published != DateTime.MinValue) ? model.Published : DateTime.Now;
+            model.Updated = model.Published;
 
             var article = model.Map();
 
@@ -50,46 +48,26 @@ namespace markashleybell.com.Web.Controllers
             return View(article);
         }
 
-        //
-        // POST: /Admin/Edit/5
-
         [HttpPost]
-        [ValidateInput(false)]
         public ActionResult Edit(ArticleViewModel model)
         {
             var article = _articleRepository.Get(model.ArticleID);
 
-            article.Title = model.Title;
+            article.MapFrom(model);
 
             _unitOfWork.Commit();
 
             return View(model);
         }
-
-        //
-        // GET: /Admin/Delete/5
- 
+        
+        [HttpPost]
         public ActionResult Delete(int id)
         {
-            return View();
-        }
+            _articleRepository.Remove(id);
 
-        //
-        // POST: /Admin/Delete/5
+            _unitOfWork.Commit();
 
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("");
         }
     }
 }

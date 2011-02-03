@@ -12,6 +12,6 @@ namespace markashleybell.com.Domain.Abstract
         IEnumerable<T> Query(Expression<Func<T, bool>> filter);
         T Get(int id);
         void Add(T entity);
-        void Remove(T entity);
+        void Remove(int id);
     }
 }

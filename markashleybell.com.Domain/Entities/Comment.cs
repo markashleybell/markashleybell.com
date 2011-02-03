@@ -13,7 +13,7 @@ namespace markashleybell.com.Domain.Entities
         public string Email { get; set; }
         public string Url { get; set; }
         public string Body { get; set; }
-        public string BodyMarkdown { get; set; }
+        public string BodyHtml { get; set; }
 
         public DateTime Published { get; set; }
         public DateTime Updated { get; set; }

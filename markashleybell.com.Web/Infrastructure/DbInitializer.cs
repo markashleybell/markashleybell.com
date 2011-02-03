@@ -18,9 +18,9 @@ namespace markashleybell.com.Web.Infrastructure
                 Title = "Test Article",
                 Author = "Mark Bell",
                 Summary = "This is a summary.",
-                SummaryMarkdown = "<p>This is a summary.</p>",
+                SummaryHtml = "<p>This is a summary.</p>",
                 Body = "This is the test article text.",
-                BodyMarkdown = "<p>This is the test article text.</p>",
+                BodyHtml = "<p>This is the test article text.</p>",
                 Slug = "test-article",
                 Published = DateTime.Now,
                 Updated = DateTime.Now,
@@ -32,7 +32,7 @@ namespace markashleybell.com.Web.Infrastructure
                         Email = "bob@bob.com",
                         Url = "http://jim.com/",
                         Body = "This is a test",
-                        BodyMarkdown = "<p>This is a test</p>",
+                        BodyHtml = "<p>This is a test</p>",
                         Published = DateTime.Now,
                         Updated = DateTime.Now
                     },
@@ -42,7 +42,7 @@ namespace markashleybell.com.Web.Infrastructure
                         Email = "jim@jim.com",
                         Url = "",
                         Body = "Jim says hello!",
-                        BodyMarkdown = "<p>Jim says hello!</p>",
+                        BodyHtml = "<p>Jim says hello!</p>",
                         Published = DateTime.Now,
                         Updated = DateTime.Now
                     }
@@ -54,9 +54,9 @@ namespace markashleybell.com.Web.Infrastructure
                 Title = "Test Article 2",
                 Author = "Mark Bell",
                 Summary = "This is a summary.",
-                SummaryMarkdown = "<p>This is a summary.</p>",
+                SummaryHtml = "<p>This is a summary.</p>",
                 Body = "This is the test article 2 text.",
-                BodyMarkdown = "<p>This is the test article 2 text.</p>",
+                BodyHtml = "<p>This is the test article 2 text.</p>",
                 Slug = "test-article-2",
                 Published = DateTime.Now,
                 Updated = DateTime.Now,
@@ -68,7 +68,7 @@ namespace markashleybell.com.Web.Infrastructure
                         Email = "jim@jim.com",
                         Url = "",
                         Body = "Jim says hello!",
-                        BodyMarkdown = "<p>Jim says hello!</p>",
+                        BodyHtml = "<p>Jim says hello!</p>",
                         Published = DateTime.Now,
                         Updated = DateTime.Now
                     },
@@ -78,7 +78,7 @@ namespace markashleybell.com.Web.Infrastructure
                         Email = "bob@bob.com",
                         Url = "http://jim.com/",
                         Body = "This is a test",
-                        BodyMarkdown = "<p>This is a test</p>",
+                        BodyHtml = "<p>This is a test</p>",
                         Published = DateTime.Now,
                         Updated = DateTime.Now
                     }

@@ -39,9 +39,10 @@ namespace markashleybell.com.Domain.Abstract
             _dbset.Add(entity);
         }
 
-        public virtual void Remove(T entity)
+        public virtual void Remove(int id)
         {
-            _dbset.Remove(entity);
+
+            _dbset.Remove(_dbset.Find(id));
         }
 
     }
