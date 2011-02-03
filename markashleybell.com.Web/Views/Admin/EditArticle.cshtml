@@ -7,80 +7,67 @@
 
 @section content {
 
-    <h2>Edit</h2>
+    <h2>Edit Article</h2>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         
         @Html.ValidationSummary(true)
 
-        <fieldset>
-            <legend>ArticleViewModel</legend>
-
-            <div class="editor-label">
+            <p>
                 @Html.LabelFor(model => model.Title)
-            </div>
-            <div class="editor-field">
                 @Html.EditorFor(model => model.Title)
                 @Html.ValidationMessageFor(model => model.Title)
-            </div>
+            </p>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Author)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Author)
-                @Html.ValidationMessageFor(model => model.Author)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Summary)
-            </div>
-            <div class="editor-field">
-                @Html.TextAreaFor(model => model.Summary)
-                @Html.ValidationMessageFor(model => model.Summary)
-            </div>
-
-            <div class="editor-label">
+            <p>
                 @Html.LabelFor(model => model.Body)
-            </div>
-            <div class="editor-field">
                 @Html.TextAreaFor(model => model.Body)
                 @Html.ValidationMessageFor(model => model.Body)
-            </div>
+            </p>
+        
+            <p>
+                @Html.LabelFor(model => model.Summary)
+                @Html.TextAreaFor(model => model.Summary)
+                @Html.ValidationMessageFor(model => model.Summary)
+            </p>
 
-            <div class="editor-label">
+            <p>
                 @Html.LabelFor(model => model.Slug)
-            </div>
-            <div class="editor-field">
                 @Html.EditorFor(model => model.Slug)
                 @Html.ValidationMessageFor(model => model.Slug)
-            </div>
+            </p>
 
-            <div class="editor-label">
+            <p>
                 @Html.LabelFor(model => model.Published)
-            </div>
-            <div class="editor-field">
                 @Html.EditorFor(model => model.Published)
                 @Html.ValidationMessageFor(model => model.Published)
-            </div>
+            </p>
+        
+            <p>
+                @Html.LabelFor(model => model.Author)
+                @Html.EditorFor(model => model.Author)
+                @Html.ValidationMessageFor(model => model.Author)
+            </p>
+
+            
 
             <p>
                 @Html.HiddenFor(model => model.ArticleID)
-                <input type="submit" value="Save" />
+                <input class="submit" type="submit" value="Save" />
             </p>
-        </fieldset>
+
     }
 
-     @using (Html.BeginForm("DeleteArticle", "Admin")) {
+     @using (Html.BeginForm("DeleteArticle", "Admin"))
+     {
          
-         
-         
-         <p>@Html.Hidden("id", Model.ArticleID) <input type="submit" value="Delete" /></p>
+         <p>@Html.Hidden("id", Model.ArticleID) <input class="submit" type="submit" value="Delete" /></p>
          
      }
 
-    <div>
+    <p>
         @Html.ActionLink("Back to List", "Articles")
-    </div>
+    </p>
 
 }

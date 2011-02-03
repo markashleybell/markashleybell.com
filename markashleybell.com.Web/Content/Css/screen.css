@@ -30,12 +30,18 @@ li span { display: block; color: #999999; font-size: 0.8em; }
 #comments h3 { color: #676767; }
 #comments p { font-size: 0.8em; }
 #commentform { margin-top: 2.8em; }
-#commentform p { font-size: 0.8em; margin: 0.7em 0 0 0; }
-#commentform input, #commentform textarea { padding: 3px; border: solid 1px #999999; width: 400px; }
+label { display: block; }
+form p { font-size: 0.8em; margin: 0.7em 0 0 0; }
+form input, form textarea { padding: 3px; border: solid 1px #999999; width: 400px; }
+
+form input.submit { font-weight: bold; width: 200px; margin-top: 20px; }
+
 #commentform input#z7sfd602nlwi { width: 30px; float: left; }
 #captcha { display: block; float: left; width: 370px; line-height: 24px; }
 #commentform input#commentsubmit { width: 200px; }
 #z7sfd602nlwi-validationmsg { float: left; line-height: 24px; }
+#Summary { width: 800px; height: 100px; }
+#Body { width: 800px; height: 800px; }
 
 #header ul { margin: 0 100px 0 0; list-style-type: none; }
 #header li { margin: 0 0 0 0; float: right; padding: 5px 0 5px 20px; }
