@@ -67,6 +67,8 @@ namespace markashleybell.com.Web
             DbDatabase.SetInitializer<Db>(new DbInitializer());
 
             ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+
+            AutoMapperConfiguration.Configure();
         }
     }
 }

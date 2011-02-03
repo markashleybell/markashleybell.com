@@ -7,6 +7,7 @@ using markashleybell.com.Web.Infrastructure;
 using markashleybell.com.Domain.Abstract;
 using markashleybell.com.Domain.Entities;
 using markashleybell.com.Web.Models;
+using AutoMapper;
 
 namespace markashleybell.com.Web.Controllers
 {
@@ -16,7 +17,7 @@ namespace markashleybell.com.Web.Controllers
 
         public ActionResult Index()
         {
-            var articles = _articleRepository.All().Map();
+            var articles = _articleRepository.All();
 
             return View(articles);
         }
@@ -29,7 +30,9 @@ namespace markashleybell.com.Web.Controllers
             if (article == null)
                 return Redirect("/pagenotfound");
 
-            return View(article.Map());
+            var viewModel = Mapper.Map<Article, ArticleViewModel>(article);
+
+            return View(viewModel);
         }
     }
 }

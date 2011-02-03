@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\Lib\AutoMapper\2.0.9999.0\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="MarkdownSharp">
       <HintPath>..\..\..\Lib\MarkdownSharp\1.13\MarkdownSharp.dll</HintPath>
@@ -84,8 +87,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\AutoMapperConfiguration.cs" />
     <Compile Include="Infrastructure\DbInitializer.cs" />
-    <Compile Include="Infrastructure\Mapper.cs" />
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
     <Compile Include="Models\ArticleViewModel.cs" />
     <Compile Include="Models\CommentViewModel.cs" />
