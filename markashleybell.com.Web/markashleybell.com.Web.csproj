@@ -148,9 +148,9 @@
     <Content Include="Views\Article\Article.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\Admin.cshtml" />
-    <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Admin\Edit.cshtml" />
-    <Content Include="Views\Admin\Create.cshtml" />
+    <Content Include="Views\Admin\Articles.cshtml" />
+    <Content Include="Views\Admin\EditArticle.cshtml" />
+    <Content Include="Views\Admin\CreateArticle.cshtml" />
     <Content Include="Views\Shared\CommentForm.cshtml" />
     <Content Include="Views\Account\LogOn.cshtml" />
     <Content Include="Db.config" />

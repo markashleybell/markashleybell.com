@@ -24,18 +24,23 @@ namespace markashleybell.com.Web.Controllers
 
         public ActionResult Index()
         {
+            return RedirectToAction("Articles");
+        }
+
+        public ActionResult Articles()
+        {
             var articles = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(_articleRepository.All());
 
             return View(articles);
         }
 
-        public ActionResult Create()
+        public ActionResult CreateArticle()
         {
             return View();
         } 
 
         [HttpPost]
-        public ActionResult Create(ArticleViewModel model)
+        public ActionResult CreateArticle(ArticleViewModel model)
         {
             model.Published = (model.Published != null && model.Published != DateTime.MinValue) ? model.Published : DateTime.Now;
             model.Updated = model.Published;
@@ -48,10 +53,10 @@ namespace markashleybell.com.Web.Controllers
 
             _unitOfWork.Commit();
 
-            return RedirectToAction("Edit", new { id = article.ArticleID });
+            return RedirectToAction("EditArticle", new { id = article.ArticleID });
         }
  
-        public ActionResult Edit(int id)
+        public ActionResult EditArticle(int id)
         {
             var article = Mapper.Map<Article, ArticleViewModel>(_articleRepository.Get(id));
 
@@ -59,7 +64,7 @@ namespace markashleybell.com.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(ArticleViewModel model)
+        public ActionResult EditArticle(ArticleViewModel model)
         {
             var article = _articleRepository.Get(model.ArticleID);
 
@@ -81,7 +86,7 @@ namespace markashleybell.com.Web.Controllers
         }
         
         [HttpPost]
-        public ActionResult Delete(int id)
+        public ActionResult DeleteArticle(int id)
         {
             _articleRepository.Remove(id);
 

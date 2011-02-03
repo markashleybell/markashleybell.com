@@ -9,13 +9,13 @@
 
     <h1>Articles</h1>
 
-    @Html.ActionLink("Add New", "Create")
+    @Html.ActionLink("Add New", "CreateArticle")
 
     <ul>
 
     @foreach(var article in Model) {
 
-        <li>@Html.ActionLink(article.Title, "Edit", new { id = article.ArticleID }) <span>@article.Published.ToString("dddd, d MMMM yyyy HH:mm")</span></li>
+        <li>@Html.ActionLink(article.Title, "EditArticle", new { id = article.ArticleID }) <span>@article.Published.ToString("dddd, d MMMM yyyy HH:mm")</span></li>
 
     }
 

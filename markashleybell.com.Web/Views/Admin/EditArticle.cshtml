@@ -1,16 +1,18 @@
 ﻿@model markashleybell.com.Web.Models.ArticleViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/Admin.cshtml";
 }
 
 @section content {
 
-    <h2>Create</h2>
+    <h2>Edit</h2>
 
     @using (Html.BeginForm()) {
+        
         @Html.ValidationSummary(true)
+
         <fieldset>
             <legend>ArticleViewModel</legend>
 
@@ -64,13 +66,21 @@
 
             <p>
                 @Html.HiddenFor(model => model.ArticleID)
-                <input type="submit" value="Create" />
+                <input type="submit" value="Save" />
             </p>
         </fieldset>
     }
 
+     @using (Html.BeginForm("DeleteArticle", "Admin")) {
+         
+         
+         
+         <p>@Html.Hidden("id", Model.ArticleID) <input type="submit" value="Delete" /></p>
+         
+     }
+
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Articles")
     </div>
 
 }

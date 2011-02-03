@@ -33,7 +33,7 @@ namespace markashleybell.com.Web.Controllers
             if (ModelState.IsValid)
             {
                 _auth.SetAuthCookie(model.Username, false);
-                return Redirect(returnUrl ?? Url.Action("Index", "Admin"));
+                return Redirect(returnUrl ?? Url.Action("Articles", "Admin"));
             }
             else
             {
