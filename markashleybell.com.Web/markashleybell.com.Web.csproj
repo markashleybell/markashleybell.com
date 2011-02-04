@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Articles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\markashleybell.com.Domain\markashleybell.com.Domain.csproj">
