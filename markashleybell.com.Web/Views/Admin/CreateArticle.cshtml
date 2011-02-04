@@ -45,14 +45,7 @@
             </p>
         
             <p>
-                @Html.LabelFor(model => model.Author)
-                @Html.EditorFor(model => model.Author)
-                @Html.ValidationMessageFor(model => model.Author)
-            </p>
-
-            
-
-            <p>
+                @Html.Hidden("Author", "Mark Bell")
                 @Html.HiddenFor(model => model.ArticleID)
                 <input class="submit" type="submit" value="Save" />
             </p>

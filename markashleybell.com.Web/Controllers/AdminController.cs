@@ -9,6 +9,7 @@ using markashleybell.com.Domain.Entities;
 using markashleybell.com.Web.Models;
 using AutoMapper;
 using MarkdownSharp;
+using System.Text.RegularExpressions;
 
 namespace markashleybell.com.Web.Controllers
 {
@@ -45,6 +46,8 @@ namespace markashleybell.com.Web.Controllers
             model.Published = (model.Published != null && model.Published != DateTime.MinValue) ? model.Published : DateTime.Now;
             model.Updated = model.Published;
 
+            model.Slug = (string.IsNullOrEmpty(model.Slug)) ? GetSlug(model.Title) : model.Slug;
+            model.SummaryHtml = _md.Transform(model.Summary);
             model.BodyHtml = _md.Transform(model.Body);
 
             var article = Mapper.Map<ArticleViewModel, Article>(model);
@@ -68,7 +71,7 @@ namespace markashleybell.com.Web.Controllers
         {
             var article = _articleRepository.Get(model.ArticleID);
 
-            article.Slug = model.Slug;
+            article.Slug = (string.IsNullOrEmpty(model.Slug)) ? GetSlug(model.Title) : model.Slug;
             article.Author = model.Author;
 
             article.Published = (model.Published != null && model.Published != DateTime.MinValue) ? model.Published : DateTime.Now;
@@ -93,6 +96,24 @@ namespace markashleybell.com.Web.Controllers
             _unitOfWork.Commit();
 
             return RedirectToAction("");
+        }
+
+        private static string GetSlug(string input)
+        {
+            RegexOptions o = RegexOptions.IgnoreCase | RegexOptions.Singleline;
+
+            // Remove all special chars (but not spaces or dashes)
+            string output = Regex.Replace(input, @"[^a-z0-9\s\-]", "", o);
+
+            // Replace spaces with hyphens
+            output = Regex.Replace(output, @"[\s]", "-", o);
+
+            // Replace multiple hyphens (more than one in a row) with a single hyphen
+            output = Regex.Replace(output, @"\-{2,}", "-", o);
+
+            // Trim the extra hyphen off the end if exists
+
+            return output.Trim(new char[] { '-', ' ' }).ToLower();
         }
     }
 }

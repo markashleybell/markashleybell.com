@@ -52,3 +52,4 @@ stylecop.*
 *.dbmdl
 Auth.config
 Db.config
+Articles/

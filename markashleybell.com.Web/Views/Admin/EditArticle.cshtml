@@ -42,17 +42,10 @@
                 @Html.LabelFor(model => model.Published)
                 @Html.EditorFor(model => model.Published)
                 @Html.ValidationMessageFor(model => model.Published)
-            </p>
-        
-            <p>
-                @Html.LabelFor(model => model.Author)
-                @Html.EditorFor(model => model.Author)
-                @Html.ValidationMessageFor(model => model.Author)
-            </p>
-
-            
+            </p>            
 
             <p>
+                @Html.HiddenFor(model => model.Author)
                 @Html.HiddenFor(model => model.ArticleID)
                 <input class="submit" type="submit" value="Save" />
             </p>

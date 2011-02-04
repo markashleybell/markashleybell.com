@@ -17,7 +17,6 @@ namespace markashleybell.com.Web.Models
         public string Author { get; set; }
         public string Summary { get; set; }
         [AllowHtml]
-        [Column(TypeName = "text")]
         public string SummaryHtml { get; set; }
         [Required]
         [AllowHtml]
