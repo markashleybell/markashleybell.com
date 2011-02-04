@@ -35,21 +35,20 @@
   <ItemGroup>
     <Reference Include="AutoMapper, Version=2.0.9999.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\AutoMapper.dll</HintPath>
+      <HintPath>..\lib\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\lib\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="MarkdownSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\MarkdownSharp.dll</HintPath>
+      <HintPath>..\lib\MarkdownSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject, Version=2.1.0.93, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Ninject.dll</HintPath>
+      <HintPath>..\lib\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

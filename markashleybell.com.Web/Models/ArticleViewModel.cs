@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using System.Data;
 
 namespace markashleybell.com.Web.Models
 {
@@ -16,6 +17,7 @@ namespace markashleybell.com.Web.Models
         public string Author { get; set; }
         public string Summary { get; set; }
         [AllowHtml]
+        [Column(TypeName = "text")]
         public string SummaryHtml { get; set; }
         [Required]
         [AllowHtml]

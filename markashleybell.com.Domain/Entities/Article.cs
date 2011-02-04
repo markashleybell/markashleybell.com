@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace markashleybell.com.Domain.Entities
 {
@@ -11,9 +13,13 @@ namespace markashleybell.com.Domain.Entities
 
         public string Title { get; set; }
         public string Author { get; set; }
+        [Column(TypeName = "ntext")]
         public string Summary { get; set; }
+        [Column(TypeName = "ntext")]
         public string SummaryHtml { get; set; }
+        [Column(TypeName = "ntext")]
         public string Body { get; set; }
+        [Column(TypeName = "ntext")]
         public string BodyHtml { get; set; }
         public string Slug { get; set; }
 

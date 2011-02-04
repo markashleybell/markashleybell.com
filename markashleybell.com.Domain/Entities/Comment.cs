@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace markashleybell.com.Domain.Entities
 {
@@ -12,7 +13,9 @@ namespace markashleybell.com.Domain.Entities
         public string AuthorName { get; set; }
         public string Email { get; set; }
         public string Url { get; set; }
+        [Column(TypeName = "ntext")]
         public string Body { get; set; }
+        [Column(TypeName = "ntext")]
         public string BodyHtml { get; set; }
 
         public DateTime Published { get; set; }

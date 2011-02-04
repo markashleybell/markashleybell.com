@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity;
 using markashleybell.com.Domain.Entities;
+using System.Data.Entity.ModelConfiguration;
 
 namespace markashleybell.com.Domain.Concrete
 {
@@ -31,5 +32,14 @@ namespace markashleybell.com.Domain.Concrete
         {
             base.SaveChanges();
         }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.Edm.Db.ColumnTypeCasingConvention>();
+
+        //    modelBuilder.Entity<Article>()
+        //                .Property(p => p.Body)
+        //                .HasColumnType("varchar(max)");
+        //}
     }
 }
