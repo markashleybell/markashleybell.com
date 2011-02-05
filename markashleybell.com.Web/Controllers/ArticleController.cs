@@ -21,6 +21,7 @@ namespace markashleybell.com.Web.Controllers
             _md = new Markdown();
         }
 
+        [OutputCache(Duration = 3600)]
         public ActionResult Index()
         {
             var articles = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(_articleRepository.All());

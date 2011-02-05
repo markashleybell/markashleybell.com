@@ -53,3 +53,5 @@ stylecop.*
 Auth.config
 Db.config
 Articles/
+Apps/
+markashleybell.com.Web/Content/jquery/

@@ -22,12 +22,6 @@ namespace markashleybell.com.Web
 
             routes.MapRoute(
                 null, // Route name
-                "testdata", // URL with parameters
-                new { controller = "Article", action = "CreateTestData" } // Parameter defaults
-            );
-
-            routes.MapRoute(
-                null, // Route name
                 "about", // URL with parameters
                 new { controller = "Main", action = "About" } // Parameter defaults
             );
@@ -36,6 +30,12 @@ namespace markashleybell.com.Web
                 null, // Route name
                 "jquery", // URL with parameters
                 new { controller = "Main", action = "JQuery" } // Parameter defaults
+            );
+
+            routes.MapRoute(
+                null, // Route name
+                "sitemap-xml", // URL with parameters
+                new { controller = "Main", action = "SiteMapXml" } // Parameter defaults
             );
 
             routes.MapRoute(
