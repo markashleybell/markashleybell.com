@@ -1,0 +1,52 @@
+﻿@model IEnumerable<markashleybell.com.Web.Models.CommentViewModel>
+
+@{
+    ViewBag.Title = "Comments";
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+
+@section content {
+
+    <h1>Comments</h1>
+
+    <table>
+        <tr>
+            <th></th>
+            <th>
+                AuthorName
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Body
+            </th>
+            <th>
+                Published
+            </th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.ActionLink("Edit", "EditComment", new { id = item.CommentID })
+            </td>
+            <td>
+                @item.AuthorName
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.Body
+            </td>
+            <td>
+                @String.Format("{0:g}", item.Published)
+            </td>
+        </tr>
+    }
+
+    </table>
+
+}
+

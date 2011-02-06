@@ -39,6 +39,8 @@ namespace markashleybell.com.Web.Controllers
 
             var viewModel = Mapper.Map<Article, ArticleDetailPageViewModel>(article);
 
+            viewModel.Comments.Sort(delegate(CommentViewModel a, CommentViewModel b) { return DateTime.Compare(a.Published, b.Published); });
+
             return View(viewModel);
         }
 

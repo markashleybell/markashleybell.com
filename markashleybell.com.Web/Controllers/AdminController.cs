@@ -95,7 +95,49 @@ namespace markashleybell.com.Web.Controllers
 
             _unitOfWork.Commit();
 
-            return RedirectToAction("");
+            return RedirectToAction("Articles");
+        }
+
+        public ActionResult Comments()
+        {
+            var comments = Mapper.Map<IEnumerable<Comment>, IEnumerable<CommentViewModel>>(_commentRepository.All());
+
+            return View(comments);
+        }
+
+        public ActionResult EditComment(int id)
+        {
+            var comment = Mapper.Map<Comment, CommentViewModel>(_commentRepository.Get(id));
+
+            return View(comment);
+        }
+
+        [HttpPost]
+        public ActionResult EditComment(CommentViewModel model)
+        {
+            var comment = _commentRepository.Get(model.CommentID);
+
+            comment.AuthorName = model.AuthorName;
+
+            comment.Published = (comment.Published != null && comment.Published != DateTime.MinValue) ? comment.Published : DateTime.Now;
+            comment.Updated = DateTime.Now;
+
+            comment.Body = model.Body;
+            comment.BodyHtml = _md.Transform(model.Body);
+
+            _unitOfWork.Commit();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteComment(int id)
+        {
+            _commentRepository.Remove(id);
+
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Comments");
         }
 
         private static string GetSlug(string input)

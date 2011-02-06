@@ -1,7 +1,7 @@
 ﻿@model markashleybell.com.Web.Models.ArticleViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Article";
     Layout = "~/Views/Shared/Admin.cshtml";
 }
 
@@ -22,7 +22,7 @@
 
             <p>
                 @Html.LabelFor(model => model.Body)
-                @Html.TextAreaFor(model => model.Body)
+                @Html.TextAreaFor(model => model.Body, new { @class = "body" })
                 @Html.ValidationMessageFor(model => model.Body)
             </p>
         

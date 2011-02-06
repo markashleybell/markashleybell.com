@@ -43,7 +43,7 @@ form input.submit { font-weight: bold; width: 200px; margin-top: 20px; }
 #commentform input#commentsubmit { width: 200px; }
 #z7sfd602nlwi-validationmsg { float: left; line-height: 24px; }
 #Summary { width: 800px; height: 100px; }
-#Body { width: 800px; height: 800px; }
+form textarea.body { width: 800px; height: 800px; }
 
 #header ul { margin: 0 100px 0 0; list-style-type: none; }
 #header li { margin: 0 0 0 0; float: right; padding: 5px 0 5px 20px; }
