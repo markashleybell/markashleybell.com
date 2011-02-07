@@ -65,6 +65,18 @@ namespace markashleybell.com.Web
 
             routes.MapRoute(
                 null, // Route name
+                "admin/{action}/{id}", // URL with parameters
+                new { controller = "Admin", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+            );
+
+            routes.MapRoute(
+                null, // Route name
+                "account/{action}/{id}", // URL with parameters
+                new { controller = "Account", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+            );
+
+            routes.MapRoute(
+                null, // Route name
                 "{*url}", // URL with parameters
                 new { controller = "Main", action = "NotFoundRedirect" } // Parameter defaults
             );
