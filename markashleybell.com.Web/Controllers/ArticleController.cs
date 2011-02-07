@@ -45,6 +45,21 @@ namespace markashleybell.com.Web.Controllers
         }
 
         [HttpPost]
+        public ActionResult ValidateComment(ArticleDetailPageViewModel model)
+        {
+            var errors = (from item in ModelState
+                          where item.Value.Errors.Any()
+                          select new
+                          {
+                              field = item.Key[0].ToString().ToUpper() + item.Key.Substring(1),
+                              error = (from e in item.Value.Errors
+                                       select new { message = e.ErrorMessage }).ToList()
+                          }).ToList();
+
+            return Json(errors);
+        }
+
+        [HttpPost]
         public ActionResult Article(ArticleDetailPageViewModel model)
         {
             var article = _articleRepository.Get(model.ArticleID);

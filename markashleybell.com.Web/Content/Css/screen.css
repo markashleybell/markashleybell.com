@@ -38,11 +38,13 @@ form input, form textarea { padding: 3px; border: solid 1px #999999; width: 400p
 
 form input.submit { font-weight: bold; width: 200px; margin-top: 20px; }
 
-#commentform input#z7sfd602nlwi { width: 30px; float: left; }
+#commentform input#Comment_z7sfd602nlwi { width: 30px; float: left; }
 #captcha { display: block; float: left; width: 370px; line-height: 24px; }
 #commentform input#commentsubmit { width: 200px; }
-#z7sfd602nlwi-validationmsg { float: left; line-height: 24px; }
+#z7sfd602nlwi-validationmsg { float: left; line-height: 26px; padding-left: 14px; }
 #Summary { width: 800px; height: 100px; }
+
+#Comment_Body { height: 100px;  }
 form textarea.body { width: 800px; height: 800px; }
 
 #header ul { margin: 0 100px 0 0; list-style-type: none; }

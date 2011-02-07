@@ -47,11 +47,14 @@
         <p>@Html.LabelFor(x => x.Comment.Url)
         @Html.TextBoxFor(x => x.Comment.Url)</p>
 
-        <p>@Html.LabelFor(x => x.Comment.Body)
+        <p><label for="Comment_Body">Comment (you can format comments with <a href="http://daringfireball.net/projects/markdown/syntax" onclick="window.open(this.href); return false;">Markdown</a>)</label> 
         @Html.TextAreaFor(x => x.Comment.Body)
         @Html.ValidationMessageFor(x => x.Comment.Body)</p>
+        <p></p>
 
-        <p><label id="captcha" for="z7sfd602nlwi">If you have 2 octopi, how many tentacles will they have?</label> &nbsp;<input type="text" size="5" id="z7sfd602nlwi" name="z7sfd602nlwi" value="" /></p>
+        <p><label id="captcha" for="Comment_z7sfd602nlwi">If you have 2 octopi, how many tentacles will they have?</label> &nbsp;
+        @Html.TextBoxFor(x => x.Comment.z7sfd602nlwi, new { size = 5 })
+        @Html.ValidationMessageFor(x => x.Comment.z7sfd602nlwi, "", new { id = "z7sfd602nlwi-validationmsg" })</p>
 
         <div class="clr">&nbsp;</div>
 
