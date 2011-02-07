@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using markashleybell.com.Domain.Abstract;
+using System.Net;
 
 namespace markashleybell.com.Web.Controllers
 {
@@ -27,6 +28,11 @@ namespace markashleybell.com.Web.Controllers
         public ActionResult JQuery()
         {
             return View();
+        }
+
+        public ActionResult NotFoundRedirect()
+        {
+            throw new HttpException((int)HttpStatusCode.NotFound, "");
         }
 
         [OutputCache(Duration = 3600)]

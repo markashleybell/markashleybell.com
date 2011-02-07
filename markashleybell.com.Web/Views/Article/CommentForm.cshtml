@@ -1,0 +1,30 @@
+﻿@model markashleybell.com.Web.Models.CommentViewModel
+
+@using (Html.BeginForm("Article", "Article", FormMethod.Post, new { id = "commentform" }))
+{
+
+    <h2>Add your comment</h2>
+
+    <p>@Html.LabelFor(x => x.AuthorName)<br />
+    @Html.TextBoxFor(x => x.AuthorName)
+    @Html.ValidationMessageFor(x => x.AuthorName)</p>
+
+    <p>@Html.LabelFor(x => x.Email)<br />
+    @Html.TextBoxFor(x => x.Email)
+    @Html.ValidationMessageFor(x => x.Email)</p>
+
+    <p>@Html.LabelFor(x => x.Url)<br />
+    @Html.TextBoxFor(x => x.Url)</p>
+
+    <p>@Html.LabelFor(x => x.Body)<br />
+    @Html.TextAreaFor(x => x.Body)
+    @Html.ValidationMessageFor(x => x.Body)</p>
+
+    <p><label id="captcha" for="z7sfd602nlwi">If you have 2 octopi, how many tentacles will they have?</label> &nbsp;<input type="text" size="5" id="z7sfd602nlwi" name="z7sfd602nlwi" value="" /></p>
+
+    <div class="clr">&nbsp;</div>
+
+    <p>@Html.HiddenFor(x => x.ArticleID)
+    <input id="commentsubmit" type="submit" value="Submit Comment" /></p>
+
+}

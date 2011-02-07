@@ -8,6 +8,7 @@ using markashleybell.com.Web.Infrastructure;
 using markashleybell.com.Domain.Concrete;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Database;
+using markashleybell.com.Web.Controllers;
 
 namespace markashleybell.com.Web
 {
@@ -19,6 +20,12 @@ namespace markashleybell.com.Web
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                null, // Route name
+                "", // URL with parameters
+                new { controller = "Main", action = "Index" } // Parameter defaults
+            );
 
             routes.MapRoute(
                 null, // Route name
@@ -52,10 +59,68 @@ namespace markashleybell.com.Web
 
             routes.MapRoute(
                 null, // Route name
-                "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Main", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                "article/{action}/{url}", // URL with parameters
+                new { controller = "Article", action = "Index", url = UrlParameter.Optional } // Parameter defaults
             );
 
+            routes.MapRoute(
+                null, // Route name
+                "{*url}", // URL with parameters
+                new { controller = "Main", action = "NotFoundRedirect" } // Parameter defaults
+            );
+
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var exception = Server.GetLastError();
+
+            var c = new HttpContextWrapper(Context);
+
+            // Log the error here
+            // ErrorLog.Logger.Log("NippyNormans", exception, c);
+
+            if (Context.IsCustomErrorEnabled)
+                ShowCustomErrorPage(exception);
+        }
+
+        private void ShowCustomErrorPage(Exception exception)
+        {
+            HttpException httpException = exception as HttpException;
+            if (httpException == null)
+                httpException = new HttpException(500, "Internal Server Error", exception);
+
+            Response.Clear();
+
+            RouteData routeData = new RouteData();
+            routeData.Values.Add("controller", "Error");
+            routeData.Values.Add("fromAppErrorEvent", true);
+
+            var statusCode = httpException.GetHttpCode();
+
+            switch (statusCode)
+            {
+                case 404:
+                    routeData.Values.Add("action", "PageNotFound");
+                    break;
+
+                case 500:
+                    routeData.Values.Add("action", "ServerError");
+                    break;
+
+                default:
+                    routeData.Values.Add("action", "OtherHttpStatusCode");
+                    routeData.Values.Add("httpStatusCode", httpException.GetHttpCode());
+                    break;
+            }
+
+            Server.ClearError();
+
+            var context = new RequestContext(new HttpContextWrapper(Context), routeData);
+            context.HttpContext.Response.StatusCode = statusCode;
+
+            IController controller = new ErrorController();
+            controller.Execute(context);
         }
 
         protected void Application_Start()

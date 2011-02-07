@@ -9,6 +9,7 @@ using markashleybell.com.Domain.Entities;
 using markashleybell.com.Web.Models;
 using AutoMapper;
 using MarkdownSharp;
+using System.Net;
 
 namespace markashleybell.com.Web.Controllers
 {
@@ -35,7 +36,7 @@ namespace markashleybell.com.Web.Controllers
             var article = _articleRepository.GetByUrl(url);
 
             if (article == null)
-                return Redirect("/pagenotfound");
+                throw new HttpException((int)HttpStatusCode.NotFound, "");
 
             var viewModel = Mapper.Map<Article, ArticleDetailPageViewModel>(article);
 
