@@ -19,6 +19,7 @@ namespace markashleybell.com.Web
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.IgnoreRoute("robots.txt");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
