@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Configuration;
 using RestSharp;
 using RestSharp.Authenticators;
+using markashleybell.com.Models;
 
 namespace markashleybell.com.Controllers
 {
@@ -53,10 +54,18 @@ namespace markashleybell.com.Controllers
             var response = client.Execute(request);
 
             var request2 = new RestRequest("https://api.dropbox.com/1/metadata/sandbox");
+            
+            var response2 = client.Execute<DropboxFolder>(request2);
 
-            var response2 = client.Execute(request2);
+            var request3 = new RestRequest("https://api.dropbox.com/1/metadata/sandbox");
+            request3.AddParameter("hash", response2.Data.hash);
 
-            return Content(response2.Content);
+            var response3 = client.Execute<DropboxFolder>(request3);
+
+            if (response3.StatusCode == HttpStatusCode.NotModified)
+                return Json(new { status = "Not Modified" }, JsonRequestBehavior.AllowGet);
+
+            return Json(response3.Data, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Auth(bool? callback)
