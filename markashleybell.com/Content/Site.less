@@ -1,0 +1,213 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// BEGIN CSS RESET - DO NOT EDIT!!
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// END CSS RESET - DO NOT EDIT!!
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// BEGIN SEMANTIC.GS CODE - DO NOT EDIT!!
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Defaults which you can freely override
+@column-width: 60;
+@gutter-width: 20;
+@columns: 12;
+
+// Utility variable — you should never need to modify this
+@gridsystem-width: (@column-width*@columns) + (@gutter-width*@columns) * 1px;
+
+// Set @total-width to 100% for a fluid layout
+@total-width: @gridsystem-width;
+
+// Uncomment these two lines and the star-hack width/margin lines below to enable sub-pixel fix for IE6 & 7. See http://tylertate.com/blog/2012/01/05/subpixel-rounding.html
+// @min-width: 960;
+// @correction: 0.5 / @min-width * 100 * 1%;
+
+// The micro clearfix http://nicolasgallagher.com/micro-clearfix-hack/
+.clearfix() {
+	*zoom:1;
+	
+	&:before,
+	&:after {
+	    content:"";
+	    display:table;
+	}
+	&:after {
+	    clear:both;
+	}
+}
+
+
+//////////
+// GRID //
+//////////
+
+body {
+	width: 100%;
+	.clearfix;
+}
+
+.row(@columns:@columns) {
+	display: block;
+	width: @total-width*((@gutter-width + @gridsystem-width)/@gridsystem-width);
+	margin: 0 @total-width*(((@gutter-width*.5)/@gridsystem-width)*-1);
+	// *width: @total-width*((@gutter-width + @gridsystem-width)/@gridsystem-width)-@correction;
+	// *margin: 0 @total-width*(((@gutter-width*.5)/@gridsystem-width)*-1)-@correction;
+	.clearfix;
+}
+.column(@x,@columns:@columns,@float: left) {
+	display: inline;
+	float: @float;
+	width: @total-width*((((@gutter-width+@column-width)*@x)-@gutter-width) / @gridsystem-width);
+	margin-left: @total-width*((@gutter-width*.5)/@gridsystem-width);
+    margin-right: @total-width*((@gutter-width*.5)/@gridsystem-width);
+	// *width: @total-width*((((@gutter-width+@column-width)*@x)-@gutter-width) / @gridsystem-width)-@correction;
+	// *margin: 0 @total-width*((@gutter-width*.5)/@gridsystem-width)-@correction;
+}
+.push(@offset:1) {
+	margin-left: @total-width*(((@gutter-width+@column-width)*@offset) / @gridsystem-width) + @total-width*((@gutter-width*.5)/@gridsystem-width);
+}
+.pull(@offset:1) {
+	margin-right: @total-width*(((@gutter-width+@column-width)*@offset) / @gridsystem-width) + @total-width*((@gutter-width*.5)/@gridsystem-width);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// END SEMANTIC.GS CODE - DO NOT EDIT!!
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* Column configuration */
+@columns: 30;
+//@column-width: 22;
+//@gutter-width: 10;
+
+/* Make it flexible */
+@total-width: 100%;
+
+img { margin: 0; padding: 0; width: 100%; }
+
+.clr {
+    clear: left;
+}
+
+#container {
+    
+    max-width: 960px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+header, footer, section {
+    
+}
+
+.grid-display {
+    padding: 0 0 0 0;
+    margin-top: 10px;
+}
+
+.basic {
+    background-color: #999;
+}
+
+.specific {
+    background-color: #ff0000;
+}
+
+.col-1w {
+    .column(30);
+}
+
+.col-2w {
+    .column(15);
+}
+
+.col-3w {
+    .column(10);
+}
+
+.col-4w {
+    .column(4);
+}
+
+.col-5w {
+    .column(6);
+}
+
+.col-5w-span2 {
+    .column(12);
+}
+
+.col-5w-span4 {
+    .column(24);
+}
+
+.col-5w-span4 {
+    .column(24);
+}
+
+.col-5w-span8 {
+    .column(8);
+}
+
+.col-10w {
+    .column(3);
+}
+
+.col-15w {
+    .column(2);
+}
+
+.col-30w {
+    .column(1);
+}
