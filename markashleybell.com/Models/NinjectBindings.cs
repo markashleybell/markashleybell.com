@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Ninject.Modules;
+using Ninject.Web.Common;
 using System.Web.SessionState;
 
 namespace markashleybell.com.Models
@@ -11,8 +12,7 @@ namespace markashleybell.com.Models
     {
         public override void Load()
         {
-            this.Bind<HttpSessionStateBase>().ToMethod(x => new HttpSessionStateWrapper(HttpContext.Current.Session));
-            this.Bind<HttpApplicationStateBase>().ToMethod(x => new HttpApplicationStateWrapper(HttpContext.Current.Application));
+            //Bind<HttpContextBase>().ToMethod(context => new HttpContextWrapper(HttpContext.Current));
         }
     }
 }

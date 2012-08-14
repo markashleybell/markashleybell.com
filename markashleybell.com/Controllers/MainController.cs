@@ -13,34 +13,33 @@ using RestSharp.Authenticators;
 using markashleybell.com.Models;
 using System.Text.RegularExpressions;
 using MarkdownSharp;
+using System.Web.Mvc.Razor;
+using System.IO;
 
 namespace markashleybell.com.Controllers
 {
     public class MainController : Controller
     {
         private DropboxApi _api;
-        private HttpSessionStateBase _sessionState;
-        private HttpApplicationStateBase _applicationState;
+        private HttpContextBase _context;
 
-        public MainController(HttpApplicationStateBase applicationState, HttpSessionStateBase sessionState)
+        public MainController(HttpContextBase context)
         {
             _api = new DropboxApi(ConfigurationManager.AppSettings["ConsumerKey"],
                                   ConfigurationManager.AppSettings["ConsumerSecret"],
                                   ConfigurationManager.AppSettings["Token"], 
                                   ConfigurationManager.AppSettings["TokenSecret"]);
-
-            _sessionState = sessionState;
-            _applicationState = applicationState;
+            _context = context;
         }
 
         public ActionResult Index()
         {
-            string hash = (_sessionState["hash"] == null) ? null : _sessionState["hash"].ToString();
+            string hash = (_context.Session["hash"] == null) ? null : _context.Session["hash"].ToString();
 
             var folder = _api.GetFileList(hash);
 
             if(folder != null)
-                _sessionState["hash"] = folder.hash;
+                _context.Session["hash"] = folder.hash;
 
             return Json(folder, JsonRequestBehavior.AllowGet);
         }
@@ -64,6 +63,23 @@ namespace markashleybell.com.Controllers
                 model.Body = new Markdown().Transform(rawContent);
             }
 
+            var template = System.IO.File.ReadAllText(Server.MapPath("~/Views/Shared/MainLayout.cshtml"));
+
+            // Render a static HTML file - this is what users will be directed to when they are viewing the page
+            using(var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindView(ControllerContext, "Post", "MainLayout");
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, new ViewDataDictionary(model), new TempDataDictionary(), sw);
+                viewResult.View.Render(viewContext, sw);
+                System.IO.File.WriteAllText(Server.MapPath("~/Rendered/" + slug + ".html"), sw.GetStringBuilder().ToString());
+            }
+
+            // TODO: This will need to render the home page/archive at the same time
+            // Top 5 posts in descending order
+            // Name MD source files 2012-08-01-08-35-this-is-the-slug, that way ordering will be simple?
+            // Archive can just be a massive list for now
+            // Include abstract in header?
+
             return View(model);
         }
 
@@ -80,8 +96,8 @@ namespace markashleybell.com.Controllers
             {
                 _api.GetRequestToken();
 
-                _sessionState["token"] = _api.Token;
-                _sessionState["tokensecret"] = _api.TokenSecret;
+                _context.Session["token"] = _api.Token;
+                _context.Session["tokensecret"] = _api.TokenSecret;
 
                 var redirectUrl = _api.GetAuthorizeUrl(Request.Url.ToString() + "?callback=true");
 
@@ -89,8 +105,8 @@ namespace markashleybell.com.Controllers
             }
             else
             {
-                _api.Token = _sessionState["token"].ToString();
-                _api.TokenSecret = _sessionState["tokensecret"].ToString();
+                _api.Token = _context.Session["token"].ToString();
+                _api.TokenSecret = _context.Session["tokensecret"].ToString();
 
                 _api.GetAccessToken();
 
