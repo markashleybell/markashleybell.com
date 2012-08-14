@@ -12,6 +12,7 @@ namespace markashleybell.com.Models
         public override void Load()
         {
             this.Bind<HttpSessionStateBase>().ToMethod(x => new HttpSessionStateWrapper(HttpContext.Current.Session));
+            this.Bind<HttpApplicationStateBase>().ToMethod(x => new HttpApplicationStateWrapper(HttpContext.Current.Application));
         }
     }
 }

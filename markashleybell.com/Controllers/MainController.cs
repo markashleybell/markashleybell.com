@@ -11,36 +11,60 @@ using System.Configuration;
 using RestSharp;
 using RestSharp.Authenticators;
 using markashleybell.com.Models;
+using System.Text.RegularExpressions;
+using MarkdownSharp;
 
 namespace markashleybell.com.Controllers
 {
     public class MainController : Controller
     {
         private DropboxApi _api;
-        private HttpSessionStateBase _session;
+        private HttpSessionStateBase _sessionState;
+        private HttpApplicationStateBase _applicationState;
 
-        public MainController(HttpSessionStateBase session)
+        public MainController(HttpApplicationStateBase applicationState, HttpSessionStateBase sessionState)
         {
             _api = new DropboxApi(ConfigurationManager.AppSettings["ConsumerKey"],
                                   ConfigurationManager.AppSettings["ConsumerSecret"],
                                   ConfigurationManager.AppSettings["Token"], 
                                   ConfigurationManager.AppSettings["TokenSecret"]);
 
-            _session = session;
+            _sessionState = sessionState;
+            _applicationState = applicationState;
         }
 
         public ActionResult Index()
         {
-            string hash = (_session["hash"] == null) ? null : _session["hash"].ToString();
+            string hash = (_sessionState["hash"] == null) ? null : _sessionState["hash"].ToString();
 
-            _api.Token = _session["token"].ToString();
-            _api.TokenSecret = _session["tokensecret"].ToString();
+            var folder = _api.GetFileList(hash);
 
-            var folder = _api.GetFiles(hash);
-
-            _session["hash"] = folder.hash;
+            if(folder != null)
+                _sessionState["hash"] = folder.hash;
 
             return Json(folder, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Post(string slug)
+        {
+            var file = _api.GetFileUrl("/" + slug + ".md");
+
+            var model = new PostViewModel();
+
+            using(var get = new WebClient())
+            {
+                var rawContent = get.DownloadString(file.url);
+
+                model.Title = Regex.Match(rawContent, "^Title:\\s?(.*?)[\\r\\n]+", RegexOptions.Multiline).Groups[1].Value;
+                var dateString = Regex.Match(rawContent, "^Date:\\s?(.*?)[\\r\\n]+", RegexOptions.Multiline).Groups[1].Value;
+                model.Date = DateTime.ParseExact(dateString, "yyyy-MM-dd hh:mm", null);
+
+                rawContent = Regex.Replace(rawContent, "(^(?:Title|Date):\\s?.*?[\\r\\n]+)", "", RegexOptions.Multiline);
+
+                model.Body = new Markdown().Transform(rawContent);
+            }
+
+            return View(model);
         }
 
         public ActionResult AccountInfo()
@@ -56,8 +80,8 @@ namespace markashleybell.com.Controllers
             {
                 _api.GetRequestToken();
 
-                _session["token"] = _api.Token;
-                _session["tokensecret"] = _api.TokenSecret;
+                _sessionState["token"] = _api.Token;
+                _sessionState["tokensecret"] = _api.TokenSecret;
 
                 var redirectUrl = _api.GetAuthorizeUrl(Request.Url.ToString() + "?callback=true");
 
@@ -65,8 +89,8 @@ namespace markashleybell.com.Controllers
             }
             else
             {
-                _api.Token = _session["token"].ToString();
-                _api.TokenSecret = _session["tokensecret"].ToString();
+                _api.Token = _sessionState["token"].ToString();
+                _api.TokenSecret = _sessionState["tokensecret"].ToString();
 
                 _api.GetAccessToken();
 

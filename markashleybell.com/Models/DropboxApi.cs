@@ -102,14 +102,14 @@ namespace markashleybell.com.Models
             return response.Data;
         }
 
-        public DropboxFolder GetFiles(string hash)
+        public DropboxFolder GetFileList(string hash)
         {
-            return GetFiles("", hash);
+            return GetFileList("", hash);
         }
 
-        public DropboxFolder GetFiles(string path, string hash)
+        public DropboxFolder GetFileList(string path, string hash)
         {
-            var client = new RestClient(_contentApiBaseUrl);
+            var client = new RestClient(_standardApiBaseUrl);
 
             client.Authenticator = OAuth1Authenticator.ForProtectedResource(
                 _consumerKey, _consumerSecret, _token, _tokenSecret
@@ -124,6 +124,21 @@ namespace markashleybell.com.Models
 
             if (response.StatusCode == HttpStatusCode.NotModified)
                 return null;
+
+            return response.Data;
+        }
+
+        public DropboxMedia GetFileUrl(string path)
+        {
+            var client = new RestClient(_standardApiBaseUrl);
+
+            client.Authenticator = OAuth1Authenticator.ForProtectedResource(
+                _consumerKey, _consumerSecret, _token, _tokenSecret
+            );
+
+            var request = new RestRequest("/media/sandbox" + path);
+
+            var response = client.Execute<DropboxMedia>(request);
 
             return response.Data;
         }

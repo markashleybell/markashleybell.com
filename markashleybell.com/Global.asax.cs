@@ -21,6 +21,13 @@ namespace markashleybell.com
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+
+            routes.MapRoute(
+                "Post", // Route name
+                "main/post/{slug}", // URL with parameters
+                new { controller = "Main", action = "Post", slug = UrlParameter.Optional } // Parameter defaults
+            );
+
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters

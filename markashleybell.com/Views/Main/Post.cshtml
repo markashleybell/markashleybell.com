@@ -1,0 +1,12 @@
+﻿@model markashleybell.com.Models.PostViewModel
+
+@{
+    ViewBag.Title = "Post";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<h1>@Model.Title</h1>
+
+<p>@Model.Date.ToString("dd/MM/yyyy hh:mm")</p>
+
+@Html.Raw(Model.Body)
