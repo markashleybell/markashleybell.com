@@ -128,6 +128,21 @@ namespace markashleybell.com.Models
             return response.Data;
         }
 
+        public string GetFileContent(string path)
+        {
+            var client = new RestClient(_contentApiBaseUrl);
+
+            client.Authenticator = OAuth1Authenticator.ForProtectedResource(
+                _consumerKey, _consumerSecret, _token, _tokenSecret
+            );
+
+            var request = new RestRequest("/files/sandbox" + path);
+
+            var response = client.Execute(request);
+
+            return response.Content;
+        }
+
         public DropboxMedia GetFileUrl(string path)
         {
             var client = new RestClient(_standardApiBaseUrl);

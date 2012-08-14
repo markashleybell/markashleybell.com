@@ -40,6 +40,41 @@
   <system.webServer>
     <validation validateIntegratedModeConfiguration="false" />
     <modules runAllManagedModulesForAllRequests="true" />
+    <rewrite>
+      <rules>
+        <clear/>
+        <rule name="Enforce Canonical URL" stopProcessing="true">
+          <match url="(.*)"/>
+          <conditions logicalGrouping="MatchAll">
+            <add input="{HTTP_HOST}" pattern="^www\.markashleybell\.com$"/>
+          </conditions>
+          <action type="Redirect" url="http://markashleybell.com/{R:1}" redirectType="Permanent"/>
+        </rule>
+        <rule name="Remove Trailing Slash" stopProcessing="true">
+          <match url="(.*)/$"/>
+          <conditions>
+            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true"/>
+            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true"/>
+          </conditions>
+          <action type="Redirect" redirectType="Permanent" url="{R:1}"/>
+        </rule>
+        <rule name="Robots" stopProcessing="true">
+          <match url="robots.txt"/>
+          <conditions logicalGrouping="MatchAll"/>
+          <action type="Rewrite" url="/robots.txt"/>
+        </rule>
+        <rule name="Article" stopProcessing="true">
+          <match url="articles/(.*)"/>
+          <conditions logicalGrouping="MatchAll"/>
+          <action type="Rewrite" url="/rendered/{R:1}.html"/>
+        </rule>
+        <rule name="Article Index" stopProcessing="true">
+          <match url="articles"/>
+          <conditions logicalGrouping="MatchAll"/>
+          <action type="Rewrite" url="/rendered/index.html"/>
+        </rule>
+      </rules>
+    </rewrite>
   </system.webServer>
   <runtime>
     <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">

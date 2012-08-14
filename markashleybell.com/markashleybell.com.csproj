@@ -92,6 +92,7 @@
     <Compile Include="Models\DropboxFolder.cs" />
     <Compile Include="Models\DropboxMedia.cs" />
     <Compile Include="Models\NinjectBindings.cs" />
+    <Compile Include="Models\PostIndexViewModel.cs" />
     <Compile Include="Models\PostViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -109,7 +110,8 @@
     <Content Include="Views\Shared\MainLayout.cshtml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="packages.config" />
-    <Content Include="Views\Main\Post.cshtml" />
+    <Content Include="Views\Main\UpdateAndPreview.cshtml" />
+    <Content Include="Views\Main\ArticleIndex.cshtml" />
     <None Include="Web.config.live" />
   </ItemGroup>
   <ItemGroup>
