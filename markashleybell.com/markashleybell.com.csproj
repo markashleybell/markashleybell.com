@@ -81,7 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\example.md" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Global.asax.cs">
@@ -98,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <None Include="Content\example.md" />
     <None Include="Content\Site.less" />
     <Content Include="Scripts\less-1.1.3.min.js" />
     <Content Include="Scripts\rainbow-custom.min.js" />
