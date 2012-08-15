@@ -9,5 +9,6 @@ namespace markashleybell.com.Models
     {
         bool Authenticate(string userName, string password);
         void SetAuthCookie(string userName, bool persistent);
+        void SignOut();
     }
 }

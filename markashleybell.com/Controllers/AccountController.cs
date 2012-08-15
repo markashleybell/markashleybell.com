@@ -31,7 +31,7 @@ namespace markashleybell.com.Controllers
             if(ModelState.IsValid)
             {
                 _auth.SetAuthCookie(model.Username, false);
-                return Redirect(returnUrl ?? Url.Action("Articles", "Admin"));
+                return Redirect(returnUrl ?? Url.Action("Index", "Article"));
             }
             else
             {
@@ -39,5 +39,11 @@ namespace markashleybell.com.Controllers
             }
         }
 
+        public ActionResult LogOff()
+        {
+            _auth.SignOut();
+
+            return RedirectToAction("Index", "Default");
+        }
     }
 }

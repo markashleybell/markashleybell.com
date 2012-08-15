@@ -83,7 +83,8 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
+    <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -112,12 +113,15 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\MainLayout.cshtml" />
-    <Content Include="Views\Main\Index.cshtml" />
     <Content Include="packages.config" />
-    <Content Include="Views\Main\UpdateAndPreview.cshtml" />
-    <Content Include="Views\Main\ArticleIndex.cshtml" />
+    <Content Include="Views\Article\RenderAndPreview.cshtml" />
+    <Content Include="Views\Article\ArticleIndex.cshtml" />
     <Content Include="Views\Account\LogOn.cshtml" />
-    <None Include="Web.config.live" />
+    <Content Include="Views\Default\Index.cshtml" />
+    <Content Include="Views\Article\Index.cshtml" />
+    <None Include="Web.config.live">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Rendered\" />

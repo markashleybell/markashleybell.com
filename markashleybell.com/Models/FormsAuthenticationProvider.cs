@@ -17,5 +17,10 @@ namespace markashleybell.com.Models
         {
             FormsAuthentication.SetAuthCookie(userName, persistent);
         }
+
+        public void SignOut()
+        {
+            FormsAuthentication.SignOut();
+        }
     }
 }

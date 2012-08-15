@@ -19,12 +19,12 @@ using System.IO;
 namespace markashleybell.com.Controllers
 {
     [Authorize]
-    public class MainController : Controller
+    public class ArticleController : Controller
     {
         private DropboxApi _api;
         private HttpContextBase _context;
 
-        public MainController(HttpContextBase context)
+        public ArticleController(HttpContextBase context)
         {
             _api = new DropboxApi(ConfigurationManager.AppSettings["ConsumerKey"],
                                   ConfigurationManager.AppSettings["ConsumerSecret"],
@@ -35,14 +35,16 @@ namespace markashleybell.com.Controllers
 
         public ActionResult Index()
         {
-            string hash = (_context.Session["hash"] == null) ? null : _context.Session["hash"].ToString();
+            var fileList = _api.GetFileList("/articles", null);
 
-            var folder = _api.GetFileList(hash);
+            var slugs = (from file in fileList.contents
+                         select new ArticleViewModel {
+                             Slug = Path.GetFileNameWithoutExtension(file.path)
+                         }).ToList();
 
-            if(folder != null)
-                _context.Session["hash"] = folder.hash;
-
-            return Json(folder, JsonRequestBehavior.AllowGet);
+            return View(new ArticleIndexViewModel {
+                Articles = slugs
+            });
         }
 
         private ArticleViewModel GenerateArticle(string slug)
@@ -126,12 +128,12 @@ namespace markashleybell.com.Controllers
             }
         }
 
-        public ActionResult UpdateAndPreview(string slug)
+        public ActionResult RenderAndPreview(string slug)
         {
             var model = GenerateArticle(slug);
 
             // Render the article view
-            RenderStaticView(model, "UpdateAndPreview", "MainLayout", Server.MapPath("~/Rendered/" + slug + ".html"));
+            RenderStaticView(model, "RenderAndPreview", "MainLayout", Server.MapPath("~/Rendered/" + slug + ".html"));
 
             var indexModel = GenerateArticleIndex();
 
@@ -141,7 +143,7 @@ namespace markashleybell.com.Controllers
             return View(model);
         }
 
-        public ActionResult UpdateAll()
+        public ActionResult Rebuild()
         {
             // Delete all files from rendered folder to purge any that no longer exist on Dropbox
             foreach(var file in Directory.GetFiles(Server.MapPath("~/Rendered"), "*.html"))
@@ -156,7 +158,7 @@ namespace markashleybell.com.Controllers
             {
                 var model = GenerateArticle(slug);
 
-                RenderStaticView(model, "UpdateAndPreview", "MainLayout", Server.MapPath("~/Rendered/" + slug + ".html"));
+                RenderStaticView(model, "RenderAndPreview", "MainLayout", Server.MapPath("~/Rendered/" + slug + ".html"));
             }
 
             var indexModel = GenerateArticleIndex();

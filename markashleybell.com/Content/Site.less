@@ -224,7 +224,7 @@ pre .regexp {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* Column configuration */
-@columns: 30;
+@columns: 12;
 //@column-width: 22;
 //@gutter-width: 10;
 
@@ -248,62 +248,39 @@ header, footer, section {
 }
 
 .grid-display {
-    padding: 0 0 0 0;
-    margin-top: 10px;
-}
-
-.basic {
+    padding: 5px 0 5px 0;
+    margin-top: 20px;
     background-color: #999;
 }
 
-.specific {
-    background-color: #ff0000;
-}
-
-.col-1w {
-    .column(30);
-}
-
-.col-2w {
-    .column(15);
-}
-
-.col-3w {
-    .column(10);
-}
-
-.col-4w {
-    .column(4);
-}
-
-.col-5w {
-    .column(6);
-}
-
-.col-5w-span2 {
+.full-width {
     .column(12);
 }
 
-.col-5w-span4 {
-    .column(24);
+.half-width {
+    .column(6);
 }
 
-.col-5w-span4 {
-    .column(24);
+.third-width {
+    .column(4);
 }
 
-.col-5w-span8 {
-    .column(8);
-}
-
-.col-10w {
+.quarter-width {
     .column(3);
 }
 
-.col-15w {
-    .column(2);
+@media screen and (max-width: 980px) {
+    #container { 
+        // Add padding as width narrows
+        // padding: 0 1%; 
+        // Or fixed?
+        padding: 0 20px;
+    }
 }
 
-.col-30w {
-    .column(1);
-}
+@media screen and (max-width: 960px) {
+    #container { 
+        // Match padding from start of breakpoint
+        // padding: 0 0.18%; 
+    }
+}  

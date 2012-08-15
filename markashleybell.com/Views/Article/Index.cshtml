@@ -1,0 +1,19 @@
+﻿@model markashleybell.com.Models.ArticleIndexViewModel
+
+@{
+    ViewBag.Title = "Article Admin";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<h1>Dropbox Documents</h1>
+
+<p>@Html.ActionLink("Rebuild", "Rebuild", "Article") | @Html.ActionLink("Log Out", "LogOff", "Account")</p>
+
+<ul>
+
+@foreach (var article in Model.Articles)
+{
+    <li><a href="/preview/@article.Slug">@article.Slug</a></li>
+}
+
+</ul>
