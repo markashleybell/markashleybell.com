@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -91,6 +92,9 @@
     <Compile Include="Models\DropboxFile.cs" />
     <Compile Include="Models\DropboxFolder.cs" />
     <Compile Include="Models\DropboxMedia.cs" />
+    <Compile Include="Models\FormsAuthenticationProvider.cs" />
+    <Compile Include="Models\IFormsAuthenticationProvider.cs" />
+    <Compile Include="Models\LogOnViewModel.cs" />
     <Compile Include="Models\NinjectBindings.cs" />
     <Compile Include="Models\ArticleIndexViewModel.cs" />
     <Compile Include="Models\ArticleViewModel.cs" />
@@ -112,6 +116,7 @@
     <Content Include="packages.config" />
     <Content Include="Views\Main\UpdateAndPreview.cshtml" />
     <Content Include="Views\Main\ArticleIndex.cshtml" />
+    <Content Include="Views\Account\LogOn.cshtml" />
     <None Include="Web.config.live" />
   </ItemGroup>
   <ItemGroup>

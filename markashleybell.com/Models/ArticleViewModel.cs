@@ -11,5 +11,6 @@ namespace markashleybell.com.Models
         public DateTime PublishDate { get; set; }
         public string Abstract { get; set; }
         public string Body { get; set; }
+        public string Slug { get; set; }
     }
 }

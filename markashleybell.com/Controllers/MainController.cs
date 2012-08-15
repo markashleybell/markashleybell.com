@@ -18,6 +18,7 @@ using System.IO;
 
 namespace markashleybell.com.Controllers
 {
+    [Authorize]
     public class MainController : Controller
     {
         private DropboxApi _api;
@@ -44,7 +45,7 @@ namespace markashleybell.com.Controllers
             return Json(folder, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateAndPreview(string slug)
+        private ArticleViewModel GenerateArticle(string slug)
         {
             var model = new ArticleViewModel();
 
@@ -52,86 +53,118 @@ namespace markashleybell.com.Controllers
 
             model.Title = Regex.Match(rawContent, "^Title:\\s?(.*?)[\\r\\n]+", RegexOptions.Multiline).Groups[1].Value;
             var dateString = Regex.Match(rawContent, "^Date:\\s?(.*?)[\\r\\n]+", RegexOptions.Multiline).Groups[1].Value;
-            model.PublishDate = DateTime.ParseExact(dateString, "yyyy-MM-dd hh:mm", null);
+            model.PublishDate = DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm", null);
 
             rawContent = Regex.Replace(rawContent, "(^(?:Title|Date):\\s?.*?[\\r\\n]+)", "", RegexOptions.Multiline);
 
             // Retrieve all local images referenced in the document and store them on the server
-            foreach (Match match in Regex.Matches(rawContent, "\\/content\\/img\\/(.*\\.gif|\\.jpg)"))
+            foreach(Match match in Regex.Matches(rawContent, "\\/content\\/img\\/(.*\\.gif|\\.jpg)"))
             {
                 var fileName = match.Groups[1].Value;
                 _api.DownloadFile("/img/" + fileName, Server.MapPath("~/Content/Img") + "/" + fileName);
             }
 
             model.Body = new Markdown().Transform(rawContent);
+            model.Slug = slug;
 
-            // Render a static HTML file using our Razor views - this is what users will be directed to when they are viewing the page normally
-            using(var sw = new StringWriter())
-            {
-                var viewResult = ViewEngines.Engines.FindView(ControllerContext, "UpdateAndPreview", "MainLayout");
-                var viewContext = new ViewContext(ControllerContext, viewResult.View, new ViewDataDictionary(model), new TempDataDictionary(), sw);
-                viewResult.View.Render(viewContext, sw);
-                System.IO.File.WriteAllText(Server.MapPath("~/Rendered/" + slug + ".html"), sw.GetStringBuilder().ToString());
-            }
+            return model;
+        }
 
-            // This will get us a nice list of file paths keyed by date (and can be limited using the API), but will be
-            // very slow to build the archive once there are a few hundred articles...
-            // var folder = _api.GetFileList(null);
-
-            //var fileList = (from f in folder.contents
-            //                let info = Path.GetFileNameWithoutExtension(f.path)
-            //                let date = Regex.Match(_api.GetFileContent(f.path), "^Date:\\s?(.*?)[\\r\\n]+", RegexOptions.Multiline).Groups[1].Value
-            //                select new KeyValuePair<DateTime, string>(DateTime.ParseExact(date, "yyyy-MM-dd hh:mm", null), info)).ToList();
-
-            // If we store the date and abstract as meta tags in the generated HTML for each page, we can use filesystem access 
-            // to build the home page and archive, which will be massively faster
-
-            // <title>(.*)</title>
-            // <meta name="publishdate" content="(.*)"\s?/?>
-
+        private ArticleIndexViewModel GenerateArticleIndex()
+        {
+            // Generate a model for the article index
             var articles = new List<ArticleViewModel>();
 
-            foreach(var file in Directory.GetFiles(Server.MapPath("~/Rendered")))
+            foreach(var file in Directory.GetFiles(Server.MapPath("~/Rendered"), "*.html"))
             {
-                // Only read the first 50 lines - this should cover the HEAD section of the HTML
-                // TODO: Cope with files of less than 50 lines (unlikely, but still)
-                using (StreamReader reader = new StreamReader(file))
+                var slug = Path.GetFileNameWithoutExtension(file);
+
+                if(slug != "index")
                 {
-                    var lines = new string[50];
-                    for (var i = 0; i < lines.Length; i++)
+                    // Only read the first 50 lines of each file - this should cover the HEAD section of the HTML
+                    // TODO: Cope with files of less than 50 lines (unlikely, but still)
+                    using(StreamReader reader = new StreamReader(file))
                     {
-                        lines[i] = reader.ReadLine();
+                        var lines = new string[50];
+                        for(var i = 0; i < lines.Length; i++)
+                        {
+                            lines[i] = reader.ReadLine();
+                        }
+
+                        var html = string.Join("", lines);
+
+                        var publishDate = Regex.Match(html, "<meta name=\"publishdate\" content=\"(.*?)\"\\s?/?>").Groups[1].Value;
+
+                        var article = new ArticleViewModel {
+                            Title = Regex.Match(html, "<title>(.*)</title>").Groups[1].Value,
+                            PublishDate = (publishDate == "") ? DateTime.MinValue : DateTime.ParseExact(publishDate, "yyyy-MM-dd HH:mm", null),
+                            Slug = slug
+                        };
+
+                        articles.Add(article);
                     }
-
-                    var html = string.Join("", lines);
-
-                    var publishDate = Regex.Match(html, "<meta name=\"publishdate\" content=\"(.*?)\"\\s?/?>").Groups[1].Value;
-
-                    var article = new ArticleViewModel {
-                        Title = Regex.Match(html, "<title>(.*)</title>").Groups[1].Value,
-                        PublishDate = (publishDate == "") ? DateTime.MinValue : DateTime.ParseExact(publishDate, "yyyy-MM-dd hh:mm", null)
-                    };
-
-                    articles.Add(article);
                 }
             }
 
+            // Sort articles by descending date
             var indexModel = new ArticleIndexViewModel {
                 Articles = articles.OrderByDescending(x => x.PublishDate).ToList()
             };
 
-            // Render a static HTML file using our Razor views - this is what users will be directed to when they are viewing the page normally
-            using (var sw = new StringWriter())
-            {
-                var viewResult = ViewEngines.Engines.FindView(ControllerContext, "ArticleIndex", "MainLayout");
-                var viewContext = new ViewContext(ControllerContext, viewResult.View, new ViewDataDictionary(indexModel), new TempDataDictionary(), sw);
-                viewResult.View.Render(viewContext, sw);
-                System.IO.File.WriteAllText(Server.MapPath("~/Rendered/index.html"), sw.GetStringBuilder().ToString());
-            }
+            return indexModel;
+        }
 
-            // We're going to need some kind of 'regenerate all' command too, for init and reset
+        private void RenderStaticView(object model, string view, string layout, string outputPath)
+        {
+            // Render a static HTML file using our Razor views - this is what users will be directed to when they are viewing the page normally
+            using(var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindView(ControllerContext, view, layout);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, new ViewDataDictionary(model), new TempDataDictionary(), sw);
+                viewResult.View.Render(viewContext, sw);
+                System.IO.File.WriteAllText(outputPath, sw.GetStringBuilder().ToString());
+            }
+        }
+
+        public ActionResult UpdateAndPreview(string slug)
+        {
+            var model = GenerateArticle(slug);
+
+            // Render the article view
+            RenderStaticView(model, "UpdateAndPreview", "MainLayout", Server.MapPath("~/Rendered/" + slug + ".html"));
+
+            var indexModel = GenerateArticleIndex();
+
+            // Render the index view
+            RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Rendered/index.html"));
 
             return View(model);
+        }
+
+        public ActionResult UpdateAll()
+        {
+            // Delete all files from rendered folder to purge any that no longer exist on Dropbox
+            foreach(var file in Directory.GetFiles(Server.MapPath("~/Rendered"), "*.html"))
+                System.IO.File.Delete(file);
+
+            var fileList = _api.GetFileList("/articles", null);
+
+            var slugs = (from file in fileList.contents
+                         select Path.GetFileNameWithoutExtension(file.path)).ToList();
+
+            foreach(var slug in slugs)
+            {
+                var model = GenerateArticle(slug);
+
+                RenderStaticView(model, "UpdateAndPreview", "MainLayout", Server.MapPath("~/Rendered/" + slug + ".html"));
+            }
+
+            var indexModel = GenerateArticleIndex();
+
+            // Render the index
+            RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Rendered/index.html"));
+
+            return Content("Done");
         }
 
         public ActionResult Auth(bool? callback)

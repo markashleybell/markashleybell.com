@@ -13,6 +13,7 @@ namespace markashleybell.com.Models
         public override void Load()
         {
             //Bind<HttpContextBase>().ToMethod(context => new HttpContextWrapper(HttpContext.Current));
+            Bind<IFormsAuthenticationProvider>().To<FormsAuthenticationProvider>();
         }
     }
 }
