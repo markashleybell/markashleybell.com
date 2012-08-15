@@ -92,8 +92,8 @@
     <Compile Include="Models\DropboxFolder.cs" />
     <Compile Include="Models\DropboxMedia.cs" />
     <Compile Include="Models\NinjectBindings.cs" />
-    <Compile Include="Models\PostIndexViewModel.cs" />
-    <Compile Include="Models\PostViewModel.cs" />
+    <Compile Include="Models\ArticleIndexViewModel.cs" />
+    <Compile Include="Models\ArticleViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

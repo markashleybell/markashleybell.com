@@ -5,10 +5,11 @@ using System.Web;
 
 namespace markashleybell.com.Models
 {
-    public class PostViewModel
+    public class ArticleViewModel
     {
         public string Title { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime PublishDate { get; set; }
+        public string Abstract { get; set; }
         public string Body { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Web;
 using RestSharp;
 using RestSharp.Authenticators;
 using System.Net;
+using System.IO;
 
 namespace markashleybell.com.Models
 {
@@ -143,6 +144,26 @@ namespace markashleybell.com.Models
             return response.Content;
         }
 
+        public void DownloadFile(string path, string destination)
+        {
+            var client = new RestClient(_contentApiBaseUrl);
+
+            client.Authenticator = OAuth1Authenticator.ForProtectedResource(
+                _consumerKey, _consumerSecret, _token, _tokenSecret
+            );
+
+            var request = new RestRequest("/files/sandbox" + path);
+
+            var response = client.Execute(request);
+
+            var bytes = response.RawBytes;
+
+            using (var fileStream = new FileStream(destination, FileMode.Create, FileAccess.ReadWrite))
+            {
+                fileStream.Write(bytes, 0, bytes.Length);
+            } 
+        }
+
         public DropboxMedia GetFileUrl(string path)
         {
             var client = new RestClient(_standardApiBaseUrl);
@@ -154,6 +175,26 @@ namespace markashleybell.com.Models
             var request = new RestRequest("/media/sandbox" + path);
 
             var response = client.Execute<DropboxMedia>(request);
+
+            return response.Data;
+        }
+
+        public DropboxFolder CreateFolder(string path)
+        {
+            var client = new RestClient(_standardApiBaseUrl);
+
+            client.Authenticator = OAuth1Authenticator.ForProtectedResource(
+                _consumerKey, _consumerSecret, _token, _tokenSecret
+            );
+
+            var request = new RestRequest("/fileops/create_folder", Method.POST);
+            request.AddParameter("root", "sandbox");
+            request.AddParameter("path", path);
+
+            var response = client.Execute<DropboxFolder>(request);
+
+            if (response.StatusCode == HttpStatusCode.NotModified)
+                return null;
 
             return response.Data;
         }

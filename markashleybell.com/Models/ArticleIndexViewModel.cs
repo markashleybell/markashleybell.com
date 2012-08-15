@@ -5,8 +5,8 @@ using System.Web;
 
 namespace markashleybell.com.Models
 {
-    public class PostIndexViewModel
+    public class ArticleIndexViewModel
     {
-        
+        public List<ArticleViewModel> Articles { get; set; }
     }
 }

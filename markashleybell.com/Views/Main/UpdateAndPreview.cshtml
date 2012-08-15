@@ -1,12 +1,16 @@
-﻿@model markashleybell.com.Models.PostViewModel
+﻿@model markashleybell.com.Models.ArticleViewModel
 
 @{
     ViewBag.Title = @Model.Title;
+    ViewBag.MetaAbstract = @Model.Abstract;
+    ViewBag.MetaDescription = @Model.Abstract;
+    ViewBag.MetaPublishDate = @Model.PublishDate.ToString("yyyy-MM-dd hh:mm");
+    
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
 <h1>@Model.Title</h1>
 
-<p>@Model.Date.ToString("dd/MM/yyyy hh:mm")</p>
+<p>@Model.PublishDate.ToString("dd/MM/yyyy hh:mm")</p>
 
 @Html.Raw(Model.Body)
