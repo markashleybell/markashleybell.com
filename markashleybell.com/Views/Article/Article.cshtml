@@ -9,8 +9,12 @@
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h1>@Model.Title</h1>
+<div class="full-width">
 
-<p>@Model.PublishDate.ToString("dd/MM/yyyy hh:mm")</p>
+    <h1>@Model.Title</h1>
 
-@Html.Raw(Model.Body)
+    <p>@Model.PublishDate.ToString("dd/MM/yyyy hh:mm")</p>
+
+    @Html.Raw(Model.Body)
+
+</div>

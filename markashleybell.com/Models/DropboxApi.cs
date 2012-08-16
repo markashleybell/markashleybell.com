@@ -6,6 +6,7 @@ using RestSharp;
 using RestSharp.Authenticators;
 using System.Net;
 using System.IO;
+using System.Text;
 
 namespace markashleybell.com.Models
 {
@@ -141,7 +142,8 @@ namespace markashleybell.com.Models
 
             var response = client.Execute(request);
 
-            return response.Content;
+            // TODO: Look at content type to determine encoding
+            return Encoding.UTF8.GetString(response.RawBytes);
         }
 
         public void DownloadFile(string path, string destination)
@@ -155,7 +157,6 @@ namespace markashleybell.com.Models
             var request = new RestRequest("/files/sandbox" + path);
 
             var response = client.Execute(request);
-
             var bytes = response.RawBytes;
 
             using (var fileStream = new FileStream(destination, FileMode.Create, FileAccess.ReadWrite))

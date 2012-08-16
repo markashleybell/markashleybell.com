@@ -3,13 +3,15 @@
     <head>
         <title>@ViewBag.Title</title>
 
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
         <meta name="abstract" content="@ViewBag.MetaAbstract" />
         <meta name="description" content="@ViewBag.MetaDescription" />
         <meta name="publishdate" content="@ViewBag.MetaPublishDate" />
 
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
-        <link href="@Url.Content("~/Content/Site.less")" rel="stylesheet/less" type="text/css" />
+        <link href="@Url.Content("~/Content/Less/Site.less")" rel="stylesheet/less" type="text/css" />
 
         <script type="text/javascript" src="@Url.Content("~/Scripts/less-1.1.3.min.js")"></script>
         <script type="text/javascript" src="@Url.Content("~/Scripts/rainbow-custom.min.js")"></script>
@@ -35,7 +37,7 @@
 
         @RenderBody()
 
-        <footer></footer>
+        <footer>All content &copy; Mark Ashley Bell</footer>
 
         </div>
     </body>

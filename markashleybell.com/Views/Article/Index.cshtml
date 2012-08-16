@@ -5,15 +5,19 @@
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h1>Dropbox Documents</h1>
+<div class="full-width">
 
-<p>@Html.ActionLink("Rebuild", "Rebuild", "Article") | @Html.ActionLink("Log Out", "LogOff", "Account")</p>
+    <h1>Dropbox Documents</h1>
 
-<ul>
+    <p>@Html.ActionLink("Rebuild", "Rebuild", "Article") | @Html.ActionLink("Log Out", "LogOff", "Account")</p>
 
-@foreach (var article in Model.Articles)
-{
-    <li><a href="/preview/@article.Slug">@article.Slug</a></li>
-}
+    <ul>
 
-</ul>
+    @foreach (var article in Model.Articles)
+    {
+        <li><a href="/preview/@article.Slug">@article.Slug</a></li>
+    }
+
+    </ul>
+
+</div>

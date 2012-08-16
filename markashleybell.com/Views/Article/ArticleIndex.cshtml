@@ -5,13 +5,17 @@
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h1>Article Index</h1>
+<div class="full-width">
 
-<ul>
+    <h1>Article Index</h1>
 
-@foreach (var article in Model.Articles)
-{
-    <li><a href="/articles/@article.Slug">@article.Title</a></li>
-}
+    <ul>
 
-</ul>
+    @foreach (var article in Model.Articles)
+    {
+        <li><a href="/articles/@article.Slug">@article.Title</a></li>
+    }
+
+    </ul>
+
+</div>

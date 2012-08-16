@@ -77,7 +77,7 @@ namespace markashleybell.com.Controllers
             // Generate a model for the article index
             var articles = new List<ArticleViewModel>();
 
-            foreach(var file in Directory.GetFiles(Server.MapPath("~/Rendered"), "*.html"))
+            foreach(var file in Directory.GetFiles(Server.MapPath("~/Content/Articles"), "*.html"))
             {
                 var slug = Path.GetFileNameWithoutExtension(file);
 
@@ -133,22 +133,22 @@ namespace markashleybell.com.Controllers
             var model = GenerateArticle(slug);
 
             // Render the article view
-            RenderStaticView(model, "RenderAndPreview", "MainLayout", Server.MapPath("~/Rendered/" + slug + ".html"));
+            RenderStaticView(model, "Article", "MainLayout", Server.MapPath("~/Content/Articles/" + slug + ".html"));
 
             var indexModel = GenerateArticleIndex();
 
             // Render the index view
-            RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Rendered/index.html"));
+            RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Content/Articles/index.html"));
 
             // TODO: Render a static home page
 
-            return View(model);
+            return View("Article", model);
         }
 
         public ActionResult Rebuild()
         {
             // Delete all files from rendered folder to purge any that no longer exist on Dropbox
-            foreach(var file in Directory.GetFiles(Server.MapPath("~/Rendered"), "*.html"))
+            foreach(var file in Directory.GetFiles(Server.MapPath("~/Content/Articles"), "*.html"))
                 System.IO.File.Delete(file);
 
             var fileList = _api.GetFileList("/articles", null);
@@ -160,13 +160,13 @@ namespace markashleybell.com.Controllers
             {
                 var model = GenerateArticle(slug);
 
-                RenderStaticView(model, "RenderAndPreview", "MainLayout", Server.MapPath("~/Rendered/" + slug + ".html"));
+                RenderStaticView(model, "Article", "MainLayout", Server.MapPath("~/Content/Articles/" + slug + ".html"));
             }
 
             var indexModel = GenerateArticleIndex();
 
             // Render the index
-            RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Rendered/index.html"));
+            RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Content/Articles/index.html"));
 
             // TODO: Render a static home page
 
