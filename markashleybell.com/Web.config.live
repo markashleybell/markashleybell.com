@@ -16,8 +16,8 @@
         <add key="webpages:Version" value="1.0.0.0" />
         <add key="ClientValidationEnabled" value="true" />
         <add key="UnobtrusiveJavaScriptEnabled" value="true" />
-        <add key="ConsumerKey" value="dhx2wyvvxmqqrsx" />
-        <add key="ConsumerSecret" value="pn6i096afjwnfko" />
+        <add key="ConsumerKey" value="XXXX" />
+        <add key="ConsumerSecret" value="XXXX" />
         <add key="Token" value="XXXX" />
         <add key="TokenSecret" value="XXXX" />
         <add key="apiKey" value="" />
@@ -82,6 +82,11 @@
                   </conditions>
                   <action type="Redirect" redirectType="Permanent" url="{R:1}" />
                 </rule>-->
+                <rule name="Index" stopProcessing="true">
+                  <match url="^$" />
+                  <conditions logicalGrouping="MatchAll" />
+                  <action type="Rewrite" url="/content/index.html" />
+                </rule>
                 <rule name="Robots" stopProcessing="true">
                     <match url="robots.txt" />
                     <conditions logicalGrouping="MatchAll" />

@@ -103,6 +103,7 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="DataServices\Routes.cs" />
+    <Compile Include="Extensions\DateExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -117,6 +118,7 @@
     <Compile Include="Models\NinjectBindings.cs" />
     <Compile Include="Models\ArticleIndexViewModel.cs" />
     <Compile Include="Models\ArticleViewModel.cs" />
+    <Compile Include="Models\Tweet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
