@@ -140,6 +140,8 @@ namespace markashleybell.com.Controllers
             // Render the index view
             RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Rendered/index.html"));
 
+            // TODO: Render a static home page
+
             return View(model);
         }
 
@@ -165,6 +167,8 @@ namespace markashleybell.com.Controllers
 
             // Render the index
             RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Rendered/index.html"));
+
+            // TODO: Render a static home page
 
             return Content("Done");
         }
