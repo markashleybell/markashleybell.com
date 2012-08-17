@@ -7,10 +7,10 @@ namespace markashleybell.com.Extensions
 {
     public static class DateExtensions
     {
-        public static string ToPrettyDate(this string s)
+        public static string ToPrettyDate(this string s, string dateFormat)
         {
             // Wed Jun 16 12:28:03 +0000 2010
-            var twitterDate = DateTime.ParseExact(s, "ddd MMM dd HH:mm:ss %zzzz yyyy", null);
+            var twitterDate = DateTime.ParseExact(s, dateFormat, null);
 
             var diff = (DateTime.Now - twitterDate).TotalMilliseconds / 1000;
 
