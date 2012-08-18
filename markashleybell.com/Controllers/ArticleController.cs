@@ -170,7 +170,7 @@ namespace markashleybell.com.Controllers
             RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Content/Articles/index.html"));
 
             // TODO: Render a static home page
-            RenderStaticView(indexModel, "ArticleIndex", "MainLayout", Server.MapPath("~/Content/Articles/index.html"));
+            RenderStaticView(indexModel, "~/Views/Default/Index.cshtml", "MainLayout", Server.MapPath("~/Content/index.html"));
 
             return Content("Done");
         }

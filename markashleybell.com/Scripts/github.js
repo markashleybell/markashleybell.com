@@ -7,7 +7,7 @@
         dataType: 'json',
         type: 'post',
         data: {
-            count: 10
+            count: 5
         },
         success: function (data, status, request) {
 

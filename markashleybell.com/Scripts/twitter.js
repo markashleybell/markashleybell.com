@@ -1,5 +1,5 @@
 ﻿function activeUrls(text) {
-    text = text.replace(/\s(http:\/\/[^\s\<]+)(\s)?/gi, ' <a href="$1">$1</a>$2');
+    text = text.replace(/\s(https?:\/\/[^\s\<]+)(\s)?/gi, ' <a href="$1">$1</a>$2');
     return text.replace(/(^|\s:?)@(\w+)/gi, ' <a href="http://twitter.com/$2">@$2</a>');
 }
 
@@ -12,7 +12,7 @@ $(function () {
         dataType: 'json',
         type: 'post',
         data: {
-            count: 10
+            count: 5
         },
         success: function (data, status, request) {
 

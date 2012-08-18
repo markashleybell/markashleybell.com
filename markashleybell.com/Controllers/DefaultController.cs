@@ -7,6 +7,7 @@ using System.Net;
 using RestSharp;
 using markashleybell.com.Models;
 using markashleybell.com.Extensions;
+using System.Globalization;
 
 namespace markashleybell.com.Controllers
 {
@@ -29,9 +30,9 @@ namespace markashleybell.com.Controllers
             var response = new RestClient().Execute<List<Tweet>>(request);
 
             return Json(response.Data.Select(x => new {
-                            date = x.created_at.ToPrettyDate("ddd MMM dd HH:mm:ss %zzzz yyyy"),
-                            status = x.text
-                        }));
+                date = x.created_at.ToPrettyDate("ddd MMM dd HH:mm:ss %zzzz yyyy"),
+                status = x.text
+            }));
         }
 
         //[HttpPost]
@@ -43,13 +44,44 @@ namespace markashleybell.com.Controllers
 
             var request = new RestRequest("https://api.github.com/users/markashleybell/events/public");
 
-            var response = new RestClient().Execute<List<RootObject>>(request);
+            var response = new RestClient().Execute<List<Activity>>(request);
 
-            return Json(response.Data.Take(count.Value).Select(x => new {
-                date = x.created_at.ToPrettyDate("yyyy-MM-ddTHH:mm:ssZ"),
-                repo = x.repo.name,
-                status = "TBD"
-            }) , JsonRequestBehavior.AllowGet);
+            var items = new List<ActivitySummary>();
+
+            foreach (var item in response.Data)
+            {
+                var activity = new ActivitySummary {
+                    date = item.created_at.ToPrettyDate("yyyy-MM-ddTHH:mm:ssZ"),
+                };
+
+                switch (item.type)
+                {
+                    case "WatchEvent":
+                        activity.status = "Watched <a href=\"http://github.com/" + item.repo.name + "\">" + item.repo.name + "</a>";
+                        break;
+                    case "PushEvent":
+                        var branch = item.payload.@ref.Substring(item.payload.@ref.LastIndexOf("/") + 1);
+                        activity.status = "Pushed to " + branch + " branch on <a href=\"http://github.com/" + item.repo.name + "\">" + item.repo.name + "<br />";
+                        foreach (var commit in item.payload.commits)
+                        {
+                            activity.status += "<a href=\"" + item.repo.url + "\">" + commit.sha.Substring(0, 6) + "</a>: " + commit.message + "<br />";
+                        }
+                        break;
+                    case "IssuesEvent":
+                        activity.status = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.payload.action) + " <a href=\"" + item.payload.issue.html_url + "\">issue " + item.payload.issue.number + "</a> on <a href=\"http://github.com/" + item.repo.name + "\">" + item.repo.name + "</a><br />";
+                        break;
+                    case "IssueCommentEvent":
+                        // activity.status = "COMMENT";
+                        // Hide for now
+                        break;
+                    default:
+                        break;
+                }
+
+                items.Add(activity);
+            }
+
+            return Json(items.Take(count.Value), JsonRequestBehavior.AllowGet);
         }
 
         

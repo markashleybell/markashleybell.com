@@ -5,26 +5,30 @@
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h2>Log On</h2>
+<div class="full-width">
 
-@using (Html.BeginForm()) {
+    <h2>Log On</h2>
+
+    @using (Html.BeginForm()) {
         
-    @Html.ValidationSummary(true)
+        @Html.ValidationSummary(true)
             
-    <p>
-        @Html.LabelFor(model => model.Username)
-        @Html.EditorFor(model => model.Username)
-        @Html.ValidationMessageFor(model => model.Username)
-    </p>
+        <p>
+            @Html.LabelFor(model => model.Username)
+            @Html.EditorFor(model => model.Username)
+            @Html.ValidationMessageFor(model => model.Username)
+        </p>
 
-    <p>
-        @Html.LabelFor(model => model.Password)
-        @Html.EditorFor(model => model.Password)
-        @Html.ValidationMessageFor(model => model.Password)
-    </p>
+        <p>
+            @Html.LabelFor(model => model.Password)
+            @Html.EditorFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.Password)
+        </p>
 
-    <p>
-        <input class="submit" type="submit" value="Log On" />
-    </p>
+        <p>
+            <input class="submit" type="submit" value="Log On" />
+        </p>
         
-}
+    }
+
+</div>

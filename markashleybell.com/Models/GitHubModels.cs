@@ -22,6 +22,7 @@ namespace markashleybell.com.Models
         public string message { get; set; }
         public Author author { get; set; }
         public string url { get; set; }
+        public string sha { get; set; }
     }
 
     public class PullRequest
@@ -62,6 +63,7 @@ namespace markashleybell.com.Models
 
     public class Payload
     {
+        public string @ref { get; set; }
         public List<Commit> commits { get; set; }
         public Issue issue { get; set; }
         public string action { get; set; }
@@ -76,7 +78,7 @@ namespace markashleybell.com.Models
         public int id { get; set; }
     }
 
-    public class RootObject
+    public class Activity
     {
         public string created_at { get; set; }
         public string type { get; set; }
@@ -84,5 +86,13 @@ namespace markashleybell.com.Models
         public bool @public { get; set; }
         public Repo repo { get; set; }
         public string id { get; set; }
+    }
+
+    public class ActivitySummary 
+    {
+        public string date { get; set; }
+        public string repo { get; set; }
+        public string repo_url { get; set; }
+        public string status { get; set; }
     }
 }

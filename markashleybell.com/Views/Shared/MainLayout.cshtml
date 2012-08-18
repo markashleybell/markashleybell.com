@@ -9,6 +9,8 @@
         <meta name="description" content="@ViewBag.MetaDescription" />
         <meta name="publishdate" content="@ViewBag.MetaPublishDate" />
 
+        <link href='http://fonts.googleapis.com/css?family=Cabin:400,700,400italic' rel='stylesheet' type='text/css' />
+
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
         <link href="@Url.Content("~/Content/Less/Site.less")" rel="stylesheet/less" type="text/css" />
@@ -29,17 +31,17 @@
     <body>
         <div id="container">
 
-        <div id="logo" class="half-width">Mark Ashley Bell, Web Designer/Developer</div>
+            <div id="logo" class="half-width">Mark Ashley Bell, Web Designer/Developer</div>
 
-        <div id="nav" class="half-width">
-            <ul>
-                <li><a href="/articles">Articles</a></li>
-            </ul>
-        </div>
+            <div id="nav" class="half-width">
+                <ul>
+                    <li><a href="/">Home</a></li><li><a href="/articles">Articles</a></li>
+                </ul>
+            </div>
 
-        @RenderBody()
+            @RenderBody()
 
-        <footer>All content &copy; Mark Ashley Bell</footer>
+            <footer>All content &copy; Mark Ashley Bell</footer>
 
         </div>
     </body>
