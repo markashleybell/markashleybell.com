@@ -151,7 +151,7 @@ code {
   border: 1px solid #eaeaea;
   margin: 0px 2px;
   padding: 0px 5px;
-  font-size: 12px;
+  font-size: 0.9em;
 }
 pre code {
   border: 0px;
@@ -170,7 +170,7 @@ pre, code {
   border-radius: 3px;
 }
 pre, pre code {
-  font-size: 13px;
+  font-size: 0.95em;
 }
 pre .comment {
   color: #998;
@@ -224,7 +224,7 @@ body {
   font-weight: 400;
   font-size: 1em;
   text-rendering: optimizeLegibility;
-  background-color: #EBEBEB;
+  background-color: #FCFCFC;
 }
 h1 {
   margin-top: 1em;
@@ -389,7 +389,7 @@ footer {
 #github {
   display: inline;
   float: left;
-  width: 56.25%;
+  width: 47.91666666666667%;
   margin-left: 1.0416666666666665%;
   margin-right: 1.0416666666666665%;
 }
@@ -399,7 +399,7 @@ footer {
 #tweets {
   display: inline;
   float: left;
-  width: 39.58333333333333%;
+  width: 47.91666666666667%;
   margin-left: 1.0416666666666665%;
   margin-right: 1.0416666666666665%;
 }
@@ -424,8 +424,8 @@ footer {
 }
 @media screen and (max-width: 980px) {
   #container {
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
   }
 }
 @media screen and (max-width: 730px) {
