@@ -58,7 +58,7 @@ namespace markashleybell.com.Controllers
             var dateString = Regex.Match(rawContent, "^Date:\\s?(.*?)[\\r\\n]+", RegexOptions.Multiline).Groups[1].Value;
             model.PublishDate = DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm", null);
 
-            rawContent = Regex.Replace(rawContent, "(^(?:Title|Date):\\s?.*?[\\r\\n]+)", "", RegexOptions.Multiline);
+            rawContent = Regex.Replace(rawContent, "(^(?:Title|Date|Abstract):\\s?.*?[\\r\\n]+)", "", RegexOptions.Multiline);
 
             // Retrieve all local images referenced in the document and store them on the server
             foreach(Match match in Regex.Matches(rawContent, "\\/content\\/img\\/articles\\/(.*\\.gif|\\.jpg)"))
