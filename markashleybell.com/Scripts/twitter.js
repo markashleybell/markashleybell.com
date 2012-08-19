@@ -20,7 +20,7 @@ $(function () {
 
             $.each(data, function (i, item) {
 
-                output.push('<p>' + item.date + ': ' + activeUrls(item.status) + '</p>');
+                output.push('<p><b>' + item.date + ':</b> ' + activeUrls(item.status) + '</p>');
 
             });
 

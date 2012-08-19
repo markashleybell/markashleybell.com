@@ -33,6 +33,9 @@
                 <add assembly="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
             </assemblies>
         </compilation>
+        <customErrors defaultRedirect="/error/servererror" mode="On">
+          <error statusCode="404" redirect="/error/pagenotfound"/>
+        </customErrors>
         <authentication mode="Forms">
             <forms loginUrl="~/Account/LogOn" timeout="2880">
                 <credentials passwordFormat="Clear">
@@ -88,19 +91,19 @@
                   <action type="Rewrite" url="/content/index.html" />
                 </rule>
                 <rule name="Robots" stopProcessing="true">
-                    <match url="robots.txt" />
-                    <conditions logicalGrouping="MatchAll" />
-                    <action type="Rewrite" url="/robots.txt" />
+                  <match url="^robots.txt$" />
+                  <conditions logicalGrouping="MatchAll" />
+                  <action type="Rewrite" url="/robots.txt" />
                 </rule>
                 <rule name="Article" stopProcessing="true">
-                    <match url="articles/(.*)" />
-                    <conditions logicalGrouping="MatchAll" />
-          <action type="Rewrite" url="/content/articles/{R:1}.html" />
+                  <match url="^articles/(.*)$" />
+                  <conditions logicalGrouping="MatchAll" />
+                  <action type="Rewrite" url="/content/articles/{R:1}.html" />
                 </rule>
                 <rule name="Article Index" stopProcessing="true">
-                    <match url="articles" />
-                    <conditions logicalGrouping="MatchAll" />
-          <action type="Rewrite" url="/content/articles/index.html" />
+                  <match url="^articles$" />
+                  <conditions logicalGrouping="MatchAll" />
+                  <action type="Rewrite" url="/content/articles/index.html" />
                 </rule>
             </rules>
         </rewrite>

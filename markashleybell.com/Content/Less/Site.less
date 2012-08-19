@@ -222,37 +222,35 @@ pre .regexp {
 // END RAINBOW.JS THEME - DO NOT EDIT!!
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Cabin, Lora, Droid Serif, Bree, Source Sans Pro, Playfair Display
-
 /* Column configuration */
 @columns: 12;
-//@column-width: 22;
-//@gutter-width: 10;
-
-/* Make it flexible */
 @total-width: 100%;
 
 body { 
 	font-family: 'Cabin', sans-serif;
 	font-weight: 400;
 	font-size: 1em;
+	text-rendering: optimizeLegibility;
 	background-color: #EBEBEB;
 }
 
 h1 {
 	margin-top: 1em;
 	font-weight: 700;
-	font-size: 2em;
+	font-size: 1.8em;
+	line-height: 1.3em;
 }
 h2 {
 	margin-top: 1em;
 	font-weight: 700;
-	font-size: 1.5em;
+	font-size: 1.4em;
 }
 p {
 	margin-top: 1em;
 	line-height: 1.3em;
 	&.article-date {
+		margin-top: 0.2em;
+		font-size: 1.1em;
 		font-weight: 700;
 		color: #757575;
 	}
@@ -275,7 +273,16 @@ a {
 	}
 }
 
-img { margin: 0; padding: 0; width: 100%; }
+img { 
+	margin: 0; 
+	padding: 0; 
+	width: 100%; 
+	border: 1px solid #CCC;
+}
+
+b {
+	font-weight: 700;
+}
 
 .clr {
     clear: left;
@@ -287,14 +294,14 @@ img { margin: 0; padding: 0; width: 100%; }
     padding-top: 2em;
 }
 
-.grid-display {
-    padding: 5px 0 5px 0;
-    margin-top: 20px;
-    background-color: #999;
-}
-
 footer, .full-width {
     .column(12);
+}
+
+footer {
+	font-size: 0.7em;
+	margin-top: 3em;
+	margin-bottom: 5em;
 }
 
 .half-width {
@@ -310,10 +317,27 @@ footer, .full-width {
 }
 
 #logo {
+	.column(1);
+	img {
+		border: none;
+	}
+}
+
+#strapline {
+	.column(6);
+	h1 {
+		margin-top: 1.25em;
+		font-size: 0.7em;
+		font-weight: 400;
+	}
 }
 
 #nav {
+	.column(5);
 	text-align: right;
+	ul {
+		margin-top: 0.75em;
+	}
 	li { 
 		display: inline; 
 		
@@ -331,19 +355,71 @@ footer, .full-width {
 }
 
 #hero {
-	h1 {
-		margin-top: 0.2em;
-		font-size: 4em;
-	}
 	h2 {
-		margin-top: 0.2em;
+		margin-top: 0.6em;
 		font-size: 2.5em;
 		font-weight: 700;
+		span {
+			display: block;
+			margin-bottom: 0.1em;
+			font-size: 1.75em;
+		}
 	}
 	p {
 		font-size: 1.3em;
-		//font-weight: 700;
 	}
+}
+
+#github, #tweets {
+	h2 { 
+		font-size: 1.2em;
+		margin-top: 1.8em;
+	}
+
+	p {
+		font-size: 0.9em;
+		
+	}
+
+	span {
+		display: block;
+		margin-top: 0.2em;
+		font-size: 0.8em;
+	}
+	> div {
+		margin-top: 1.3em;
+	}
+}
+
+#github {
+	.column(7);
+	p{
+		margin-right: 1em;
+	}
+}
+#tweets {
+	.column(5);
+}
+
+.article-list {
+	margin-top: 2em;
+	li {
+		margin-top: 1em;
+		a { 
+			font-size: 1.7em;
+			line-height: 1.3em;
+			font-weight: 700; 
+		}
+	}
+	span {
+		margin-top: 0.2em;
+		display: block;
+		line-height: 1.3em;
+	}
+}
+
+#disqus_thread {
+	margin-top: 2em;
 }
 
 @media screen and (max-width: 980px) {
@@ -351,13 +427,22 @@ footer, .full-width {
         // Add padding as width narrows
         // padding: 0 1%; 
         // Or fixed?
-        padding: 0 20px;
+        padding-left: 25px;
+		padding-right: 25px;
     }
 }
 
-@media screen and (max-width: 960px) {
-    #container { 
-        // Match padding from start of breakpoint
-        // padding: 0 0.18%; 
-    }
-}  
+@media screen and (max-width: 730px) {
+	#hero h2 {
+		font-size: 2em;
+	}
+}
+
+@media screen and (max-width: 560px) {
+	#hero h2 {
+		font-size: 1.5em;
+	}
+	.half-width {
+		.column(12);
+	}
+}

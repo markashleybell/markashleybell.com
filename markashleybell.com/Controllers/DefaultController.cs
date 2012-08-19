@@ -61,10 +61,10 @@ namespace markashleybell.com.Controllers
                         break;
                     case "PushEvent":
                         var branch = item.payload.@ref.Substring(item.payload.@ref.LastIndexOf("/") + 1);
-                        activity.status = "Pushed to " + branch + " branch on <a href=\"http://github.com/" + item.repo.name + "\">" + item.repo.name + "<br />";
+                        activity.status = "Pushed to " + branch + " branch on <a href=\"http://github.com/" + item.repo.name + "\">" + item.repo.name + "</a> ";
                         foreach (var commit in item.payload.commits)
                         {
-                            activity.status += "<a href=\"" + item.repo.url + "\">" + commit.sha.Substring(0, 6) + "</a>: " + commit.message + "<br />";
+                            activity.status += "<span><a href=\"http://github.com/" + item.repo.name + "/commit/" + commit.sha + "\">" + commit.sha.Substring(0, 6) + "</a>: " + commit.message + "</span> ";
                         }
                         break;
                     case "IssuesEvent":

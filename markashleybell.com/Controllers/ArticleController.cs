@@ -54,16 +54,17 @@ namespace markashleybell.com.Controllers
             var rawContent = _api.GetFileContent("/articles/" + slug + ".md");
 
             model.Title = Regex.Match(rawContent, "^Title:\\s?(.*?)[\\r\\n]+", RegexOptions.Multiline).Groups[1].Value;
+            model.Abstract = Regex.Match(rawContent, "^Abstract:\\s?(.*?)[\\r\\n]+", RegexOptions.Multiline).Groups[1].Value;
             var dateString = Regex.Match(rawContent, "^Date:\\s?(.*?)[\\r\\n]+", RegexOptions.Multiline).Groups[1].Value;
             model.PublishDate = DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm", null);
 
             rawContent = Regex.Replace(rawContent, "(^(?:Title|Date):\\s?.*?[\\r\\n]+)", "", RegexOptions.Multiline);
 
             // Retrieve all local images referenced in the document and store them on the server
-            foreach(Match match in Regex.Matches(rawContent, "\\/content\\/img\\/(.*\\.gif|\\.jpg)"))
+            foreach(Match match in Regex.Matches(rawContent, "\\/content\\/img\\/articles\\/(.*\\.gif|\\.jpg)"))
             {
                 var fileName = match.Groups[1].Value;
-                _api.DownloadFile("/img/" + fileName, Server.MapPath("~/Content/Img") + "/" + fileName);
+                _api.DownloadFile("/img/" + fileName, Server.MapPath("~/Content/Img/Articles") + "/" + fileName);
             }
 
             model.Body = new Markdown().Transform(rawContent);
@@ -99,6 +100,7 @@ namespace markashleybell.com.Controllers
 
                         var article = new ArticleViewModel {
                             Title = Regex.Match(html, "<title>(.*)</title>").Groups[1].Value,
+                            Abstract = Regex.Match(html, "<meta name=\"abstract\" content=\"(.*?)\"\\s?/?>").Groups[1].Value,
                             PublishDate = (publishDate == "") ? DateTime.MinValue : DateTime.ParseExact(publishDate, "yyyy-MM-dd HH:mm", null),
                             Slug = slug
                         };
