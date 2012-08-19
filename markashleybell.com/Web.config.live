@@ -149,6 +149,6 @@
         </system.webServer>
     </location>
     <system.serviceModel>
-        <serviceHostingEnvironment aspNetCompatibilityEnabled="true" />
+        <serviceHostingEnvironment aspNetCompatibilityEnabled="true" multipleSiteBindingsEnabled="true" />
     </system.serviceModel>
 </configuration>
