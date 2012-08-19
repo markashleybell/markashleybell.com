@@ -83,7 +83,5 @@ namespace markashleybell.com.Controllers
 
             return Json(items.Take(count.Value), JsonRequestBehavior.AllowGet);
         }
-
-        
     }
 }
