@@ -64,6 +64,7 @@ namespace markashleybell.com.Models
     public class Payload
     {
         public string @ref { get; set; }
+        public string ref_type { get; set; }
         public List<Commit> commits { get; set; }
         public Issue issue { get; set; }
         public string action { get; set; }

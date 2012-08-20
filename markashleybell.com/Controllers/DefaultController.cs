@@ -70,6 +70,9 @@ namespace markashleybell.com.Controllers
                     case "IssuesEvent":
                         activity.status = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.payload.action) + " <a href=\"" + item.payload.issue.html_url + "\">issue " + item.payload.issue.number + "</a> on <a href=\"http://github.com/" + item.repo.name + "\">" + item.repo.name + "</a><br />";
                         break;
+                    case "DeleteEvent":
+                        activity.status = "Deleted " + item.payload.ref_type + " " + item.payload.@ref + " on <a href=\"http://github.com/" + item.repo.name + "\">" + item.repo.name + "</a> ";
+                        break;
                     case "IssueCommentEvent":
                         // activity.status = "COMMENT";
                         // Hide for now
