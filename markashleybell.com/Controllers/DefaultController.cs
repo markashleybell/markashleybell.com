@@ -56,6 +56,9 @@ namespace markashleybell.com.Controllers
 
                 switch (item.type)
                 {
+                    case "CreateEvent":
+                        activity.status = "Created " + item.payload.ref_type + " " + item.payload.@ref + " on <a href=\"http://github.com/" + item.repo.name + "\">" + item.repo.name + "</a> ";
+                        break;
                     case "WatchEvent":
                         activity.status = "Watched <a href=\"http://github.com/" + item.repo.name + "\">" + item.repo.name + "</a>";
                         break;
