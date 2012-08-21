@@ -25,7 +25,7 @@ namespace markashleybell.com.Controllers
             if (!count.HasValue)
                 throw new HttpException((int)HttpStatusCode.NotFound, "Page Not Found");
 
-            var request = new RestRequest("https://api.twitter.com/1/statuses/user_timeline.json?screen_name=markashleybell&count=" + count.Value);
+            var request = new RestRequest("https://api.twitter.com/1/statuses/user_timeline.json?screen_name=markashleybell&trim_user=true&include_rts=true&count=" + count.Value);
 
             var response = new RestClient().Execute<List<Tweet>>(request);
 
@@ -35,8 +35,8 @@ namespace markashleybell.com.Controllers
             }));
         }
 
-        //[HttpPost]
-        //[OutputCache(Duration = 1800)]
+        [HttpPost]
+        [OutputCache(Duration = 1800)]
         public ActionResult RecentGitHubActivity(int? count)
         {
             if (!count.HasValue)
