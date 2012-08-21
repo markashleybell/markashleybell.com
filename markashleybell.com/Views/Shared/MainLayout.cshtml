@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Configuration
+
+<!DOCTYPE html>
 <html>
     <head>
         <title>@ViewBag.Title</title>
@@ -37,6 +39,14 @@
             <footer>All content &copy; Mark Ashley Bell</footer>
 
         </div>
+        @if(Convert.ToBoolean(ConfigurationManager.AppSettings["DevMode"])) {
+            
+        <script type="text/javascript" src="@Url.Content("~/Scripts/twitter.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/github.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/email.js")"></script>
+            
+        } else {
+            
         <script type="text/javascript" src="@Url.Content("~/Scripts/script.min.js")"></script>
         <script type="text/javascript">
 
@@ -51,5 +61,7 @@
             })();
 
         </script>
+            
+        }
     </body>
 </html>

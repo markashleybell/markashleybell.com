@@ -16,6 +16,7 @@
         <add key="webpages:Version" value="1.0.0.0" />
         <add key="ClientValidationEnabled" value="true" />
         <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+        <add key="DevMode" value="false" />
         <add key="ConsumerKey" value="XXXX" />
         <add key="ConsumerSecret" value="XXXX" />
         <add key="Token" value="XXXX" />
