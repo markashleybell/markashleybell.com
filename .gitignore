@@ -106,3 +106,7 @@ UpgradeLog*.XML
 
 # Exclude local config
 Web.config
+
+# Exclude auto-generated CSS created by Web Workshop addin
+markashleybell.com/Content/Less/Site.css
+markashleybell.com/Content/Less/Site.min.css

@@ -130,6 +130,12 @@
     <Content Include="Content\Img\Articles\.gitignore" />
     <Content Include="Content\Img\Site\favicon.ico" />
     <Content Include="Content\Img\Site\logo.png" />
+    <Content Include="Content\Less\Site.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Less\Site.min.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </Content>
     <Content Include="DataServices\Packages.svc" />
     <Content Include="Global.asax" />
     <None Include="Content\Less\Site.less" />
