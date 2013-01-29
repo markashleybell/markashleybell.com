@@ -11,7 +11,7 @@
         for (var x = 0; x < v.length; x++)
             t += String.fromCharCode(parseInt(v[x], 10));
 
-        e.empty().append('<a href="' + String.fromCharCode(109, 97, 105, 108, 116, 111, 58) + t + '">' + t + '</a>');
+        e.empty().append('<a class="email-link" href="' + String.fromCharCode(109, 97, 105, 108, 116, 111, 58) + t + '">' + t + '</a>');
     }
 
 });

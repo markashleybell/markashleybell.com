@@ -76,7 +76,25 @@ $(function () {
         for (var x = 0; x < v.length; x++)
             t += String.fromCharCode(parseInt(v[x], 10));
 
-        e.empty().append('<a href="' + String.fromCharCode(109, 97, 105, 108, 116, 111, 58) + t + '">' + t + '</a>');
+        e.empty().append('<a class="email-link" href="' + String.fromCharCode(109, 97, 105, 108, 116, 111, 58) + t + '">' + t + '</a>');
     }
 
+});﻿analytics.trackLink($('a.github-link'), 'Clicked GitHub Link', {
+    category: 'Outgoing Links'
+});
+
+analytics.trackLink($('a.linkedin-link'), 'Clicked LinkedIn Link', {
+    category: 'Outgoing Links'
+});
+
+analytics.trackLink($('a.twitter-link'), 'Clicked Twitter Link', {
+    category: 'Outgoing Links'
+});
+
+analytics.trackLink($('a.so-link'), 'Clicked Stack Overflow Link', {
+    category: 'Outgoing Links'
+});
+
+analytics.trackLink($('a.email-link'), 'Clicked Email Link', {
+    category: 'Action Links'
 });

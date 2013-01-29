@@ -140,6 +140,7 @@
     <Content Include="Global.asax" />
     <None Include="Content\Less\Site.less" />
     <Content Include="Packages\Readme.txt" />
+    <Content Include="Scripts\analytics.js" />
     <Content Include="Scripts\github.js" />
     <Content Include="Scripts\email.js" />
     <Content Include="Scripts\less-1.1.3.min.js" />
