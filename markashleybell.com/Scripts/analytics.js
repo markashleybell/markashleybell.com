@@ -14,6 +14,10 @@ analytics.trackLink($('a.so-link'), 'Clicked Stack Overflow Link', {
     category: 'Outgoing Links'
 });
 
+analytics.trackLink($('a.appnet-link'), 'Clicked App.net Link', {
+    category: 'Outgoing Links'
+});
+
 analytics.trackLink($('a.email-link'), 'Clicked Email Link', {
     category: 'Action Links'
 });
