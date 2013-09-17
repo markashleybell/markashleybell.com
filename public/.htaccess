@@ -1,0 +1,21 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.markeebee.com
+RewriteRule (.*) http://markeebee.com/$1 [R=301,L]
+AddDefaultCharset UTF-8
+AddType 'text/html; charset=UTF-8' .html
+AddLanguage en-GB .html .htm .css .js
+
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|swf|mp3|mp4)$">
+Header set Cache-Control "max-age=2592000, must-revalidate"
+Header unset Last-Modified
+</FilesMatch>
+
+<FilesMatch "\.(html|htm|xml|txt|xsl)$">
+Header set Cache-Control "max-age=7200, must-revalidate"
+Header unset Last-Modified
+</FilesMatch>
+
+<FilesMatch "\.(css)$">
+Header set Cache-Control "max-age=604800, must-revalidate"
+Header unset Last-Modified
+</FilesMatch>

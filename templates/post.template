@@ -1,0 +1,11 @@
+<article>
+    <div class="post-heading">
+        <h1><a href="${permalink}">${heading}</a>
+    </div>
+    <div class="post-date">
+        <p>${date}</p>
+    </div>
+    <div class="post-body">
+        ${body}
+    </div>
+</article>

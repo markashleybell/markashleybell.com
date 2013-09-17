@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>${title}Mark Ashley Bell, Freelance Web Designer/Developer - C# ASP.NET, jQuery, JavaScript and Python web development</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="alternate" type="application/rss+xml" title="The latest articles from markeebee.com" href="/rss.xml" />
+        <link rel="shortcut icon" href="img/favicon.ico" />
+        <link rel="stylesheet" type="text/css" media="screen" href="css/styles${minify}.css?v1" />
+        <script type="text/javascript">
+            // Analytics code here
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <header>
+                <h1><a href="/">Mark Ashley Bell, Freelance Web Designer/Developer</a></h1>
+            </header>
+            ${content}
+            <footer>
+                <nav>
+                    <h2>Older articles:</h2>
+                    ${nav}
+                </nav>
+                <p id="credit"><small>&copy; <a href="https://twitter.com/markeebee">Mark Ashley Bell</a> 2013</small></p>
+            </footer>
+        </div>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery${minify}.js"></script>
+        <script type="text/javascript" src="js/main${minify}.js?v1"></script>
+    </body>
+</html>

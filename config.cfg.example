@@ -1,0 +1,10 @@
+[Site]
+hostname: HOSTNAME
+[Debug]
+minify: False
+[FTP]
+secure: True
+hostname: HOSTNAME
+username: USERNAME
+password: PASSWORD
+remotepath: REMOTEPATH
