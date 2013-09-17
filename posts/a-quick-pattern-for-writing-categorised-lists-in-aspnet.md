@@ -14,7 +14,7 @@ using (SqlDataReader links = new SqlCommand(sql, conn).ExecuteReader())
 	{
         // Store the first category and write out the first heading
         string category = links["category"].ToString();
-        Response.Write("&lgt;h2&rgt;" + category + "</h2><ul>");
+        Response.Write("<h2>" + category + "</h2><ul>");
     
         while (links.Read())
         {

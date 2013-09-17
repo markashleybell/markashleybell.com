@@ -7,6 +7,7 @@
         <link rel="alternate" type="application/rss+xml" title="The latest articles from markeebee.com" href="/rss.xml" />
         <link rel="shortcut icon" href="img/favicon.ico" />
         <link rel="stylesheet" type="text/css" media="screen" href="css/styles${minify}.css?v1" />
+        <link rel="stylesheet" type="text/css" media="screen" href="css/github.css?v1" />
         <script type="text/javascript">
             // Analytics code here
         </script>
@@ -26,6 +27,7 @@
             </footer>
         </div>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery${minify}.js"></script>
+        <script type="text/javascript" src="js/rainbow-custom.min.js?v1"></script>
         <script type="text/javascript" src="js/main${minify}.js?v1"></script>
     </body>
 </html>
