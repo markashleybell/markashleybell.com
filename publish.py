@@ -104,7 +104,7 @@ for inputfile in file_list:
     # post_date = inputfile[0].strftime('%A %d %B, %Y %H:%M') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
     # post_date = inputfile[0].strftime('%d %b, %Y, %H:%M') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
     post_date = inputfile[0].strftime('%d %b, %Y') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
-    post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(inputfile[2], extensions=['extra']))
+    post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(inputfile[2], extensions=['extra', 'codehilite']))
     # If there are less than 5 posts in the homepage list, add this one
     if len(homepage) < homepage_post_count: 
         if inputfile[5] is not None:

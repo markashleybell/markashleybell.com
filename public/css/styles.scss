@@ -19,7 +19,7 @@ img {
 	color: #969696;
 }
 
-.align-right {
+.meta-column {
 	text-align: right;
 }
 
@@ -55,6 +55,7 @@ p {
 	line-height: $line-height;
 	code {
 		font-size: 1em;
+		color: inherit;
 	}
 }
 
@@ -114,5 +115,18 @@ a#logo {
 			background: none;
 			color: #000000;
 		}
+	}
+}
+
+.codehilitetable {
+	width: 100%;
+}
+
+@media (max-width: 767px) {
+	.meta-column {
+		text-align: left;
+	}
+	h1 {
+		margin-top: 0;
 	}
 }
