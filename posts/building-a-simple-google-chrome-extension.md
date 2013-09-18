@@ -6,7 +6,7 @@ I have a web app running on my home server to keep track of my bookmarks—it's 
 
 Although this system works well enough, it looks a bit untidy and takes up space in the bookmarks bar. With the advent of [Extensions for Chrome](http://www.theregister.co.uk/2010/01/25/google_chrome_4_stable/), I thought I'd have a go at writing an extension to nicely integrate my custom page bookmarking button into the Chrome browser.
 
-![Screen Shot](/content/img/articles/chrome-extension-screenshot.gif "Screen Shot")
+![Screen Shot](/img/post/chrome-extension-screenshot.gif "Screen Shot")
 
 It's clear from the start that Chrome's extension structure is a lot simpler than that of [Firefox extensions](http://kb.mozillazine.org/Getting_started_with_extension_development). Chrome extensions are just a collection of plain HTML and JavaScript files—no odd folder hierarchies or XUL to deal with here. Of course, there are several advantages to Mozilla's approach (ease of internationalisation, UI consistency), but I can't help feeling that building Chrome extensions will be much more accessible to amateur developers; I'm betting that this is exactly what Google was aiming for.
 

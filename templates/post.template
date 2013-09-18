@@ -1,11 +1,13 @@
-<article>
-    <div class="post-heading">
+<div class="row">
+	<div class="col-md-2 align-right">
+        <p class="post-date">${date}</p>
+    </div>
+    <div class="col-md-10">
         <h1><a href="${permalink}">${heading}</a>
     </div>
-    <div class="post-date">
-        <p>${date}</p>
-    </div>
-    <div class="post-body">
+</div>
+<div class="row">
+    <div class="post-body col-md-10 col-md-offset-2">
         ${body}
     </div>
-</article>
+</div>

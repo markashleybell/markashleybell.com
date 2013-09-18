@@ -4,30 +4,37 @@
         <title>${title}Mark Ashley Bell, Freelance Web Designer/Developer - C# ASP.NET, jQuery, JavaScript and Python web development</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <link rel="alternate" type="application/rss+xml" title="The latest articles from markeebee.com" href="/rss.xml" />
+        <link rel="alternate" type="application/rss+xml" title="The latest articles from markashleybell.com" href="/rss.xml" />
         <link rel="shortcut icon" href="img/favicon.ico" />
-        <link rel="stylesheet" type="text/css" media="screen" href="css/styles${minify}.css?v1" />
-        <link rel="stylesheet" type="text/css" media="screen" href="css/github.css?v1" />
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.css?v1" />
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/styles${minify}.css?v1" />
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/github.css?v1" />
         <script type="text/javascript">
             // Analytics code here
         </script>
     </head>
     <body>
-        <div id="container">
-            <header>
-                <h1><a href="/">Mark Ashley Bell, Freelance Web Designer/Developer</a></h1>
-            </header>
+        <div class="container">
+            <div class="row" id="header">
+                <div class="col-md-2 align-right">
+                    <a id="logo" href="/"><img src="/img/logo.png" /></a>
+                </div>
+                <div class="col-md-10">
+                    <p id="strapline"><a href="/">Mark Ashley Bell, Freelance Web Designer/Developer</a></p>
+                </div>
+            </div>
             ${content}
-            <footer>
-                <nav>
+            ${comments}
+            <div class="row" id="footer">
+                <div class="col-md-10 col-md-offset-2">
                     <h2>Older articles:</h2>
                     ${nav}
-                </nav>
-                <p id="credit"><small>&copy; <a href="https://twitter.com/markeebee">Mark Ashley Bell</a> 2013</small></p>
+                    <p id="credit">&copy; <a href="https://twitter.com/markashleybell">Mark Ashley Bell</a> 2013</p>
+                </div>
             </footer>
         </div>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery${minify}.js"></script>
-        <script type="text/javascript" src="js/rainbow-custom.min.js?v1"></script>
-        <script type="text/javascript" src="js/main${minify}.js?v1"></script>
+        <script type="text/javascript" src="/js/rainbow-custom.min.js?v1"></script>
+        <script type="text/javascript" src="/js/main${minify}.js?v1"></script>
     </body>
 </html>

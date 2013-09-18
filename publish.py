@@ -37,7 +37,7 @@ args = parser.parse_args()
 config = ConfigParser.RawConfigParser()
 config.read('config.cfg')
 
-minify = '.min' if config.get('Debug', 'minify') else ''
+minify = '.min' if config.get('Debug', 'minify') is True else ''
 
 # Load the master page template
 master_template_file = codecs.open('templates/master.template', 'r', 'utf-8')
@@ -46,6 +46,10 @@ master_template = Template(master_template_file.read())
 # Load the template HTML for individual posts
 post_template_file = codecs.open('templates/post.template', 'r', 'utf-8')
 post_template = Template(post_template_file.read())
+
+# Load the template HTML for comments
+comment_template_file = codecs.open('templates/disqus.template', 'r', 'utf-8')
+comment_template = Template(comment_template_file.read())
 
 # Get the path of this script and the path of the parent (the destination for generated HTML)
 currentpath = os.path.dirname(os.path.abspath(__file__))
@@ -98,7 +102,8 @@ rss_post_count = 5
 for inputfile in file_list:
     # Populate the post template HTML
     # post_date = inputfile[0].strftime('%A %d %B, %Y %H:%M') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
-    post_date = inputfile[0].strftime('%d %b, %Y, %H:%M') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
+    # post_date = inputfile[0].strftime('%d %b, %Y, %H:%M') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
+    post_date = inputfile[0].strftime('%d %b, %Y') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
     post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(inputfile[2], extensions=['extra']))
     # If there are less than 5 posts in the homepage list, add this one
     if len(homepage) < homepage_post_count: 
@@ -111,14 +116,14 @@ for inputfile in file_list:
     if len(rss) < rss_post_count: 
         rss.append(inputfile)
     # Populate the master template with the populated post HTML
-    output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - ', minify = minify)
+    output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - ', minify = minify, comments = comment_template.substitute())
     # Write out the processed HTML file for this post
     o = codecs.open(web_root + '/' + inputfile[4], 'w', 'utf-8')
     o.write(output)
     o.close()
 
 # Create the index page, passing in the joined HTML for the homepage posts
-output = master_template.substitute(content = '\r\n'.join(homepage), nav = nav, title = '', minify = minify)
+output = master_template.substitute(content = '\r\n'.join(homepage), nav = nav, title = '', minify = minify, comments = '')
 o = codecs.open(web_root + '/index.html', 'w', 'utf-8')
 o.write(output)
 o.close()
@@ -170,8 +175,11 @@ if args.publish and secure:
         print 'Creating css folder'
         sftp.mkdir(remotepath + '/css')
 
-    # Upload the CSS file
+    # Upload the CSS files
+    sftp.put(web_root + '/css/bootstrap.css', remotepath + '/css/bootstrap.css')
+    sftp.put(web_root + '/css/github.css', remotepath + '/css/github.css')
     sftp.put(web_root + '/css/styles.css', remotepath + '/css/styles.css')
+    sftp.put(web_root + '/css/styles.min.css', remotepath + '/css/styles.min.css')
 
     # Check if the image folder exists, and if not create it
     try:
@@ -192,7 +200,8 @@ if args.publish and secure:
         sftp.mkdir(remotepath + '/js')
 
     # Upload the script
-    sftp.put(web_root + '/js/main.min.js', remotepath + '/js/main.min.js')
+    sftp.put(web_root + '/js/rainbow-custom.min.js', remotepath + '/js/rainbow-custom.min.js')
+    sftp.put(web_root + '/js/main.js', remotepath + '/js/main.js')
 
     # Upload all post images
     for f in glob.glob(web_root + '/img/post/*.jpg'):
