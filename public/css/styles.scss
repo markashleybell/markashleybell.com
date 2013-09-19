@@ -67,8 +67,26 @@ li {
 	line-height: $line-height;
 }
 
+pre, code {
+	font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+
 pre {
 	margin: 1.5em 0 0 0;
+	display: block;
+	padding: 9.5px;
+	font-size: 13px;
+	line-height: 1.428571429;
+	background-color: #f5f5f5;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+}
+
+code {
+	padding: 2px 4px;
+	white-space: nowrap;
+	background-color: #f9f2f4;
+	border-radius: 4px;
 }
 
 h1, p.post-date {
@@ -116,10 +134,6 @@ a#logo {
 			color: #000000;
 		}
 	}
-}
-
-.codehilitetable {
-	width: 100%;
 }
 
 @media (max-width: 767px) {

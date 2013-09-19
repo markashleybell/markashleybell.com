@@ -107,7 +107,7 @@ Working on a project today, I came across the need for a simple stopwatch/timer 
         }
     }
 
-Because I wasn't interested in sub-second accuracy, I've used the `System.Windows.Forms.Timer` for simplicity, but the principle is the same whichever timer class you use. 
+Because I wasn't interested in sub-second accuracy, I've used `System.Windows.Forms.Timer` for simplicity, but the principle is the same whichever timer class you use. 
 
 If you want to find out more about the differences between `System.Threading.Timer`, `System.Windows.Forms.Timer` and `System.Timers.Timer`, it's definitely worth reading [this article comparing the Timer classes in the .NET Framework class library](http://msdn.microsoft.com/en-us/magazine/cc164015.aspx).
 

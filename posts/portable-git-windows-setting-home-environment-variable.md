@@ -46,6 +46,7 @@ Now that we have pointed Portable Git to the correct folder, you should be able 
 
 Open it up, paste in the following code from [this GitHub guide](http://help.github.com/working-with-key-passphrases/) and save:
 
+    :::sh
     SSH_ENV="$HOME/.ssh/environment"
 
     # start the ssh-agent

@@ -16,22 +16,23 @@ So let's get stuck in! First create a new folder for your extension code—it do
 
 This is the glue that holds our extension together. It contains the basic meta data about the extension (title, description etc), as well as acting as a pointer to the various files that contain the extension's user interface and JavaScript code. It also defines permissions that specify which browser components and external URLs the extension is allowed to access. The manifest for our extension looks like this:
 
-<pre><code data-language="javascript">{
-    "name": "Bookmark",
-    "description": "Adds the current page to my bookmarking system.",
-    "version": "1.0",
-    "background_page": "background.html",
-    "permissions": [
-        "tabs", 
-        "http://*/*", 
-        "https://*/*"
-    ],
-    "browser_action": {
-        "default_title": "Bookmark This Page",
-        "default_icon": "icon.png",
-        "popup": "popup.html"
+    :::javascript
+    {
+        "name": "Bookmark",
+        "description": "Adds the current page to my bookmarking system.",
+        "version": "1.0",
+        "background_page": "background.html",
+        "permissions": [
+            "tabs", 
+            "http://*/*", 
+            "https://*/*"
+        ],
+        "browser_action": {
+            "default_title": "Bookmark This Page",
+            "default_icon": "icon.png",
+            "popup": "popup.html"
+        }
     }
-}</code></pre>
 
 The `background_page` property points to an HTML page which contains the logic code for the extension. This HTML is never displayed, it just interacts with the browser and page via JavaScript. The `browser_action` section defines a button with an icon, which the user will click to open the bookmarking dialog, and the `popup` property which points to the HTML file containing the dialog form.
 
@@ -39,49 +40,50 @@ The `background_page` property points to an HTML page which contains the logic c
 
 This file contains a basic HTML form with title, url, summary and tag fields (so that we can edit and tag our page bookmark before saving it), and some JavaScript code to do the population and saving of the fields. You can [download the complete source here](/content/downloads/mab_bookmark_extension.zip), but for now the important part is the script:
 
-<pre><code data-language="javascript">// This callback function is called when the content script has been 
-// injected and returned its results
-function onPageInfo(o) 
-{ 
-    document.getElementById("title").value = o.title; 
-    document.getElementById("url").value = o.url; 
-    document.getElementById("summary").innerText = o.summary; 
-} 
-
-// POST the data to the server using XMLHttpRequest
-function addBookmark(f)
-{
-    var req = new XMLHttpRequest();
-	req.open("POST", "http://mywebappurl/do_add_bookmark/", true);
-	
-	var params = "title=" + document.getElementById("title").value + 
-				 "&url=" + document.getElementById("url").value + 
-				 "&summary=" + document.getElementById("summary").value +
-				 "&tags=" + document.getElementById("tags").value;
-	
-	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	req.setRequestHeader("Content-length", params.length);
-	req.setRequestHeader("Connection", "close");
-	
-	req.send(params);
-    
-    req.onreadystatechange = function() 
+    :::javascript
+    // This callback function is called when the content script has been 
+    // injected and returned its results
+    function onPageInfo(o) 
     { 
-        // If the request completed, close the extension popup
-        if (req.readyState == 4)
-            if (req.status == 200) window.close();
-    };
-    
-    return false;
-}
+        document.getElementById("title").value = o.title; 
+        document.getElementById("url").value = o.url; 
+        document.getElementById("summary").innerText = o.summary; 
+    } 
 
-// Call the getPageInfo function in the background page, passing in 
-// our onPageInfo function as the callback
-window.onload = function() 
-{ 
-    var bg = chrome.extension.getBackgroundPage();
-    bg.getPageInfo(onPageInfo);
-}</code></pre>
+    // POST the data to the server using XMLHttpRequest
+    function addBookmark(f)
+    {
+        var req = new XMLHttpRequest();
+    	req.open("POST", "http://mywebappurl/do_add_bookmark/", true);
+    	
+    	var params = "title=" + document.getElementById("title").value + 
+    				 "&url=" + document.getElementById("url").value + 
+    				 "&summary=" + document.getElementById("summary").value +
+    				 "&tags=" + document.getElementById("tags").value;
+    	
+    	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    	req.setRequestHeader("Content-length", params.length);
+    	req.setRequestHeader("Connection", "close");
+    	
+    	req.send(params);
+        
+        req.onreadystatechange = function() 
+        { 
+            // If the request completed, close the extension popup
+            if (req.readyState == 4)
+                if (req.status == 200) window.close();
+        };
+        
+        return false;
+    }
+
+    // Call the getPageInfo function in the background page, passing in 
+    // our onPageInfo function as the callback
+    window.onload = function() 
+    { 
+        var bg = chrome.extension.getBackgroundPage();
+        bg.getPageInfo(onPageInfo);
+    }
 
 This may look a little confusing at first, but it will hopefully make more sense when you see the other code.
 
@@ -89,31 +91,33 @@ This may look a little confusing at first, but it will hopefully make more sense
 
 Think of this file as the negotiator between the popup dialog and the content/DOM of the currently loaded web page. Though it's an HTML file, it only needs contain a single script tag (as shown below); it will never be displayed anywhere. `getPageInfo` is the function we called when our popup loaded, and its parameter is the callback function which sets the values of the form fields in `popup.html`.
 
-<pre><code data-language="javascript"><script>
-    // Array to hold callback functions
-    var callbacks = []; 
-    
-    // This function is called onload in the popup code
-    function getPageInfo(callback) 
-    { 
-        // Add the callback to the queue
-        callbacks.push(callback); 
+    :::html
+    <script>
+        // Array to hold callback functions
+        var callbacks = []; 
+        
+        // This function is called onload in the popup code
+        function getPageInfo(callback) 
+        { 
+            // Add the callback to the queue
+            callbacks.push(callback); 
 
-        // Injects the content script into the current page 
-        chrome.tabs.executeScript(null, { file: "content_script.js" }); 
-    }; 
+            // Injects the content script into the current page 
+            chrome.tabs.executeScript(null, { file: "content_script.js" }); 
+        }; 
 
-    // Perform the callback when a request is received from the content script
-    chrome.extension.onRequest.addListener(function(request) 
-    { 
-        // Get the first callback in the callbacks array
-        // and remove it from the array
-        var callback = callbacks.shift();
+        // Perform the callback when a request is received from the content script
+        chrome.extension.onRequest.addListener(function(request) 
+        { 
+            // Get the first callback in the callbacks array
+            // and remove it from the array
+            var callback = callbacks.shift();
 
-        // Call the callback function
-        callback(request); 
-    }); 
-</script></code></pre>
+            // Call the callback function
+            callback(request); 
+        }); 
+    </script>
+
 
 When `getPageInfo` is called, it pushes the callback function onto a queue and then injects the content script (below) into the code of the current web page.
 
@@ -121,15 +125,16 @@ When `getPageInfo` is called, it pushes the callback function onto a queue and t
 
 The content script itself is pretty simple: it just gets the title, url and any selected text from the current page and fires them back the the background page.
 
-<pre><code data-language="javascript">// Object to hold information about the current page
-var pageInfo = {
-    "title": document.title,
-    "url": window.location.href,
-    "summary": window.getSelection().toString()
-};
+    :::javascript
+    // Object to hold information about the current page
+    var pageInfo = {
+        "title": document.title,
+        "url": window.location.href,
+        "summary": window.getSelection().toString()
+    };
 
-// Send the information back to the extension
-chrome.extension.sendRequest(pageInfo);</code></pre>
+    // Send the information back to the extension
+    chrome.extension.sendRequest(pageInfo);
 
 The background page listener then gets the callback function from the queue (which, if you remember, is the `onPageInfo` function from the popup page) and calls it, passing in the information about the page so that it can populate the form field values.
 
