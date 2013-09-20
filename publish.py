@@ -37,7 +37,8 @@ args = parser.parse_args()
 config = ConfigParser.RawConfigParser()
 config.read('config.cfg')
 
-minify = '.min' if config.get('Debug', 'minify') is True else ''
+# Determine whether to use minified versions of scripts and CSS
+minify = '.min' if config.getboolean('Debug', 'minify') else ''
 
 # Load the master page template
 master_template_file = codecs.open('templates/master.template', 'r', 'utf-8')
@@ -97,7 +98,7 @@ nav = u'<ul>' + ''.join(nav_items) + '</ul>'
 homepage = []
 homepage_post_count = 5
 rss = []
-rss_post_count = 5
+rss_post_count = 10
 
 for inputfile in file_list:
     # Populate the post template HTML
@@ -131,16 +132,23 @@ o.close()
 hostname = config.get('Site', 'hostname')
 
 def map_rss_item(x):
+    # Replace any relative urls with absolute URLs
+    body = re.sub(r"(/img[a-z0-9\/\-\_\.]+)", r"http://markashleybell.com\1", x[2])
+
+    # TODO: Remove hard-coded hostname above - when the variable is substituted into 
+    #       the regex as below, the RSS output is truncated for some reason?
+    # body = re.sub(r"(/img[a-z0-9\/\-\_\.]+)", r"http://" + hostname + "\1", x[2])
+
     return PyRSS2Gen.RSSItem(
             title = x[1],
             link = "http://" + hostname + "/" + x[4],
-            description = markdown.markdown(x[2], extensions=['extra']),
+            description = markdown.markdown(body, extensions=['extra']),
             guid = PyRSS2Gen.Guid("http://" + hostname + "/" + x[4]),
             pubDate = x[0]
         )
 
 rss_feed = PyRSS2Gen.RSS2(
-        title = "markashleybell.com",
+        title = hostname,
         link = "http://" + hostname,
         description = "The latest articles from " + hostname,
         lastBuildDate = datetime.datetime.now(),
@@ -168,6 +176,9 @@ if args.publish and secure:
     ssh.connect(hostname, username=username, password=password)
     sftp = ssh.open_sftp()
 
+    # Upload .htaccess
+    sftp.put(web_root + '/.htaccess', remotepath + '/.htaccess')
+
     # Check if the CSS folder exists, and if not create it
     try:
         s = sftp.stat(remotepath + '/css')
@@ -176,10 +187,8 @@ if args.publish and secure:
         sftp.mkdir(remotepath + '/css')
 
     # Upload the CSS files
-    sftp.put(web_root + '/css/bootstrap.css', remotepath + '/css/bootstrap.css')
-    sftp.put(web_root + '/css/github.css', remotepath + '/css/github.css')
-    sftp.put(web_root + '/css/styles.css', remotepath + '/css/styles.css')
-    sftp.put(web_root + '/css/styles.min.css', remotepath + '/css/styles.min.css')
+    for f in glob.glob(web_root + '/css/*.css'):
+        sftp.put(web_root + '/css/' + os.path.basename(f), remotepath + '/css/' + os.path.basename(f))
 
     # Check if the image folder exists, and if not create it
     try:
@@ -189,8 +198,9 @@ if args.publish and secure:
         sftp.mkdir(remotepath + '/img')
         sftp.mkdir(remotepath + '/img/post')
 
-    # Upload the favicon
+    # Upload the favicon and logo
     sftp.put(web_root + '/img/favicon.ico', remotepath + '/img/favicon.ico')
+    sftp.put(web_root + '/img/logo.png', remotepath + '/img/logo.png')
 
     # Check if the script folder exists, and if not create it
     try:
@@ -200,18 +210,22 @@ if args.publish and secure:
         sftp.mkdir(remotepath + '/js')
 
     # Upload the script
-    sftp.put(web_root + '/js/rainbow-custom.min.js', remotepath + '/js/rainbow-custom.min.js')
-    sftp.put(web_root + '/js/main.js', remotepath + '/js/main.js')
+    for f in glob.glob(web_root + '/js/*.js'):
+        sftp.put(web_root + '/js/' + os.path.basename(f), remotepath + '/js/' + os.path.basename(f))
 
     # Upload all post images
     for f in glob.glob(web_root + '/img/post/*.jpg'):
-        sftp.put(f, remotepath + '/img/post/' + os.path.split(f)[1])
-        print '/img/post/' + os.path.split(f)[1] + ' -> /img/post/' + os.path.split(f)[1]
+        sftp.put(f, remotepath + '/img/post/' + os.path.basename(f))
+        print '/img/post/' + os.path.basename(f) + ' -> /img/post/' + os.path.basename(f)
+
+    for f in glob.glob(web_root + '/img/post/*.gif'):
+        sftp.put(f, remotepath + '/img/post/' + os.path.basename(f))
+        print '/img/post/' + os.path.basename(f) + ' -> /img/post/' + os.path.basename(f)
 
     # Upload all the HTML files
     for f in glob.glob(web_root + '/*.html'):
-        sftp.put(f, remotepath + '/' + os.path.split(f)[1])
-        print '/' + os.path.split(f)[1] + ' -> /' + os.path.split(f)[1]
+        sftp.put(f, remotepath + '/' + os.path.basename(f))
+        print '/' + os.path.basename(f) + ' -> /' + os.path.basename(f)
 
     # Upload the RSS feed XML
     sftp.put(web_root + '/rss.xml', remotepath + '/rss.xml')
