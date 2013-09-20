@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>${title}Mark Ashley Bell, Freelance Web Designer/Developer - C# ASP.NET, jQuery, JavaScript and Python web development</title>
+        <title>${title}</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="alternate" type="application/rss+xml" title="The latest articles from markashleybell.com" href="/rss.xml" />

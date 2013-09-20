@@ -117,14 +117,14 @@ for inputfile in file_list:
     if len(rss) < rss_post_count: 
         rss.append(inputfile)
     # Populate the master template with the populated post HTML
-    output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - ', minify = minify, comments = comment_template.substitute())
+    output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - Mark Ashley Bell', minify = minify, comments = comment_template.substitute())
     # Write out the processed HTML file for this post
     o = codecs.open(web_root + '/' + inputfile[4], 'w', 'utf-8')
     o.write(output)
     o.close()
 
 # Create the index page, passing in the joined HTML for the homepage posts
-output = master_template.substitute(content = '\r\n'.join(homepage), nav = nav, title = '', minify = minify, comments = '')
+output = master_template.substitute(content = '\r\n'.join(homepage), nav = nav, title = 'Mark Ashley Bell, Freelance Web Designer/Developer - C# ASP.NET, jQuery, JavaScript and Python web development', minify = minify, comments = '')
 o = codecs.open(web_root + '/index.html', 'w', 'utf-8')
 o.write(output)
 o.close()

@@ -138,4 +138,8 @@ a#logo:hover {
   h1 {
     margin-top: 0;
   }
+
+  #header {
+    padding-bottom: 0;
+  }
 }
