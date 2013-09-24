@@ -6,7 +6,7 @@ from string import Template
 # Parse headers (date and title) from post file content
 def get_post_data(content):
     # Fields are empty by default
-    metadata = { 'title': None, 'date': None, 'content': None, 'abstract': None }
+    metadata = { 'title': None, 'date': None, 'content': None, 'abstract': None, 'pagetype': None }
     # Try and get the title
     titlere = re.compile("(^Title: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = titlere.search(content)
@@ -22,10 +22,16 @@ def get_post_data(content):
     match = abstractre.search(content)
     if match:
         metadata['abstract'] = match.group(2).strip()
-    # Remove the title and date header lines if they were present
+    # Try and get the type
+    pagetypere = re.compile("(^PageType: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
+    match = pagetypere.search(content)
+    if match:
+        metadata['pagetype'] = match.group(2).strip()
+    # Remove the header lines if they were present
     content_no_metadata = titlere.sub('', content)
     content_no_metadata = datere.sub('', content_no_metadata)
-    metadata['content'] = abstractre.sub('', content_no_metadata)
+    content_no_metadata = abstractre.sub('', content_no_metadata)
+    metadata['content'] = pagetypere.sub('', content_no_metadata)
     return metadata
 
 # Set up command-line arguments
@@ -71,7 +77,7 @@ for folder in glob.glob(currentpath):
         # Replace the .md extension with .html
         html_file = re.sub(r"(?si)^(.*\.)(md)$", r"\1html", markdown_file)
         # Create a list of tuples containing post data, ready for sorting by date
-        file_tuple = post_data['date'], post_data['title'], post_data['content'], markdown_file, html_file, post_data['abstract']
+        file_tuple = post_data['date'], post_data['title'], post_data['content'], markdown_file, html_file, post_data['abstract'], post_data['pagetype']
         file_list.append(file_tuple)
  
 # Sort the file list by post date descending 
@@ -88,9 +94,10 @@ nav_items = []
 # Loop through all the files in the list and create a nav list item for each
 # We create the nav before the post HTML because it is included in every page
 for inputfile in file_list:
-    # Add the item to nav (we are ordered by created date descending, so we're adding in the correct order)
-    nav_item = u'<li><a href="' + inputfile[4] + '">' + inputfile[1] + '</a></li>'
-    nav_items.append(nav_item)
+    if inputfile[6] != 'static':
+        # Add the item to nav (we are ordered by created date descending, so we're adding in the correct order)
+        nav_item = u'<li><a href="' + inputfile[4] + '">' + inputfile[1] + '</a></li>'
+        nav_items.append(nav_item)
 
 nav = u'<ul>' + ''.join(nav_items) + '</ul>'
 
@@ -107,14 +114,14 @@ for inputfile in file_list:
     post_date = inputfile[0].strftime('%d %b, %Y') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
     post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(inputfile[2], extensions=['extra', 'codehilite']))
     # If there are less than 5 posts in the homepage list, add this one
-    if len(homepage) < homepage_post_count: 
+    if len(homepage) < homepage_post_count and inputfile[6] != 'static':
         if inputfile[5] is not None:
             short_post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(inputfile[5] + ' <a class="more-link" href="' + inputfile[4] + '">&rarr;</a>', extensions=['extra']))
             homepage.append(short_post)
         else:
             homepage.append(post)
     # Add the raw post details to the RSS feed
-    if len(rss) < rss_post_count: 
+    if len(rss) < rss_post_count and inputfile[6] != 'static': 
         rss.append(inputfile)
     # Populate the master template with the populated post HTML
     output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - Mark Ashley Bell', minify = minify, comments = comment_template.substitute())
