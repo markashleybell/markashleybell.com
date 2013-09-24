@@ -41,8 +41,14 @@
                 <div class="col-sm-2 meta-column">
                     <a id="logo" href="/"><img src="/img/logo.png" /></a>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-6">
                     <p id="strapline"><a href="/">Mark Ashley Bell, Freelance Web Designer/Developer</a></p>
+                </div>
+                <div class="col-sm-4 meta-column">
+                    <ul id="nav">
+                        <!-- <li><a href="about.html">Home</a></li> -->
+                        <li><a href="about.html">About</a></li>
+                    </ul>
                 </div>
             </div>
             ${content}
