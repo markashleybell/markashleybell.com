@@ -124,7 +124,8 @@ for inputfile in file_list:
     if len(rss) < rss_post_count and inputfile[6] != 'static': 
         rss.append(inputfile)
     # Populate the master template with the populated post HTML
-    output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - Mark Ashley Bell', minify = minify, comments = comment_template.substitute())
+    comments = '' if inputfile[6] == 'static' else comment_template.substitute()
+    output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - Mark Ashley Bell', minify = minify, comments = comments)
     # Write out the processed HTML file for this post
     o = codecs.open(web_root + '/' + inputfile[4], 'w', 'utf-8')
     o.write(output)

@@ -55,7 +55,7 @@
             ${comments}
             <div class="row" id="footer">
                 <div class="col-sm-10 col-sm-offset-2">
-                    <h2>Older articles:</h2>
+                    <h2>Previous articles:</h2>
                     ${nav}
                     <p id="credit">&copy; <a href="https://twitter.com/markashleybell">Mark Ashley Bell</a> 2013</p>
                 </div>

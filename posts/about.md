@@ -1,8 +1,6 @@
-Title: About
+Title: About Me
 Date: 2013-09-24 13:05
 PageType: static
-
-This is the about page.
 
 # Hi! My name's Mark. I build websites and web applications.
 
