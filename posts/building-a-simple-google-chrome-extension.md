@@ -140,6 +140,6 @@ The background page listener then gets the callback function from the queue (whi
 
 Testing and installing the extension is much easier than in Firefox, too. All you need to do is click the Chrome "spanner" icon at top right and select Extensions. Once you're on the Extensions tab, click Developer Mode, browse to your extension's folder and select it. You'll see the icon appear in your browser toolbar; click it while viewing any normal web page and you should see a popup like the one in the screen shot at the beginning of the article, populated with the data from the current page.
 
-You can [download all the source code here](/content/downloads/mab_bookmark_extension.zip) and modify it to suit your own purposes, or just use it to learn from. 
+You can [download all the source code here](/files/mab_bookmark_extension.zip) and modify it to suit your own purposes, or just use it to learn from. 
 
 That's it! I'll explain more about Chrome extensions in future posts, but in the meantime, the [Google extension documentation](http://code.google.com/chrome/extensions/docs.html) is comprehensive and very useful to learn from. I also picked up a lot of good information from [this thread on the Chromium Extensions Google Group](http://groups.google.com/group/chromium-extensions/browse_thread/thread/eab847f0a32ec25c/1e1881eea2498a10?lnk=gst&q=update%20popup%20from%20backround%20page#1e1881eea2498a10).

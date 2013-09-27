@@ -111,4 +111,4 @@ Because I wasn't interested in sub-second accuracy, I've used `System.Windows.Fo
 
 If you want to find out more about the differences between `System.Threading.Timer`, `System.Windows.Forms.Timer` and `System.Timers.Timer`, it's definitely worth reading [this article comparing the Timer classes in the .NET Framework class library](http://msdn.microsoft.com/en-us/magazine/cc164015.aspx).
 
-You can [download my source code here](/content/downloads/StopwatchSpike.zip) (Visual Studio 2008 Solution).
+You can [download my source code here](/files/StopwatchSpike.zip) (Visual Studio 2008 Solution).
