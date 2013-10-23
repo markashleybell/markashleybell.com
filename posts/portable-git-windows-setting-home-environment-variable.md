@@ -14,7 +14,7 @@ Now open the new Git folder. Inside you'll see a number of folders and files. Ru
 
 You should see something like this (possibly with a different version number, depending on the version you downloaded):
 
-![Screen Shot](/img/post/git-version.gif "Screen Shot")
+![Screen Shot](${cdn2}/img/post/git-version.gif "Screen Shot")
 
 By default, Git and MSys (the minimal UNIX system it runs under on Windows) look for configuration items—startup scripts, SSL keys etc—in the current user's home folder, which on my Windows 7 machine is `C:\Users\Mark`. 
 

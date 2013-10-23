@@ -6,7 +6,7 @@ I have a web app running on my home server to keep track of my bookmarks—it's 
 
 Although this system works well enough, it looks a bit untidy and takes up space in the bookmarks bar. With the advent of [Extensions for Chrome](http://www.theregister.co.uk/2010/01/25/google_chrome_4_stable/), I thought I'd have a go at writing an extension to nicely integrate my custom page bookmarking button into the Chrome browser.
 
-![Screen Shot](/img/post/chrome-extension-screenshot.gif "Screen Shot")
+![Screen Shot](${cdn2}/img/post/chrome-extension-screenshot.gif "Screen Shot")
 
 It's clear from the start that Chrome's extension structure is a lot simpler than that of [Firefox extensions](http://kb.mozillazine.org/Getting_started_with_extension_development). Chrome extensions are just a collection of plain HTML and JavaScript files—no odd folder hierarchies or XUL to deal with here. Of course, there are several advantages to Mozilla's approach (ease of internationalisation, UI consistency), but I can't help feeling that building Chrome extensions will be much more accessible to amateur developers; I'm betting that this is exactly what Google was aiming for.
 
@@ -38,7 +38,7 @@ The `background_page` property points to an HTML page which contains the logic c
 
 ## popup.html
 
-This file contains a basic HTML form with title, url, summary and tag fields (so that we can edit and tag our page bookmark before saving it), and some JavaScript code to do the population and saving of the fields. You can [download the complete source here](/content/downloads/mab_bookmark_extension.zip), but for now the important part is the script:
+This file contains a basic HTML form with title, url, summary and tag fields (so that we can edit and tag our page bookmark before saving it), and some JavaScript code to do the population and saving of the fields. You can [download the complete source here](${cdn2}/content/downloads/mab_bookmark_extension.zip), but for now the important part is the script:
 
     :::javascript
     // This callback function is called when the content script has been 
@@ -140,6 +140,6 @@ The background page listener then gets the callback function from the queue (whi
 
 Testing and installing the extension is much easier than in Firefox, too. All you need to do is click the Chrome "spanner" icon at top right and select Extensions. Once you're on the Extensions tab, click Developer Mode, browse to your extension's folder and select it. You'll see the icon appear in your browser toolbar; click it while viewing any normal web page and you should see a popup like the one in the screen shot at the beginning of the article, populated with the data from the current page.
 
-You can [download all the source code here](/content/downloads/mab_bookmark_extension.zip) and modify it to suit your own purposes, or just use it to learn from. 
+You can [download all the source code here](${cdn2}/content/downloads/mab_bookmark_extension.zip) and modify it to suit your own purposes, or just use it to learn from. 
 
 That's it! I'll explain more about Chrome extensions in future posts, but in the meantime, the [Google extension documentation](http://code.google.com/chrome/extensions/docs.html) is comprehensive and very useful to learn from. I also picked up a lot of good information from [this thread on the Chromium Extensions Google Group](http://groups.google.com/group/chromium-extensions/browse_thread/thread/eab847f0a32ec25c/1e1881eea2498a10?lnk=gst&q=update%20popup%20from%20backround%20page#1e1881eea2498a10).

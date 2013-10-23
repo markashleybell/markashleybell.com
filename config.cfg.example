@@ -1,5 +1,7 @@
 [Site]
 hostname: HOSTNAME
+cdn1: CDN
+cdn2: CDN
 [Debug]
 minify: False
 [FTP]

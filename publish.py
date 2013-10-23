@@ -43,6 +43,9 @@ args = parser.parse_args()
 config = ConfigParser.RawConfigParser()
 config.read('config.cfg')
 
+cdn1 = config.get('Site', 'cdn1')
+cdn2 = config.get('Site', 'cdn2')
+
 # Determine whether to use minified versions of scripts and CSS
 minify = '.min' if config.getboolean('Debug', 'minify') else ''
 
@@ -112,11 +115,11 @@ for inputfile in file_list:
     # post_date = inputfile[0].strftime('%A %d %B, %Y %H:%M') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
     # post_date = inputfile[0].strftime('%d %b, %Y, %H:%M') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
     post_date = inputfile[0].strftime('%d %b, %Y') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
-    post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(inputfile[2], extensions=['extra', 'codehilite']))
+    post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, inputfile[2]), extensions=['extra', 'codehilite']), cdn1 = cdn1, cdn2 = cdn2)
     # If there are less than 5 posts in the homepage list, add this one
     if len(homepage) < homepage_post_count and inputfile[6] != 'static':
         if inputfile[5] is not None:
-            short_post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(inputfile[5] + ' <a class="more-link" href="' + inputfile[4] + '">&rarr;</a>', extensions=['extra']))
+            short_post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(inputfile[5] + ' <a class="more-link" href="' + inputfile[4] + '">&rarr;</a>', extensions=['extra']), cdn1 = cdn1, cdn2 = cdn2)
             homepage.append(short_post)
         else:
             homepage.append(post)
@@ -125,14 +128,14 @@ for inputfile in file_list:
         rss.append(inputfile)
     # Populate the master template with the populated post HTML
     comments = '' if inputfile[6] == 'static' else comment_template.substitute()
-    output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - Mark Ashley Bell', minify = minify, comments = comments)
+    output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - Mark Ashley Bell', minify = minify, comments = comments, cdn1 = cdn1, cdn2 = cdn2)
     # Write out the processed HTML file for this post
     o = codecs.open(web_root + '/' + inputfile[4], 'w', 'utf-8')
     o.write(output)
     o.close()
 
 # Create the index page, passing in the joined HTML for the homepage posts
-output = master_template.substitute(content = '\r\n'.join(homepage), nav = nav, title = 'Mark Ashley Bell, Freelance Web Designer/Developer - C# ASP.NET, jQuery, JavaScript and Python web development', minify = minify, comments = '')
+output = master_template.substitute(content = '\r\n'.join(homepage), nav = nav, title = 'Mark Ashley Bell, Freelance Web Designer/Developer - C# ASP.NET, jQuery, JavaScript and Python web development', minify = minify, comments = '', cdn1 = cdn1, cdn2 = cdn2)
 o = codecs.open(web_root + '/index.html', 'w', 'utf-8')
 o.write(output)
 o.close()

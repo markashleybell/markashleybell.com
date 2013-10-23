@@ -6,9 +6,9 @@
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="alternate" type="application/rss+xml" title="The latest articles from markashleybell.com" href="/rss.xml" />
         <link rel="shortcut icon" href="/img/favicon.ico" />
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap${minify}.css?v1" />
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/styles${minify}.css?v1" />
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/friendly${minify}.css?v1" />
+        <link rel="stylesheet" type="text/css" media="screen" href="${cdn1}/css/bootstrap${minify}.css?v1" />
+        <link rel="stylesheet" type="text/css" media="screen" href="${cdn1}/css/styles${minify}.css?v1" />
+        <link rel="stylesheet" type="text/css" media="screen" href="${cdn1}/css/friendly${minify}.css?v1" />
         <script type="text/javascript">
 
             var _gaq = _gaq || [];
@@ -39,7 +39,7 @@
         <div class="container">
             <div class="row" id="header">
                 <div class="col-sm-2 meta-column">
-                    <a id="logo" href="/"><img src="/img/logo.png" /></a>
+                    <a id="logo" href="/"><img src="${cdn2}/img/logo.png" /></a>
                 </div>
                 <div class="col-sm-6">
                     <p id="strapline"><a href="/">Mark Ashley Bell, Freelance Web Designer/Developer</a></p>
@@ -62,6 +62,6 @@
             </footer>
         </div>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery${minify}.js"></script>
-        <script type="text/javascript" src="/js/main${minify}.js?v1"></script>
+        <script type="text/javascript" src="${cdn2}/js/main${minify}.js?v1"></script>
     </body>
 </html>

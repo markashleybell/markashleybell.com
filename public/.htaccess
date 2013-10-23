@@ -16,7 +16,7 @@ Header set Cache-Control "max-age=7200, must-revalidate"
 Header unset Last-Modified
 </FilesMatch>
 
-<FilesMatch "\.(css)$">
+<FilesMatch "\.(css|js)$">
 Header set Cache-Control "max-age=604800, must-revalidate"
 Header unset Last-Modified
 </FilesMatch>
