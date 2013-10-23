@@ -241,4 +241,16 @@ if args.publish and secure:
     # Upload the RSS feed XML
     sftp.put(web_root + '/rss.xml', remotepath + '/rss.xml')
 
+    # Check if the script folder exists, and if not create it
+    try:
+        s = sftp.stat(remotepath + '/files')
+    except IOError as e:
+        print 'Creating files folder'
+        sftp.mkdir(remotepath + '/files')
+
+    # Upload all download files
+    for f in glob.glob(web_root + '/files/*.*'):
+        sftp.put(f, remotepath + '/files/' + os.path.basename(f))
+        print '/files/' + os.path.basename(f) + ' -> /files/' + os.path.basename(f)
+
     print 'Publish complete'
