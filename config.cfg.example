@@ -3,7 +3,7 @@ hostname: HOSTNAME
 cdn1: CDN
 cdn2: CDN
 [Debug]
-minify: False
+minify: True
 [FTP]
 secure: True
 hostname: HOSTNAME

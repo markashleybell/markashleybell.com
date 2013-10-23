@@ -38,7 +38,7 @@ The `background_page` property points to an HTML page which contains the logic c
 
 ## popup.html
 
-This file contains a basic HTML form with title, url, summary and tag fields (so that we can edit and tag our page bookmark before saving it), and some JavaScript code to do the population and saving of the fields. You can [download the complete source here](${cdn2}/content/downloads/mab_bookmark_extension.zip), but for now the important part is the script:
+This file contains a basic HTML form with title, url, summary and tag fields (so that we can edit and tag our page bookmark before saving it), and some JavaScript code to do the population and saving of the fields. You can [download the complete source here](${cdn2}/files/mab_bookmark_extension.zip), but for now the important part is the script:
 
     :::javascript
     // This callback function is called when the content script has been 

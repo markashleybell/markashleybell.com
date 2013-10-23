@@ -46,8 +46,8 @@
                 </div>
                 <div class="col-sm-4 meta-column">
                     <ul id="nav">
-                        <!-- <li><a href="about.html">Home</a></li> -->
-                        <li><a href="about.html">About</a></li>
+                        <li><a href="about.html"><span>About</span></a></li>
+                        <li><a class="github-link" href="http://github.com/markashleybell"><span>GitHub</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -60,6 +60,7 @@
                     <p id="credit">&copy; <a href="https://twitter.com/markashleybell">Mark Ashley Bell</a> 2013</p>
                 </div>
             </footer>
+            <div id="nav-button"></div>
         </div>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery${minify}.js"></script>
         <script type="text/javascript" src="${cdn2}/js/main${minify}.js?v1"></script>

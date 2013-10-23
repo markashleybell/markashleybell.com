@@ -14,4 +14,7 @@ $(function () {
         e.empty().append('<a class="email-link" href="' + String.fromCharCode(109, 97, 105, 108, 116, 111, 58) + t + '">' + t + '</a>');
     }
 
+    var nav = $('#nav');
+    $('#nav-button').on('click', function(e) { nav.toggle(); });
+
 });
