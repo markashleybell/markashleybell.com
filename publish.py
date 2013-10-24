@@ -1,12 +1,13 @@
 # This Python file uses the following encoding: utf-8
-import argparse, markdown, datetime, codecs, re, os, glob, time, re, ConfigParser, PyRSS2Gen
+import argparse, markdown, datetime, codecs, re, os, fileinput, glob, time, re, ConfigParser, PyRSS2Gen
 import paramiko, base64, getpass, socket, sys, traceback # Only needed for uploads
-from string import Template
+# from string import Template
+from jinja2 import Template, Environment, FileSystemLoader
 
 # Parse headers (date and title) from post file content
-def get_post_data(content):
+def get_post_data(content, markdown_file, html_file):
     # Fields are empty by default
-    metadata = { 'title': None, 'date': None, 'content': None, 'abstract': None, 'pagetype': None }
+    metadata = { 'title': None, 'date': None, 'body': None, 'abstract': None, 'pagetype': None, 'markdown_file': markdown_file, 'html_file': html_file }
     # Try and get the title
     titlere = re.compile("(^Title: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = titlere.search(content)
@@ -21,7 +22,7 @@ def get_post_data(content):
     abstractre = re.compile("(^Abstract: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = abstractre.search(content)
     if match:
-        metadata['abstract'] = match.group(2).strip()
+        metadata['abstract'] = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, match.group(2).strip() + ' <a class="more-link" href="' + html_file + '">&rarr;</a>'))
     # Try and get the type
     pagetypere = re.compile("(^PageType: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = pagetypere.search(content)
@@ -31,7 +32,9 @@ def get_post_data(content):
     content_no_metadata = titlere.sub('', content)
     content_no_metadata = datere.sub('', content_no_metadata)
     content_no_metadata = abstractre.sub('', content_no_metadata)
-    metadata['content'] = pagetypere.sub('', content_no_metadata)
+    content_no_metadata = pagetypere.sub('', content_no_metadata)
+    # Populate the body field
+    metadata['body'] = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, content_no_metadata), extensions=['extra', 'codehilite'])
     return metadata
 
 # Set up command-line arguments
@@ -43,27 +46,38 @@ args = parser.parse_args()
 config = ConfigParser.RawConfigParser()
 config.read('config.cfg')
 
+hostname = config.get('Site', 'hostname')
 cdn1 = config.get('Site', 'cdn1')
 cdn2 = config.get('Site', 'cdn2')
-
+analytics_id = config.get('Site', 'analytics_id')
+disqus_id = config.get('Site', 'disqus_id')
+# Asset file version (for breaking cache)
+asset_version = config.get('Site', 'asset_version')
+# Determine whether to reference a single versioned css file
+use_concatenated = config.getboolean('Debug', 'use_concatenated')
 # Determine whether to use minified versions of scripts and CSS
 minify = '.min' if config.getboolean('Debug', 'minify') else ''
-
-# Load the master page template
-master_template_file = codecs.open('templates/master.template', 'r', 'utf-8')
-master_template = Template(master_template_file.read())
-
-# Load the template HTML for individual posts
-post_template_file = codecs.open('templates/post.template', 'r', 'utf-8')
-post_template = Template(post_template_file.read())
-
-# Load the template HTML for comments
-comment_template_file = codecs.open('templates/disqus.template', 'r', 'utf-8')
-comment_template = Template(comment_template_file.read())
 
 # Get the path of this script and the path of the parent (the destination for generated HTML)
 currentpath = os.path.dirname(os.path.abspath(__file__))
 web_root = currentpath + '/public'
+
+# Load the templates
+env = Environment(loader=FileSystemLoader(currentpath + '/templates/'))
+index_template = env.get_template('index.html')
+post_template = env.get_template('post.html')
+
+# Concatenate all minified CSS files
+css_files = [f for f in glob.glob(web_root + '/css/*.min.css')]
+with open(web_root + '/css/all.min.v' + asset_version + '.css', 'w') as fout:
+    for line in fileinput.input(css_files):
+        fout.write(line)
+
+# Concatenate all minified JS files
+js_files = [f for f in glob.glob(web_root + '/js/*.min.js')]
+with open(web_root + '/js/all.min.v' + asset_version + '.js', 'w') as fout:
+    for line in fileinput.input(js_files):
+        fout.write(line)
 
 # Build a sortable list of file information
 file_list = []
@@ -74,88 +88,87 @@ for folder in glob.glob(currentpath):
     for f in glob.glob(folder + '/posts/*.md'):
         # Get the filename portion of the path
         markdown_file = os.path.split(f)[1]
+        # Replace the .md extension with .html to get the output filename
+        html_file = re.sub(r"(?si)^(.*\.)(md)$", r"\1html", markdown_file)
         # Open the Markdown file and get the first line (heading)
         md = codecs.open(f, 'r', 'utf-8')
-        post_data = get_post_data(md.read())
-        # Replace the .md extension with .html
-        html_file = re.sub(r"(?si)^(.*\.)(md)$", r"\1html", markdown_file)
-        # Create a list of tuples containing post data, ready for sorting by date
-        file_tuple = post_data['date'], post_data['title'], post_data['content'], markdown_file, html_file, post_data['abstract'], post_data['pagetype']
-        file_list.append(file_tuple)
+        post_data = get_post_data(md.read(), markdown_file, html_file)
+        file_list.append(post_data)
  
 # Sort the file list by post date descending 
-file_list.sort()
-file_list.reverse()
+file_list = sorted(file_list, key=lambda k: k['date'], reverse = True) 
 
 # Just delete all existing HTML files to avoid orphans
 for f in glob.glob(web_root + '/*.html'):
    os.unlink (f)
 
-# Build a list of links to individual posts
-nav_items = []
-
-# Loop through all the files in the list and create a nav list item for each
-# We create the nav before the post HTML because it is included in every page
-for inputfile in file_list:
-    if inputfile[6] != 'static':
-        # Add the item to nav (we are ordered by created date descending, so we're adding in the correct order)
-        nav_item = u'<li><a href="' + inputfile[4] + '">' + inputfile[1] + '</a></li>'
-        nav_items.append(nav_item)
-
-nav = u'<ul>' + ''.join(nav_items) + '</ul>'
+# Build a list of nav links to individual posts 
+# (we are ordered by created date descending, so we're adding in the correct order)
+nav_items = [f for f in file_list if f['pagetype'] != 'static']
 
 # Collect the first n posts to display on the home page
-homepage = []
+homepage_posts = []
 homepage_post_count = 5
-rss = []
+rss_posts = []
 rss_post_count = 10
 
 for inputfile in file_list:
-    # Populate the post template HTML
-    # post_date = inputfile[0].strftime('%A %d %B, %Y %H:%M') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
-    # post_date = inputfile[0].strftime('%d %b, %Y, %H:%M') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
-    post_date = inputfile[0].strftime('%d %b, %Y') if inputfile[0] is not None else 'COULD NOT PARSE DATE'
-    post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, inputfile[2]), extensions=['extra', 'codehilite']), cdn1 = cdn1, cdn2 = cdn2)
     # If there are less than 5 posts in the homepage list, add this one
-    if len(homepage) < homepage_post_count and inputfile[6] != 'static':
-        if inputfile[5] is not None:
-            short_post = post_template.substitute(date = post_date, heading = inputfile[1], permalink = inputfile[4], body = markdown.markdown(inputfile[5] + ' <a class="more-link" href="' + inputfile[4] + '">&rarr;</a>', extensions=['extra']), cdn1 = cdn1, cdn2 = cdn2)
-            homepage.append(short_post)
-        else:
-            homepage.append(post)
+    if len(homepage_posts) < homepage_post_count and inputfile['pagetype'] != 'static':
+        homepage_posts.append(inputfile)
     # Add the raw post details to the RSS feed
-    if len(rss) < rss_post_count and inputfile[6] != 'static': 
-        rss.append(inputfile)
-    # Populate the master template with the populated post HTML
-    comments = '' if inputfile[6] == 'static' else comment_template.substitute()
-    output = master_template.substitute(content = post, nav = nav, title = inputfile[1] + ' - Mark Ashley Bell', minify = minify, comments = comments, cdn1 = cdn1, cdn2 = cdn2)
+    if len(rss_posts) < rss_post_count and inputfile['pagetype'] != 'static': 
+        rss_posts.append(inputfile)
+    # Populate the post template with the post data
+    comments = None if inputfile['pagetype'] == 'static' else 1
+    output = post_template.render(date = inputfile['date'], 
+        title = inputfile['title'], 
+        permalink = inputfile['html_file'], 
+        body = inputfile['body'], 
+        nav_items = nav_items, 
+        meta_title = inputfile['title'] + ' - Mark Ashley Bell', 
+        comments = comments, 
+        minify = minify, 
+        use_concatenated = use_concatenated,
+        asset_version = asset_version,
+        cdn1 = cdn1, 
+        cdn2 = cdn2,
+        analytics_id = analytics_id,
+        disqus_id = disqus_id)
     # Write out the processed HTML file for this post
-    o = codecs.open(web_root + '/' + inputfile[4], 'w', 'utf-8')
+    o = codecs.open(web_root + '/' + inputfile['html_file'], 'w', 'utf-8')
     o.write(output)
     o.close()
 
 # Create the index page, passing in the joined HTML for the homepage posts
-output = master_template.substitute(content = '\r\n'.join(homepage), nav = nav, title = 'Mark Ashley Bell, Freelance Web Designer/Developer - C# ASP.NET, jQuery, JavaScript and Python web development', minify = minify, comments = '', cdn1 = cdn1, cdn2 = cdn2)
+output = index_template.render(posts = homepage_posts,
+        nav_items = nav_items, 
+        meta_title = 'Mark Ashley Bell, Freelance Web Designer/Developer - C# ASP.NET, jQuery, JavaScript and Python web development', 
+        minify = minify, 
+        use_concatenated = use_concatenated,
+        asset_version = asset_version,
+        cdn1 = cdn1, 
+        cdn2 = cdn2,
+        analytics_id = analytics_id,
+        disqus_id = disqus_id)
 o = codecs.open(web_root + '/index.html', 'w', 'utf-8')
 o.write(output)
 o.close()
 
-hostname = config.get('Site', 'hostname')
-
-def map_rss_item(x):
+def map_rss_item(item):
     # Replace any relative urls with absolute URLs
-    body = re.sub(r"(/img[a-z0-9\/\-\_\.]+)", r"http://markashleybell.com\1", x[2])
+    body = re.sub(r"(/img[a-z0-9\/\-\_\.]+)", r"http://markashleybell.com\1", item['body'])
 
     # TODO: Remove hard-coded hostname above - when the variable is substituted into 
     #       the regex as below, the RSS output is truncated for some reason?
-    # body = re.sub(r"(/img[a-z0-9\/\-\_\.]+)", r"http://" + hostname + "\1", x[2])
+    # body = re.sub(r"(/img[a-z0-9\/\-\_\.]+)", r"http://" + hostname + "\1", item['html_file'])
 
     return PyRSS2Gen.RSSItem(
-            title = x[1],
-            link = "http://" + hostname + "/" + x[4],
+            title = item['title'],
+            link = "http://" + hostname + "/" + item['html_file'],
             description = markdown.markdown(body, extensions=['extra']),
-            guid = PyRSS2Gen.Guid("http://" + hostname + "/" + x[4]),
-            pubDate = x[0]
+            guid = PyRSS2Gen.Guid("http://" + hostname + "/" + item['html_file']),
+            pubDate = item['date']
         )
 
 rss_feed = PyRSS2Gen.RSS2(
@@ -163,21 +176,22 @@ rss_feed = PyRSS2Gen.RSS2(
         link = "http://" + hostname,
         description = "The latest articles from " + hostname,
         lastBuildDate = datetime.datetime.now(),
-        items = map(map_rss_item, rss)
+        items = map(map_rss_item, rss_posts)
     )
 
 rss_feed.write_xml(codecs.open(web_root + '/rss.xml', 'w', 'utf-8'))
 
 print 'File generation complete'
 
-# Load config for upload
 secure = config.getboolean('FTP', 'secure')
-hostname = config.get('FTP', 'hostname')
-username = config.get('FTP', 'username')
-password = config.get('FTP', 'password')
-remotepath = config.get('FTP', 'remotepath')
 
 if args.publish and secure:
+    # Load config for upload
+    hostname = config.get('FTP', 'hostname')
+    username = config.get('FTP', 'username')
+    password = config.get('FTP', 'password')
+    remotepath = config.get('FTP', 'remotepath')
+
     # Set up log
     paramiko.util.log_to_file('sftp.log')
 
