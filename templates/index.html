@@ -1,0 +1,18 @@
+{% extends "master.html" %}
+{% block content %}
+{% for post in posts %}
+<div class="row">
+	<div class="col-sm-2 meta-column">
+        <p class="post-date">{{ post.date.strftime('%d %b, %Y') }}</p>
+    </div>
+    <div class="col-sm-10">
+        <h1><a href="{{ post.html_file }}">{{ post.title }}</a>
+    </div>
+</div>
+<div class="row">
+    <div class="post-body col-sm-10 col-sm-offset-2">
+        {{ post.abstract if post.abstract else post.body }}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
