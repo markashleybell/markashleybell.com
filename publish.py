@@ -156,17 +156,10 @@ o.write(output)
 o.close()
 
 def map_rss_item(item):
-    # Replace any relative urls with absolute URLs
-    body = re.sub(r"(/img[a-z0-9\/\-\_\.]+)", r"http://markashleybell.com\1", item['body'])
-
-    # TODO: Remove hard-coded hostname above - when the variable is substituted into 
-    #       the regex as below, the RSS output is truncated for some reason?
-    # body = re.sub(r"(/img[a-z0-9\/\-\_\.]+)", r"http://" + hostname + "\1", item['html_file'])
-
     return PyRSS2Gen.RSSItem(
             title = item['title'],
             link = "http://" + hostname + "/" + item['html_file'],
-            description = markdown.markdown(body, extensions=['extra']),
+            description = markdown.markdown(item['body'], extensions=['extra']),
             guid = PyRSS2Gen.Guid("http://" + hostname + "/" + item['html_file']),
             pubDate = item['date']
         )
