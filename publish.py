@@ -201,70 +201,26 @@ if args.publish and secure:
     ssh.connect(hostname, username=username, password=password)
     sftp = ssh.open_sftp()
 
-    # Upload .htaccess
-    sftp.put(web_root + '/.htaccess', remotepath + '/.htaccess')
+    public_folder = 'public'
+    excludes = ['.gitignore']
+    remote_folders = []
 
-    # Check if the CSS folder exists, and if not create it
-    try:
-        s = sftp.stat(remotepath + '/css')
-    except IOError as e:
-        print 'Creating css folder'
-        sftp.mkdir(remotepath + '/css')
-
-    # Upload the CSS files
-    for f in glob.glob(web_root + '/css/*.css'):
-        sftp.put(web_root + '/css/' + os.path.basename(f), remotepath + '/css/' + os.path.basename(f))
-
-    # Check if the image folder exists, and if not create it
-    try:
-        s = sftp.stat(remotepath + '/img')
-    except IOError as e:
-        print 'Creating img folder'
-        sftp.mkdir(remotepath + '/img')
-        sftp.mkdir(remotepath + '/img/post')
-
-    # Upload the favicon and logo
-    sftp.put(web_root + '/img/favicon.ico', remotepath + '/img/favicon.ico')
-    sftp.put(web_root + '/img/logo.png', remotepath + '/img/logo.png')
-
-    # Check if the script folder exists, and if not create it
-    try:
-        s = sftp.stat(remotepath + '/js')
-    except IOError as e:
-        print 'Creating js folder'
-        sftp.mkdir(remotepath + '/js')
-
-    # Upload the script
-    for f in glob.glob(web_root + '/js/*.js'):
-        sftp.put(web_root + '/js/' + os.path.basename(f), remotepath + '/js/' + os.path.basename(f))
-
-    # Upload all post images
-    for f in glob.glob(web_root + '/img/post/*.jpg'):
-        sftp.put(f, remotepath + '/img/post/' + os.path.basename(f))
-        print '/img/post/' + os.path.basename(f) + ' -> /img/post/' + os.path.basename(f)
-
-    for f in glob.glob(web_root + '/img/post/*.gif'):
-        sftp.put(f, remotepath + '/img/post/' + os.path.basename(f))
-        print '/img/post/' + os.path.basename(f) + ' -> /img/post/' + os.path.basename(f)
-
-    # Upload all the HTML files
-    for f in glob.glob(web_root + '/*.html'):
-        sftp.put(f, remotepath + '/' + os.path.basename(f))
-        print '/' + os.path.basename(f) + ' -> /' + os.path.basename(f)
-
-    # Upload the RSS feed XML
-    sftp.put(web_root + '/rss.xml', remotepath + '/rss.xml')
-
-    # Check if the script folder exists, and if not create it
-    try:
-        s = sftp.stat(remotepath + '/files')
-    except IOError as e:
-        print 'Creating files folder'
-        sftp.mkdir(remotepath + '/files')
-
-    # Upload all download files
-    for f in glob.glob(web_root + '/files/*.*'):
-        sftp.put(f, remotepath + '/files/' + os.path.basename(f))
-        print '/files/' + os.path.basename(f) + ' -> /files/' + os.path.basename(f)
+    for root, dirs, files in os.walk(public_folder):
+        files = [name for name in files if name not in excludes]
+        for name in files:
+            upload_folder = ''
+            if root != public_folder:
+                upload_folder = '/' + '/'.join(root.replace('\\', '/').split('/')[1:])
+            # Create the remote folder if it doesn't exist
+            if upload_folder not in remote_folders:
+                try:
+                    s = sftp.stat(remotepath + upload_folder)
+                except IOError as e:
+                    print 'Creating folder ' + upload_folder
+                    sftp.mkdir(remotepath + upload_folder)
+                    # Store the remote name so we don't keep checking
+                    remote_folders.append(upload_folder)
+            sftp.put(os.path.join(root, name), remotepath + upload_folder + '/' + name)
+            print 'Upload ' + os.path.join(root, name) + ' to ' + upload_folder + '/' + name
 
     print 'Publish complete'
