@@ -1,5 +1,5 @@
 Title: Creating a simple Stopwatch/Timer application with C# / Windows Forms
-Abstract: Working on a project today, I came across the need for a simple stopwatch/timer which would keep track of the total elapsed time until it was reset. It turned out to be a little trickier than I first assumed, so I've posted my code here for the convenience of anyone else who needs to do the same thing.
+Abstract: I came across the need for a simple stopwatch/timer which would keep track of the total elapsed time until it was reset. It turned out to be a little trickier than I first assumed, so I've posted my code here for the convenience of anyone else who needs to do the same thing.
 Date: 2011-02-04 09:26
 
 While working on a project today, I came across the need for a simple stopwatch/timer which would keep track of the total elapsed time until it was reset. It turned out to be a little trickier than I first assumed, so I've posted my code here for the convenience of anyone else who needs to do the same thing.

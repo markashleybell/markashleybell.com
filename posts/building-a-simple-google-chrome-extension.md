@@ -2,7 +2,7 @@ Title: Building a simple Google Chrome extension
 Abstract: In this example, I walk through creating a simple extension for Google Chrome which grabs the title, url and any selected text from the current page.
 Date: 2010-01-26 08:41
 
-I have a web app running on my home server to keep track of my bookmarks—it's a little like [Delicious](http://delicious.com/), but simpler and with some personal customisations. Currently I save bookmarks to this app via a Javascript bookmarklet: clicking it gets the current page's title and url (and also any selected text, to use as a summary) and sends it to a popup form; submitting that form then saves the bookmark data to the server.
+I have a web app running on my home server to keep track of my bookmarks—it's a little like [Delicious](https://delicious.com/), but simpler and with some personal customisations. Currently I save bookmarks to this app via a Javascript bookmarklet: clicking it gets the current page's title and url (and also any selected text, to use as a summary) and sends it to a popup form; submitting that form then saves the bookmark data to the server.
 
 Although this system works well enough, it looks a bit untidy and takes up space in the bookmarks bar. With the advent of [Extensions for Chrome](http://www.theregister.co.uk/2010/01/25/google_chrome_4_stable/), I thought I'd have a go at writing an extension to nicely integrate my custom page bookmarking button into the Chrome browser.
 
@@ -142,4 +142,4 @@ Testing and installing the extension is much easier than in Firefox, too. All yo
 
 You can [download all the source code here](${cdn2}/files/mab_bookmark_extension.zip) and modify it to suit your own purposes, or just use it to learn from. 
 
-That's it! I'll explain more about Chrome extensions in future posts, but in the meantime, the [Google extension documentation](http://code.google.com/chrome/extensions/docs.html) is comprehensive and very useful to learn from. I also picked up a lot of good information from [this thread on the Chromium Extensions Google Group](http://groups.google.com/group/chromium-extensions/browse_thread/thread/eab847f0a32ec25c/1e1881eea2498a10?lnk=gst&q=update%20popup%20from%20backround%20page#1e1881eea2498a10).
+That's it! I'll explain more about Chrome extensions in future posts, but in the meantime, the [Google extension documentation](https://developer.chrome.com/extensions/getstarted.html) is comprehensive and very useful to learn from. I also picked up a lot of good information from [this thread on the Chromium Extensions Google Group](https://groups.google.com/forum/#!topic/chromium-extensions/6rhH8KMuwlw).
