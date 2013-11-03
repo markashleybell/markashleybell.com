@@ -7,7 +7,7 @@ from jinja2 import Template, Environment, FileSystemLoader
 # Parse headers (date and title) from post file content
 def get_post_data(content, markdown_file, html_file):
     # Fields are empty by default
-    metadata = { 'title': None, 'date': None, 'body': None, 'abstract': None, 'pagetype': None, 'markdown_file': markdown_file, 'html_file': html_file }
+    metadata = { 'title': None, 'date': None, 'body': None, 'abstract': None, 'abstract_nolink': None, 'pagetype': None, 'markdown_file': markdown_file, 'html_file': html_file }
     # Try and get the title
     titlere = re.compile("(^Title: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = titlere.search(content)
@@ -22,6 +22,7 @@ def get_post_data(content, markdown_file, html_file):
     abstractre = re.compile("(^Abstract: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = abstractre.search(content)
     if match:
+        metadata['abstract_nolink'] = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, match.group(2).strip()))
         metadata['abstract'] = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, match.group(2).strip() + ' <a class="more-link" href="' + html_file + '">&rarr;</a>'))
     # Try and get the type
     pagetypere = re.compile("(^PageType: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
@@ -159,7 +160,7 @@ def map_rss_item(item):
     return PyRSS2Gen.RSSItem(
             title = item['title'],
             link = "http://" + hostname + "/" + item['html_file'],
-            description = markdown.markdown(item['body'], extensions=['extra']),
+            description = markdown.markdown(item['abstract_nolink'], extensions=['extra']),
             guid = PyRSS2Gen.Guid("http://" + hostname + "/" + item['html_file']),
             pubDate = item['date']
         )
