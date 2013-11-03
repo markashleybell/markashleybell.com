@@ -2,18 +2,18 @@ Title: Automatically converting tabs to spaces on file open in Sublime Text
 Abstract: A Sublime Text plugin to automatically convert tabs to spaces when a file is opened.
 Date: 2013-11-03 08:19
 
-Though there is of course a great deal of [controversy](http://programmers.stackexchange.com/questions/57/tabs-versus-spaceswhat-is-the-proper-indentation-character-for-everything-in-e) surrounding the issue (!?), I prefer spaces over tabs when indenting code. In order to keep my indentation consistent, I've written a simple [Sublime Text](http://www.sublimetext.com/) plugin which detects the presence of tab characters in any file I open and replaces them with the correct number of spaces (using Sublime's built in conversion feature):
+Although there is of course a great deal of [controversy](http://programmers.stackexchange.com/questions/57/tabs-versus-spaceswhat-is-the-proper-indentation-character-for-everything-in-e) surrounding the issue (!?), I prefer spaces over tabs when indenting code. In order to keep my indentation consistent, I've written a simple [Sublime Text](http://www.sublimetext.com/) plugin which detects the presence of tab characters in any file I open and replaces them with the correct number of spaces (using Sublime's built in conversion feature):
 
     :::python
-    import sublime, sublime_plugin, os, re
-
     class ExpandTabsOnLoad(sublime_plugin.EventListener):
         # Run ST's 'expand_tabs' command when opening a file,
         # only if there are any tab characters in the file
         def on_load(self, view):
-            if view.settings().get("expand_tabs_on_load", False) and view.find("\t", 0):
+            expand_tabs = view.settings().get("expand_tabs_on_load", False)
+            if expand_tabs and view.find("\t", 0):
                 view.run_command("expand_tabs")
-                message = "Converted tab characters to {0} spaces".format(view.settings().get("tab_size", 0))
+                tab_size = view.settings().get("tab_size", 0)
+                message = "Converted tab characters to {0} spaces".format(tab_size)
                 sublime.status_message(message)
 
 Add a key named `expand_tabs_on_load` with a value of `true` to your global, user, project or syntax-specific `.sublime-settings` file to enable the plugin:
