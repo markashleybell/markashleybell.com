@@ -54,18 +54,18 @@ This file contains a basic HTML form with title, url, summary and tag fields (so
     function addBookmark(f)
     {
         var req = new XMLHttpRequest();
-    	req.open("POST", "http://mywebappurl/do_add_bookmark/", true);
-    	
-    	var params = "title=" + document.getElementById("title").value + 
-    				 "&url=" + document.getElementById("url").value + 
-    				 "&summary=" + document.getElementById("summary").value +
-    				 "&tags=" + document.getElementById("tags").value;
-    	
-    	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    	req.setRequestHeader("Content-length", params.length);
-    	req.setRequestHeader("Connection", "close");
-    	
-    	req.send(params);
+        req.open("POST", "http://mywebappurl/do_add_bookmark/", true);
+        
+        var params = "title=" + document.getElementById("title").value + 
+                     "&url=" + document.getElementById("url").value + 
+                     "&summary=" + document.getElementById("summary").value +
+                     "&tags=" + document.getElementById("tags").value;
+        
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.setRequestHeader("Content-length", params.length);
+        req.setRequestHeader("Connection", "close");
+        
+        req.send(params);
         
         req.onreadystatechange = function() 
         { 

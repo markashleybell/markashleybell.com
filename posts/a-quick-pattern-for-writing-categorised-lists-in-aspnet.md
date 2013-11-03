@@ -11,8 +11,8 @@ Well, here's one simple way to do it. The code below allows everything to be sto
         
     using (SqlDataReader links = new SqlCommand(sql, conn).ExecuteReader())
     {
-    	if(links.HasRows)
-    	{
+        if(links.HasRows)
+        {
             // Store the first category and write out the first heading
             string category = links["category"].ToString();
             Response.Write("<h2>" + category + "</h2><ul>");
