@@ -58,13 +58,11 @@ asset_version = config.get('Site', 'asset_version')
 use_concatenated = config.getboolean('Debug', 'use_concatenated')
 # Determine whether to use minified versions of scripts and CSS
 minify = '.min' if config.getboolean('Debug', 'minify') else ''
-
-# Get the path of this script and the path of the parent (the destination for generated HTML)
-currentpath = os.path.dirname(os.path.abspath(__file__))
-web_root = currentpath + '/public'
+# Define web root (html output) folder
+web_root = 'public'
 
 # Load the templates
-env = Environment(loader=FileSystemLoader(currentpath + '/templates/'))
+env = Environment(loader=FileSystemLoader('templates/'))
 index_template = env.get_template('index.html')
 post_template = env.get_template('post.html')
 
@@ -83,18 +81,16 @@ with open(web_root + '/js/all.min.v' + asset_version + '.js', 'w') as fout:
 # Build a sortable list of file information
 file_list = []
 
-# Loop through all Markdown files in the current folder
-for folder in glob.glob(currentpath):
-    # Select the type of file
-    for f in glob.glob(folder + '/posts/*.md'):
-        # Get the filename portion of the path
-        markdown_file = os.path.split(f)[1]
-        # Replace the .md extension with .html to get the output filename
-        html_file = re.sub(r"(?si)^(.*\.)(md)$", r"\1html", markdown_file)
-        # Open the Markdown file and get the first line (heading)
-        md = codecs.open(f, 'r', 'utf-8')
-        post_data = get_post_data(md.read(), markdown_file, html_file)
-        file_list.append(post_data)
+# Loop through all Markdown files in the posts folder
+for f in glob.glob('posts/*.md'):
+    # Get the filename portion of the path
+    markdown_file = os.path.split(f)[1]
+    # Replace the .md extension with .html to get the output filename
+    html_file = re.sub(r"(?si)^(.*\.)(md)$", r"\1html", markdown_file)
+    # Open the Markdown file and get the first line (heading)
+    md = codecs.open(f, 'r', 'utf-8')
+    post_data = get_post_data(md.read(), markdown_file, html_file)
+    file_list.append(post_data)
  
 # Sort the file list by post date descending 
 file_list = sorted(file_list, key=lambda k: k['date'], reverse = True) 
