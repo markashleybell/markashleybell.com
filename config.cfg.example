@@ -4,7 +4,7 @@ cdn1: CDN1
 cdn2: CDN2
 analytics_id: ANALYTICS_ID
 disqus_id: DISQUS_ID
-asset_version: 1
+asset_version: 2
 [Debug]
 minify: True
 use_concatenated: True

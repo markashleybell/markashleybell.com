@@ -1,3 +1,7 @@
-Jinja2==2.7.1
+Jinja2==2.7.2
 MarkupSafe==0.18
+pypm==1.4.0
+pythonselect==1.3
+pywin32==218.3
+virtualenv==1.11.2
 wsgiref==0.1.2
