@@ -18,105 +18,181 @@ This is the glue that holds our extension together. It contains the basic meta d
 
     :::javascript
     {
-        "name": "Bookmark",
-        "description": "Adds the current page to my bookmarking system.",
-        "version": "1.0",
-        "background_page": "background.html",
+        "manifest_version": 2,
+        "name": "Bookmark Extension Example",
+        "description": "POST details of the current page to a remote endpoint.",
+        "version": "0.1",
+        "background": {
+            "scripts": ["background.js"],
+            "persistent": true
+        },
+        "browser_action": {
+            "default_icon": "icon.png",
+            "default_popup": "popup.html"
+        },
         "permissions": [
             "tabs", 
-            "http://*/*", 
-            "https://*/*"
-        ],
-        "browser_action": {
-            "default_title": "Bookmark This Page",
-            "default_icon": "icon.png",
-            "popup": "popup.html"
-        }
+            "http://*/", 
+            "https://*/"
+        ]
     }
 
 The `background_page` property points to an HTML page which contains the logic code for the extension. This HTML is never displayed, it just interacts with the browser and page via JavaScript. The `browser_action` section defines a button with an icon, which the user will click to open the bookmarking dialog, and the `popup` property which points to the HTML file containing the dialog form.
 
 ## popup.html
 
-This file contains a basic HTML form with title, url, summary and tag fields (so that we can edit and tag our page bookmark before saving it), and some JavaScript code to do the population and saving of the fields. You can [download the complete source here](${cdn2}/files/mab_bookmark_extension.zip), but for now the important part is the script:
+This file contains our UI: a basic HTML form with title, url, summary and tag fields (so that we can edit and tag our bookmark before saving it).
+
+    :::html
+    <html>
+        <head>
+            <style>
+                body { 
+                    min-width: 420px; 
+                    overflow-x: hidden; 
+                    font-family: Arial, sans-serif; 
+                    font-size: 12px; 
+                }
+                input, textarea { 
+                    width: 420px; 
+                }
+                input#save { 
+                    font-weight: bold; width: auto; 
+                }
+            </style>
+            <script src="popup.js"></script>
+        </head>
+        <body>
+            <form id="addbookmark">
+                <p><label for="title">Title</label><br />
+                <input type="text" id="title" name="title" size="50" value="" /></p>
+                <p><label for="url">Url</label><br />
+                <input type="text" id="url" name="url" size="50" value="" /></p>
+                <p><label for="summary">Summary</label><br />
+                <textarea id="summary" name="summary" rows="6" cols="35"></textarea></p>
+                <p><label for="tags">Tags</label><br />
+                <input type="text" id="tags" name="tags" size="50" value="" /></p>
+                <p>
+                    <input id="save" type="submit" value="Save Bookmark" />
+                    <span id="status-display"></span>
+                </p>
+            </form>
+        </body>
+    </html>
+
+## popup.js
+
+This file contains JavaScript code to populate and save field values. You can [download the complete source here](${cdn2}/files/mab_bookmark_extension.zip), but for now the important part is the script:
 
     :::javascript
     // This callback function is called when the content script has been 
     // injected and returned its results
-    function onPageInfo(o) 
-    { 
-        document.getElementById("title").value = o.title; 
-        document.getElementById("url").value = o.url; 
-        document.getElementById("summary").innerText = o.summary; 
+    function onPageInfo(o)  { 
+
+        document.getElementById('title').value = o.title; 
+        document.getElementById('url').value = o.url; 
+        document.getElementById('summary').innerText = o.summary; 
+
     } 
 
+    // Global reference to the status display SPAN
+    var statusDisplay = null;
+
     // POST the data to the server using XMLHttpRequest
-    function addBookmark(f)
-    {
-        var req = new XMLHttpRequest();
-        req.open("POST", "http://mywebappurl/do_add_bookmark/", true);
+    function addBookmark() {
+
+        // Cancel the form submit
+        event.preventDefault();
+
+        // The URL to POST our data to
+        var postUrl = 'http://post-test.markb.com';
+
+        // Cache a reference to the status display SPAN
+        statusDisplay = document.getElementById('status-display');
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', postUrl, true);
         
-        var params = "title=" + document.getElementById("title").value + 
-                     "&url=" + document.getElementById("url").value + 
-                     "&summary=" + document.getElementById("summary").value +
-                     "&tags=" + document.getElementById("tags").value;
+        var title = encodeURIComponent(document.getElementById('title').value);
+        var url = encodeURIComponent(document.getElementById('url').value);
+        var summary = encodeURIComponent(document.getElementById('summary').value);
+        var tags = encodeURIComponent(document.getElementById('tags').value);
+
+        var params = 'title=' + title + 
+                     '&url=' + url + 
+                     '&summary=' + summary +
+                     '&tags=' + tags;
         
-        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        req.setRequestHeader("Content-length", params.length);
-        req.setRequestHeader("Connection", "close");
-        
-        req.send(params);
-        
-        req.onreadystatechange = function() 
-        { 
-            // If the request completed, close the extension popup
-            if (req.readyState == 4)
-                if (req.status == 200) window.close();
+        // Replace any instances of the URLEncoded space char with +
+        params = params.replace(/%20/g, '+');
+
+        // Set correct header for form data 
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        // Handle request state change events
+        xhr.onreadystatechange = function() { 
+            // If the request completed
+            if (xhr.readyState == 4) {
+                statusDisplay.innerHTML = '';
+                if (xhr.status == 200) {
+                    // If it was a success, close the popup after a short delay
+                    statusDisplay.innerHTML = 'Saved!';
+                    window.setTimeout(window.close, 1000);
+                } else {
+                    // Show what went wrong
+                    statusDisplay.innerHTML = 'Error saving: ' + xhr.statusText;
+                }
+            }
         };
-        
-        return false;
+
+        // Send the request and set status
+        xhr.send(params);
+        statusDisplay.innerHTML = 'Saving...';
+
     }
 
-    // Call the getPageInfo function in the background page, passing in 
-    // our onPageInfo function as the callback
-    window.onload = function() 
-    { 
-        var bg = chrome.extension.getBackgroundPage();
-        bg.getPageInfo(onPageInfo);
-    }
+    // When the popup HTML has loaded
+    window.addEventListener('load', function(evt) {
 
-This may look a little confusing at first, but it will hopefully make more sense when you see the other code.
+        // Bind our addBookmark function to the form submit event
+        document.getElementById('addbookmark').addEventListener('submit', addBookmark);
+        // Call the getPageInfo function in the background page, injecting
+        // content_script.js into the current HTML page and passing in our 
+        // onPageInfo function as the callback
+        chrome.extension.getBackgroundPage().getPageInfo(onPageInfo);
 
-## background.html
+    });
 
-Think of this file as the negotiator between the popup dialog and the content/DOM of the currently loaded web page. Though it's an HTML file, it only needs contain a single script tag (as shown below); it will never be displayed anywhere. `getPageInfo` is the function we called when our popup loaded, and its parameter is the callback function which sets the values of the form fields in `popup.html`.
+This may look a little confusing at first, but it will make more sense when you see the other code.
 
-    :::html
-    <script>
-        // Array to hold callback functions
-        var callbacks = []; 
-        
-        // This function is called onload in the popup code
-        function getPageInfo(callback) 
-        { 
-            // Add the callback to the queue
-            callbacks.push(callback); 
+## background.js
 
-            // Injects the content script into the current page 
-            chrome.tabs.executeScript(null, { file: "content_script.js" }); 
-        }; 
+Think of this file as the negotiator between the popup dialog and the content/DOM of the currently loaded web page. `getPageInfo` is the function we called when our popup loaded, and its parameter is the callback function which sets the values of the form fields in `popup.js`.
 
-        // Perform the callback when a request is received from the content script
-        chrome.extension.onRequest.addListener(function(request) 
-        { 
-            // Get the first callback in the callbacks array
-            // and remove it from the array
-            var callback = callbacks.shift();
+    :::javascript
+    // Array to hold callback functions
+    var callbacks = []; 
 
-            // Call the callback function
-            callback(request); 
-        }); 
-    </script>
+    // This function is called onload in the popup code
+    function getPageInfo(callback) { 
+
+        // Add the callback to the queue
+        callbacks.push(callback); 
+        // Inject the content script into the current page 
+        chrome.tabs.executeScript(null, { file: 'content_script.js' }); 
+
+    }; 
+
+    // Perform the callback when a request is received from the content script
+    chrome.extension.onMessage.addListener(function(request)  { 
+
+        // Get the first callback in the callbacks array
+        // and remove it from the array
+        var callback = callbacks.shift();
+        // Call the callback function
+        callback(request); 
+
+    }); 
 
 
 When `getPageInfo` is called, it pushes the callback function onto a queue and then injects the content script (below) into the code of the current web page.
