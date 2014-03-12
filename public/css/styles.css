@@ -11,12 +11,17 @@ img {
     border: solid 1px #e0e0e0;
 }
 
-.post-date {
+.post-updated {
     color: #969696;
 }
 
 .meta-column {
     text-align: right;
+}
+
+.publish-note {
+    font-size: 0.9em;
+    font-style: italic;
 }
 
 #logo {
@@ -85,7 +90,7 @@ code {
     border-radius: 4px;
 }
 
-h1, p.post-date {
+h1, p.post-updated {
     margin: 2em 0 0 0;
 }
 

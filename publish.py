@@ -7,17 +7,22 @@ from jinja2 import Template, Environment, FileSystemLoader
 # Parse headers (date and title) from post file content
 def get_post_data(content, markdown_file, html_file):
     # Fields are empty by default
-    metadata = { 'title': None, 'date': None, 'body': None, 'abstract': None, 'abstract_nolink': None, 'pagetype': None, 'markdown_file': markdown_file, 'html_file': html_file }
+    metadata = { 'title': None, 'published': None, 'updated': None, 'body': None, 'abstract': None, 'abstract_nolink': None, 'pagetype': None, 'markdown_file': markdown_file, 'html_file': html_file }
     # Try and get the title
     titlere = re.compile("(^Title: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = titlere.search(content)
     if match:
         metadata['title'] = match.group(2).strip()
-    # Try and get the date
-    datere = re.compile("(^Date: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
-    match = datere.search(content)
+    # Try and get the published date
+    publishedre = re.compile("(^Published: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
+    match = publishedre.search(content)
     if match:
-        metadata['date'] = datetime.datetime.strptime(match.group(2).strip(), '%Y-%m-%d %H:%M')
+        metadata['published'] = datetime.datetime.strptime(match.group(2).strip(), '%Y-%m-%d %H:%M')
+    # Try and get the updated date
+    updatedre = re.compile("(^Updated: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
+    match = updatedre.search(content)
+    if match:
+        metadata['updated'] = datetime.datetime.strptime(match.group(2).strip(), '%Y-%m-%d %H:%M')
     # Try and get the abstract
     abstractre = re.compile("(^Abstract: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = abstractre.search(content)
@@ -31,7 +36,8 @@ def get_post_data(content, markdown_file, html_file):
         metadata['pagetype'] = match.group(2).strip()
     # Remove the header lines if they were present
     content_no_metadata = titlere.sub('', content)
-    content_no_metadata = datere.sub('', content_no_metadata)
+    content_no_metadata = publishedre.sub('', content_no_metadata)
+    content_no_metadata = updatedre.sub('', content_no_metadata)
     content_no_metadata = abstractre.sub('', content_no_metadata)
     content_no_metadata = pagetypere.sub('', content_no_metadata)
     # Populate the body field
@@ -93,7 +99,7 @@ for f in glob.glob('posts/*.md'):
     file_list.append(post_data)
  
 # Sort the file list by post date descending 
-file_list = sorted(file_list, key=lambda k: k['date'], reverse = True) 
+file_list = sorted(file_list, key=lambda k: k['updated'], reverse = True) 
 
 # Just delete all existing HTML files to avoid orphans
 for f in glob.glob(web_root + '/*.html'):
@@ -118,7 +124,8 @@ for inputfile in file_list:
         rss_posts.append(inputfile)
     # Populate the post template with the post data
     comments = None if inputfile['pagetype'] == 'static' else 1
-    output = post_template.render(date = inputfile['date'], 
+    output = post_template.render(published = inputfile['published'], 
+        updated = inputfile['updated'], 
         title = inputfile['title'], 
         permalink = inputfile['html_file'], 
         body = inputfile['body'], 
@@ -158,7 +165,7 @@ def map_rss_item(item):
             link = "http://" + hostname + "/" + item['html_file'],
             description = markdown.markdown(item['abstract_nolink'], extensions=['extra']),
             guid = PyRSS2Gen.Guid("http://" + hostname + "/" + item['html_file']),
-            pubDate = item['date']
+            pubDate = item['updated']
         )
 
 rss_feed = PyRSS2Gen.RSS2(

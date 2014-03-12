@@ -3,5 +3,7 @@
 .DS_Store
 *.log
 *.cfg
+*.cfg.live
+*.cfg.local
 rss.xml
 *.sublime-workspace
