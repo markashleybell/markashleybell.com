@@ -1,6 +1,7 @@
 Title: IntelliJ IDEA: Fixing "Permission denied: connect" Errors
 Abstract: An issue with some older Cisco VPN client software means IntelliJ IDEA will throw connection exceptions when trying to perform online actions. Here's how to fix it.
-Date: 2012-12-21 13:37
+Published: 2012-12-21 13:37
+Updated: 2012-12-21 13:37
 
 I'm making my first tentative steps with [Scala](http://www.scala-lang.org/), and according to many sources (including Mikio Braun's excellent [getting started article](http://blog.mikiobraun.de/2011/04/getting-started-in-scala.html)), the IDE of choice is [IntelliJ IDEA](http://www.jetbrains.com/idea/). 
 

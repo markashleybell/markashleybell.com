@@ -1,6 +1,7 @@
 Title: A quick pattern for writing categorised lists in ASP.NET
 Abstract: A simple method of writing out a set of categorised lists in ASP.NET/C#.
-Date: 2010-02-12 09:46
+Published: 2010-02-12 09:46
+Updated: 2010-02-12 09:46
 
 This one's more for my own reference than anything else. I often need to write out a set of HTML lists, separated by headings; the code here is actually taken from the links page on my design blog, which you can take a look at as an example of what I mean (table and field names have been changed for security reasons).
 

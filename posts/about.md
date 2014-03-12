@@ -1,5 +1,6 @@
 Title: About Me
-Date: 2013-09-24 13:05
+Published: 2013-09-24 13:05
+Updated: 2013-09-24 13:05
 PageType: static
 
 # Hi! My name's Mark. I build websites and web applications.

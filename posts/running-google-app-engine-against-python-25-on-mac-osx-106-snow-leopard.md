@@ -1,6 +1,7 @@
 Title: Running Google App Engine against Python 2.5 on Mac OSX 10.6 Snow Leopard
 Abstract: How to point the Google App Engine Launcher to the supported Python version on Mac OSX 10.6 Snow Leopard.
-Date: 2010-03-15 03:01
+Published: 2010-03-15 03:01
+Updated: 2010-03-15 03:01
 
 I ran into a strange error yesterday night while working on an App Engine project in Python. Most of the application worked perfectly, but certain views threw errors like the following:
 
