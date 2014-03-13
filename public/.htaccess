@@ -14,7 +14,7 @@ Header set Cache-Control "max-age=2592000, must-revalidate"
 # Header unset Last-Modified
 </FilesMatch>
 
-<FilesMatch "\.(html|htm|xml|txt|xsl)$">
+<FilesMatch "\.(html|htm|txt|xsl)$">
 # This is stripped by Nginx when gzip is enabled...
 FileETag MTime Size
 Header set Cache-Control "max-age=7200, must-revalidate"
