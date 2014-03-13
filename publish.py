@@ -169,7 +169,7 @@ def map_rss_item(item):
         )
 
 rss_feed = PyRSS2Gen.RSS2(
-        title = hostname,
+        title = "Mark Ashley Bell",
         link = "http://" + hostname,
         description = "The latest articles from " + hostname,
         lastBuildDate = datetime.datetime.now(),
