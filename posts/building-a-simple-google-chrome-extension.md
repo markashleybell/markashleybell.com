@@ -1,7 +1,7 @@
 Title: Building a simple Google Chrome extension
 Abstract: In this example, I walk through creating a simple extension for Google Chrome which grabs the title, url and any selected text from the current page.
 Published: 2010-01-26 08:41
-Updated: 2014-03-12 06:02
+Updated: 2014-03-12 06:10
 
 I have a web app running on my home server to keep track of my bookmarks—it's a little like [Delicious](https://delicious.com/), but simpler and with some personal customisations. Currently I save bookmarks to this app via a Javascript bookmarklet: clicking it gets the current page's title and url (and also any selected text, to use as a summary) and sends it to a popup form; submitting that form then saves the bookmark data to the server.
 
