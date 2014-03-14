@@ -1,5 +1,5 @@
 # This Python file uses the following encoding: utf-8
-import argparse, markdown, datetime, codecs, re, os, fileinput, glob, time, re, ConfigParser, PyRSS2Gen
+import argparse, markdown, datetime, codecs, re, os, fileinput, glob, time, re, ConfigParser, rss
 import paramiko, base64, getpass, socket, sys, traceback # Only needed for uploads
 # from string import Template
 from jinja2 import Template, Environment, FileSystemLoader
@@ -156,39 +156,21 @@ output = index_template.render(posts = homepage_posts,
         cdn2 = cdn2,
         analytics_id = analytics_id,
         disqus_id = disqus_id)
+# Write out the processed HTML file for the index page
 o = codecs.open(web_root + '/index.html', 'w', 'utf-8')
 o.write(output)
 o.close()
 
-# def map_rss_item(item):
-#     return PyRSS2Gen.RSSItem(
-#             title = item['title'],
-#             link = "http://" + hostname + "/" + item['html_file'],
-#             description = markdown.markdown(item['abstract_nolink'], extensions=['extra']),
-#             guid = PyRSS2Gen.Guid("http://" + hostname + "/" + item['html_file']),
-#             pubDate = item['updated']
-#         )
-
-# rss_feed = PyRSS2Gen.RSS2(
-#         title = "Mark Ashley Bell",
-#         link = "http://" + hostname,
-#         description = "The latest articles from " + hostname,
-#         lastBuildDate = datetime.datetime.now(),
-#         items = map(map_rss_item, rss_posts)
-#     )
-
-# rss_feed.write_xml(codecs.open(web_root + '/rss.xml', 'w'), 'utf-8')
-
-import rss
-
-rss_feed = rss.RSSChannel(
+# Generate the RSS feed XML
+rss_feed = rss.RSSFeed(
         title = "Mark Ashley Bell",
         link = "http://" + hostname,
         description = "The latest articles from " + hostname,
         lastBuildDate = datetime.datetime.now(),
+        atomLink = "http://" + hostname + "/rss.xml",
         items = rss_posts
     )
-
+# Write out the RSS XML to a file
 f = codecs.open(web_root + '/rss.xml', 'w', 'utf-8')
 rss_feed.get_xml().writexml(f)
 f.close()

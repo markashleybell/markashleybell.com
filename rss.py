@@ -1,7 +1,7 @@
 from xml.dom.minidom import Document
-import datetime, time
+import datetime, time, markdown
 
-class RSSChannel():
+class RSSFeed():
     def __init__(self,
                  title,
                  link,
@@ -10,7 +10,7 @@ class RSSChannel():
                  copyright = None,
                  pubDate = None,  # a datetime, *in* *GMT*
                  lastBuildDate = None, # a datetime
-                 docs = "http://blogs.law.harvard.edu/tech/rss",
+                 atomLink = None,
                  items = None,     # list of RSSItems
                  ):
         self.title = title
@@ -20,10 +20,15 @@ class RSSChannel():
         self.copyright = copyright
         self.pubDate = pubDate
         self.lastBuildDate = lastBuildDate
-        self.docs = docs
+        self.atomLink = atomLink
         self.items = items
 
-    def _format_date(self, dt):
+    def __unix_time(self, dt):
+        epoch = datetime.datetime.utcfromtimestamp(0)
+        delta = dt - epoch
+        return delta.total_seconds()
+
+    def __format_date(self, dt):
         return "%s, %02d %s %04d %02d:%02d:%02d GMT" % (
                 ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][dt.weekday()],
                 dt.day,
@@ -49,10 +54,10 @@ class RSSChannel():
         description.appendChild(doc.createTextNode(self.description));
         channel.appendChild(description)
         lastBuildDate = doc.createElement('lastBuildDate')
-        lastBuildDate.appendChild(doc.createTextNode(self._format_date(self.lastBuildDate)));
+        lastBuildDate.appendChild(doc.createTextNode(self.__format_date(self.lastBuildDate)));
         channel.appendChild(lastBuildDate)
         atomLink = doc.createElement('atom:link')
-        atomLink.setAttribute('href', 'http://markashleybell.com/rss.xml')
+        atomLink.setAttribute('href', self.atomLink)
         atomLink.setAttribute('rel', 'self')
         atomLink.setAttribute('type', 'application/rss+xml');
         channel.appendChild(atomLink)
@@ -63,22 +68,20 @@ class RSSChannel():
             title = doc.createElement('title')
             title.appendChild(doc.createTextNode(i['title']))
             item.appendChild(title)
+            link = doc.createElement('link')
+            link.appendChild(doc.createTextNode(self.link + '/' + i['html_file']))
+            item.appendChild(link)
+            description = doc.createElement('description')
+            description.appendChild(doc.createTextNode(markdown.markdown(i['abstract_nolink'], extensions=['extra'])))
+            item.appendChild(description)
+            guid = doc.createElement('guid')
+            timeStamp = "{0:d}".format(int(self.__unix_time(i['updated'])))
+            guid.appendChild(doc.createTextNode(self.link + '/' + i['html_file'] + '?d=' + timeStamp))
+            guid.setAttribute('isPermaLink', 'false')
+            item.appendChild(guid)
+            pubDate = doc.createElement('pubDate')
+            pubDate.appendChild(doc.createTextNode(self.__format_date(i['updated'])))
+            item.appendChild(pubDate)
 
         return doc
 
-    
-        
-
-# class RSSItem():
-#     def __init__(self,
-#                  title = None,  # string
-#                  link = None,   # url as string
-#                  description = None, # string
-#                  guid = None,    # a unique string
-#                  pubDate = None, # a datetime
-#                  ):
-#         self.title = title
-#         self.link = link
-#         self.description = description
-#         self.guid = guid
-#         self.pubDate = pubDate
