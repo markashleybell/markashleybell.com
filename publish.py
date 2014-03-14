@@ -3,6 +3,7 @@ import argparse, markdown, datetime, codecs, re, os, fileinput, glob, time, re, 
 import paramiko, base64, getpass, socket, sys, traceback # Only needed for uploads
 # from string import Template
 from jinja2 import Template, Environment, FileSystemLoader
+from xml.dom.minidom import Document
 
 # Parse headers (date and title) from post file content
 def get_post_data(content, markdown_file, html_file):
@@ -159,24 +160,38 @@ o = codecs.open(web_root + '/index.html', 'w', 'utf-8')
 o.write(output)
 o.close()
 
-def map_rss_item(item):
-    return PyRSS2Gen.RSSItem(
-            title = item['title'],
-            link = "http://" + hostname + "/" + item['html_file'],
-            description = markdown.markdown(item['abstract_nolink'], extensions=['extra']),
-            guid = PyRSS2Gen.Guid("http://" + hostname + "/" + item['html_file']),
-            pubDate = item['updated']
-        )
+# def map_rss_item(item):
+#     return PyRSS2Gen.RSSItem(
+#             title = item['title'],
+#             link = "http://" + hostname + "/" + item['html_file'],
+#             description = markdown.markdown(item['abstract_nolink'], extensions=['extra']),
+#             guid = PyRSS2Gen.Guid("http://" + hostname + "/" + item['html_file']),
+#             pubDate = item['updated']
+#         )
 
-rss_feed = PyRSS2Gen.RSS2(
+# rss_feed = PyRSS2Gen.RSS2(
+#         title = "Mark Ashley Bell",
+#         link = "http://" + hostname,
+#         description = "The latest articles from " + hostname,
+#         lastBuildDate = datetime.datetime.now(),
+#         items = map(map_rss_item, rss_posts)
+#     )
+
+# rss_feed.write_xml(codecs.open(web_root + '/rss.xml', 'w'), 'utf-8')
+
+import rss
+
+rss_feed = rss.RSSChannel(
         title = "Mark Ashley Bell",
         link = "http://" + hostname,
         description = "The latest articles from " + hostname,
         lastBuildDate = datetime.datetime.now(),
-        items = map(map_rss_item, rss_posts)
+        items = rss_posts
     )
 
-rss_feed.write_xml(codecs.open(web_root + '/rss.xml', 'w', 'utf-8'))
+f = codecs.open(web_root + '/rss.xml', 'w', 'utf-8')
+rss_feed.get_xml().writexml(f)
+f.close()
 
 print 'File generation complete'
 
