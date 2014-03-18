@@ -1,5 +1,9 @@
 #!/bin/sh
-GIT_WORK_TREE=/home/markb/tmp/mab git checkout -f
-GIT_WORK_TREE=/home/markb/tmp/mab git reset --hard
+GIT_WORK_TREE=/home/markb/tmp/mab/source git checkout -f
+GIT_WORK_TREE=/home/markb/tmp/mab/source git reset --hard
+cp /home/markb/tmp/mab/config.cfg /home/markb/tmp/mab/source/config.cfg
+cd /home/markb/tmp/mab/source/
+python2.7 publish.py
 rm -rf /home/markb/webapps/markashleybell/test/*
 cp -r /home/markb/tmp/mab/public/* /home/markb/webapps/markashleybell/test/
+cp /home/markb/tmp/mab/public/.htaccess /home/markb/webapps/markashleybell/test/.htaccess
