@@ -4,6 +4,6 @@ GIT_WORK_TREE=/home/markb/tmp/mab/source git reset --hard
 cp /home/markb/tmp/mab/config.cfg /home/markb/tmp/mab/source/config.cfg
 cd /home/markb/tmp/mab/source/
 python2.7 publish.py
-rm -rf /home/markb/webapps/markashleybell/test/*
-cp -r /home/markb/tmp/mab/source/public/* /home/markb/webapps/markashleybell/test/
-cp /home/markb/tmp/mab/source/public/.htaccess /home/markb/webapps/markashleybell/test/.htaccess
+rm -rf /home/markb/webapps/markashleybell/*
+cp -r /home/markb/tmp/mab/source/public/* /home/markb/webapps/markashleybell/
+cp /home/markb/tmp/mab/source/public/.htaccess /home/markb/webapps/markashleybell/.htaccess
