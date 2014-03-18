@@ -5,5 +5,5 @@ cp /home/markb/tmp/mab/config.cfg /home/markb/tmp/mab/source/config.cfg
 cd /home/markb/tmp/mab/source/
 python2.7 publish.py
 rm -rf /home/markb/webapps/markashleybell/test/*
-cp -r /home/markb/tmp/mab/public/* /home/markb/webapps/markashleybell/test/
-cp /home/markb/tmp/mab/public/.htaccess /home/markb/webapps/markashleybell/test/.htaccess
+cp -r /home/markb/tmp/mab/source/public/* /home/markb/webapps/markashleybell/test/
+cp /home/markb/tmp/mab/source/public/.htaccess /home/markb/webapps/markashleybell/test/.htaccess
