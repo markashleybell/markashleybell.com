@@ -1,0 +1,5 @@
+#!/bin/sh
+GIT_WORK_TREE=/home/markb/tmp/mab git checkout -f
+GIT_WORK_TREE=/home/markb/tmp/mab git reset --hard
+rm -rf /home/markb/webapps/markashleybell/test/*
+cp -r /home/markb/tmp/mab/public/* /home/markb/webapps/markashleybell/test/
