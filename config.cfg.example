@@ -8,9 +8,3 @@ asset_version: 4
 [Debug]
 minify: True
 use_concatenated: True
-[FTP]
-secure: True
-hostname: HOSTNAME
-username: USERNAME
-password: PASSWORD
-remotepath: REMOTEPATH

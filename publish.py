@@ -1,9 +1,7 @@
 # This Python file uses the following encoding: utf-8
 import argparse, markdown, datetime, codecs, re, os, fileinput, glob, time, re, ConfigParser, rss
-import paramiko, base64, getpass, socket, sys, traceback # Only needed for uploads
-# from string import Template
 from jinja2 import Template, Environment, FileSystemLoader
-from xml.dom.minidom import Document
+
 
 # Parse headers (date and title) from post file content
 def get_post_data(content, markdown_file, html_file):
@@ -45,10 +43,6 @@ def get_post_data(content, markdown_file, html_file):
     metadata['body'] = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, content_no_metadata), extensions=['extra', 'codehilite'])
     return metadata
 
-# Set up command-line arguments
-parser = argparse.ArgumentParser(description='Generate a blog from Markdown files and HTML templates')
-parser.add_argument('-p', '--publish', help='publish to remote server', action='store_true')
-args = parser.parse_args()
 
 # Load config
 config = ConfigParser.RawConfigParser()
@@ -176,45 +170,3 @@ rss_feed.get_xml().writexml(f)
 f.close()
 
 print 'File generation complete'
-
-secure = config.getboolean('FTP', 'secure')
-
-if args.publish and secure:
-    # Load config for upload
-    hostname = config.get('FTP', 'hostname')
-    username = config.get('FTP', 'username')
-    password = config.get('FTP', 'password')
-    remotepath = config.get('FTP', 'remotepath')
-
-    # Set up log
-    paramiko.util.log_to_file('sftp.log')
-
-    # Connect to the server
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(hostname, username=username, password=password)
-    sftp = ssh.open_sftp()
-
-    public_folder = 'public'
-    excludes = ['.gitignore']
-    remote_folders = []
-
-    for root, dirs, files in os.walk(public_folder):
-        files = [name for name in files if name not in excludes]
-        for name in files:
-            upload_folder = ''
-            if root != public_folder:
-                upload_folder = '/' + '/'.join(root.replace('\\', '/').split('/')[1:])
-            # Create the remote folder if it doesn't exist
-            if upload_folder not in remote_folders:
-                try:
-                    s = sftp.stat(remotepath + upload_folder)
-                except IOError as e:
-                    print 'Creating folder ' + upload_folder
-                    sftp.mkdir(remotepath + upload_folder)
-                    # Store the remote name so we don't keep checking
-                    remote_folders.append(upload_folder)
-            sftp.put(os.path.join(root, name), remotepath + upload_folder + '/' + name)
-            print 'Upload ' + os.path.join(root, name) + ' to ' + upload_folder + '/' + name
-
-    print 'Publish complete'
