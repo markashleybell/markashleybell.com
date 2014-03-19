@@ -6,13 +6,7 @@
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="alternate" type="application/rss+xml" title="The latest articles from markashleybell.com" href="/rss.xml" />
         <link rel="shortcut icon" href="/img/favicon.ico" />
-        {% if use_concatenated %}
         <link rel="stylesheet" type="text/css" media="screen" href="{{ cdn1 }}/css/all.min.v{{ asset_version }}.css" />
-        {% else %}
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ cdn1 }}/css/bootstrap{{ minify }}.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ cdn1 }}/css/styles{{ minify }}.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ cdn1 }}/css/friendly{{ minify }}.css" />
-        {% endif %}
         <script>
 
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -78,10 +72,6 @@
             <div id="nav-button"></div>
         </div>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery{{ minify }}.js"></script>
-        {% if use_concatenated %}
         <script type="text/javascript" src="{{ cdn2 }}/js/all.min.v{{ asset_version }}.js"></script>
-        {% else %}
-        <script type="text/javascript" src="{{ cdn2 }}/js/main{{ minify }}.js"></script>
-        {% endif %}
     </body>
 </html>

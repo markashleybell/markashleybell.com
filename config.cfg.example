@@ -4,6 +4,3 @@ cdn1: CDN1
 cdn2: CDN2
 analytics_id: ANALYTICS_ID
 disqus_id: DISQUS_ID
-[Debug]
-minify: True
-use_concatenated: True

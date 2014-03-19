@@ -56,10 +56,6 @@ analytics_id = config.get('Site', 'analytics_id')
 disqus_id = config.get('Site', 'disqus_id')
 # Asset file version (for breaking cache)
 asset_version = config.get('Versions', 'asset_version')
-# Determine whether to reference a single versioned css file
-use_concatenated = config.getboolean('Debug', 'use_concatenated')
-# Determine whether to use minified versions of scripts and CSS
-minify = '.min' if config.getboolean('Debug', 'minify') else ''
 # Define web root (html output) folder
 web_root = 'public'
 
@@ -68,14 +64,19 @@ env = Environment(loader=FileSystemLoader('templates/'))
 index_template = env.get_template('index.html')
 post_template = env.get_template('post.html')
 
+# Remove old files
+[os.remove(f) for f in glob.glob(web_root + '/css/*.css')]
+[os.remove(f) for f in glob.glob(web_root + '/js/*.js')]
+[os.remove(f) for f in glob.glob(web_root + '/*.html')]
+
 # Concatenate all minified CSS files
-css_files = [f for f in glob.glob(web_root + '/css/*.min.css')]
+css_files = [f for f in glob.glob('css/*.min.css')]
 with open(web_root + '/css/all.min.v' + asset_version + '.css', 'w') as fout:
     for line in fileinput.input(css_files):
         fout.write(line)
 
 # Concatenate all minified JS files
-js_files = [f for f in glob.glob(web_root + '/js/*.min.js')]
+js_files = [f for f in glob.glob('js/*.min.js')]
 with open(web_root + '/js/all.min.v' + asset_version + '.js', 'w') as fout:
     for line in fileinput.input(js_files):
         fout.write(line)
@@ -128,8 +129,6 @@ for inputfile in file_list:
         nav_items = nav_items, 
         meta_title = inputfile['title'] + ' - Mark Ashley Bell', 
         comments = comments, 
-        minify = minify, 
-        use_concatenated = use_concatenated,
         asset_version = asset_version,
         cdn1 = cdn1, 
         cdn2 = cdn2,
@@ -144,8 +143,6 @@ for inputfile in file_list:
 output = index_template.render(posts = homepage_posts,
         nav_items = nav_items, 
         meta_title = 'Mark Ashley Bell, Freelance Web Designer/Developer - C# ASP.NET, jQuery, JavaScript and Python web development', 
-        minify = minify, 
-        use_concatenated = use_concatenated,
         asset_version = asset_version,
         cdn1 = cdn1, 
         cdn2 = cdn2,
