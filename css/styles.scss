@@ -5,6 +5,16 @@ $line-height: 1.7em;
     padding-top: 30px;
 }
 
+.row {
+    &:before, &:after {
+        content: " "; /* 1 */
+        display: table; /* 2 */
+    }
+    &:after {
+        clear: both;
+    }
+}
+
 img {
     max-width: 100%;
 }
@@ -152,6 +162,7 @@ a#logo {
         list-style: none;
         padding: 0;
         margin: 0;
+        line-height: 43px;
         li {
             display: inline;
             line-height: 43px;

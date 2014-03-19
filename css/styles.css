@@ -3,6 +3,16 @@
     padding-top: 30px;
 }
 
+.row:before, .row:after {
+    content: " ";
+    /* 1 */
+    display: table;
+    /* 2 */
+}
+.row:after {
+    clear: both;
+}
+
 img {
     max-width: 100%;
 }
@@ -147,6 +157,7 @@ a#logo:hover {
         list-style: none;
         padding: 0;
         margin: 0;
+        line-height: 43px;
     }
     #nav li {
         display: inline;
