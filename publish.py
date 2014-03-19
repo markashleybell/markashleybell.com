@@ -47,6 +47,7 @@ def get_post_data(content, markdown_file, html_file):
 # Load config
 config = ConfigParser.RawConfigParser()
 config.read('config.cfg')
+config.read('versions.cfg')
 
 hostname = config.get('Site', 'hostname')
 cdn1 = config.get('Site', 'cdn1')
@@ -54,7 +55,7 @@ cdn2 = config.get('Site', 'cdn2')
 analytics_id = config.get('Site', 'analytics_id')
 disqus_id = config.get('Site', 'disqus_id')
 # Asset file version (for breaking cache)
-asset_version = config.get('Site', 'asset_version')
+asset_version = config.get('Versions', 'asset_version')
 # Determine whether to reference a single versioned css file
 use_concatenated = config.getboolean('Debug', 'use_concatenated')
 # Determine whether to use minified versions of scripts and CSS
