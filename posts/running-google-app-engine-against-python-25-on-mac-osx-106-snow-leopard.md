@@ -9,7 +9,7 @@ I ran into a strange error yesterday night while working on an App Engine projec
 
 However, the same application worked perfectly on my Windows 7 development server.
 
-I was puzzled for a while, but it turns out that [App Engine currently only supports Python 2.5.x](http://code.google.com/p/googleappengine/issues/detail?id=757), while in Snow Leopard the default Python version was updated to 2.6.1.
+I was puzzled for a while, but it turns out that [App Engine currently only supports Python 2.5.x](http://code.google.com/p/googleappengine/issues/detail?id=757 "External Link: Google App Engine Issue 757"), while in Snow Leopard the default Python version was updated to 2.6.1.
 
 Python 2.5 is still installed on Snow Leopard, so it's just a case of explicitly pointing the App Engine development server at the correct version. If you're using the Google App Engine Launcher, open the Preferences dialog, and enter the following into the `Python Path` field:
 

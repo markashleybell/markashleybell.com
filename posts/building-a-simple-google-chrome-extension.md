@@ -3,13 +3,13 @@ Abstract: In this example, I walk through creating a simple extension for Google
 Published: 2010-01-26 08:41
 Updated: 2014-03-12 06:10
 
-I have a web app running on my home server to keep track of my bookmarks—it's a little like [Delicious](https://delicious.com/), but simpler and with some personal customisations. Currently I save bookmarks to this app via a Javascript bookmarklet: clicking it gets the current page's title and url (and also any selected text, to use as a summary) and sends it to a popup form; submitting that form then saves the bookmark data to the server.
+I have a web app running on my home server to keep track of my bookmarks—it's a little like [Delicious](https://delicious.com/ "External Link: Delicious"), but simpler and with some personal customisations. Currently I save bookmarks to this app via a Javascript bookmarklet: clicking it gets the current page's title and url (and also any selected text, to use as a summary) and sends it to a popup form; submitting that form then saves the bookmark data to the server.
 
-Although this system works well enough, it looks a bit untidy and takes up space in the bookmarks bar. With the advent of [Extensions for Chrome](http://www.theregister.co.uk/2010/01/25/google_chrome_4_stable/), I thought I'd have a go at writing an extension to nicely integrate my custom page bookmarking button into the Chrome browser.
+Although this system works well enough, it looks a bit untidy and takes up space in the bookmarks bar. With the advent of [Extensions for Chrome](http://www.theregister.co.uk/2010/01/25/google_chrome_4_stable/ "External Link: Google Chrome"), I thought I'd have a go at writing an extension to nicely integrate my custom page bookmarking button into the Chrome browser.
 
 ![Screen Shot](${cdn2}/img/post/chrome-extension-screenshot.gif "Screen Shot")
 
-It's clear from the start that Chrome's extension structure is a lot simpler than that of [Firefox extensions](http://kb.mozillazine.org/Getting_started_with_extension_development). Chrome extensions are just a collection of plain HTML and JavaScript files—no odd folder hierarchies or XUL to deal with here. There are advantages to Mozilla's approach (ease of internationalisation, UI consistency), but I can't help feeling that building Chrome extensions will be much more accessible to amateur developers; I'm betting that this is exactly what Google was aiming for.
+It's clear from the start that Chrome's extension structure is a lot simpler than that of [Firefox extensions](http://kb.mozillazine.org/Getting_started_with_extension_development "External Link: Firefox Extensions"). Chrome extensions are just a collection of plain HTML and JavaScript files—no odd folder hierarchies or XUL to deal with here. There are advantages to Mozilla's approach (ease of internationalisation, UI consistency), but I can't help feeling that building Chrome extensions will be much more accessible to amateur developers; I'm betting that this is exactly what Google was aiming for.
 
 So let's get stuck in! First create a new folder for your extension code—it doesn't matter where for now. My basic Chrome extension consists of just a few files:
 
@@ -83,7 +83,7 @@ This file contains our UI: a basic HTML form with title, url, summary and tag fi
 
 ## popup.js
 
-This file contains JavaScript code to populate and save field values. You can [download the complete source here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.1.zip), but for now the important part is the script itself:
+This file contains JavaScript code to populate and save field values. You can [download the complete source here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.1.zip "External Link: Chrome Extension Source Download"), but for now the important part is the script itself:
 
     :::javascript
     // This callback function is called when the content script has been 
@@ -208,6 +208,6 @@ The background page listener then gets the callback function from the queue (whi
 
 To test your extension, open the Chrome Extensions tab (Tools > Extensions), check 'Developer Mode' and click 'Load unpacked extension...'. Browse to your extension's folder and select it: you'll see the icon appear in your browser toolbar. Click it while viewing any normal web page and you should see a popup like the one in the screen shot at the beginning of this article, populated with the data from the current page.
 
-You can [download all the source code here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.1.zip) and modify it to suit your own purposes, or just use it to learn from. 
+You can [download all the source code here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.1.zip "External Link: Chrome Extension Source Download") and modify it to suit your own purposes, or just use it to learn from. 
 
-That's it! I'll explain more about Chrome extensions in future posts, but in the meantime, the [Google extension documentation](https://developer.chrome.com/extensions/getstarted.html) is comprehensive and very useful to learn from. I also picked up a lot of good information from [this thread on the Chromium Extensions Google Group](https://groups.google.com/forum/#!topic/chromium-extensions/6rhH8KMuwlw).
+That's it! I'll explain more about Chrome extensions in future posts, but in the meantime, the [Google extension documentation](https://developer.chrome.com/extensions/getstarted.html "External Link: Google Chrome Extension Documentation") is comprehensive and very useful to learn from. I also picked up a lot of good information from [this thread on the Chromium Extensions Google Group](https://groups.google.com/forum/#!topic/chromium-extensions/6rhH8KMuwlw "External Link: Chromium Extensions Google Group").

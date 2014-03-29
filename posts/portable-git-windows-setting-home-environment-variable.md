@@ -3,11 +3,11 @@ Abstract: There are a couple of issues which make Portable Git not quite as port
 Published: 2010-11-17 08:17
 Updated: 2010-11-17 08:17
 
-Portable Git is a completely standalone version of the [Git](http://git-scm.com/) distributed version control system. All you need do to get going is to download a file and unzip it into a folder. In theory, what you end up with is a self-contained Git install which doesn't touch any other part of your Windows system, meaning that you can take your entire, ready configured version control system with you from computer to computer on a portable drive.
+Portable Git is a completely standalone version of the [Git](http://git-scm.com/ "External Link: Git") distributed version control system. All you need do to get going is to download a file and unzip it into a folder. In theory, what you end up with is a self-contained Git install which doesn't touch any other part of your Windows system, meaning that you can take your entire, ready configured version control system with you from computer to computer on a portable drive.
 
 However, there are a couple of issues which make Portable Git not quite as portable as it could be. In this article, I'm going to explain the gotchas and walk you through creating a tweaked Portable Git for Windows install which is truly self contained. Even if you don't need to carry it around with you, it's still useful to keep all your Git configuration files and scripts in one place where you can easily find them.
 
-The first step is to [download the zip file containing Portable Git](http://code.google.com/p/msysgit/downloads/list). Once you have the file, unzip its contents into a folder of your choice. I chose to put mine in `E:\Git`. 
+The first step is to [download the zip file containing Portable Git](http://code.google.com/p/msysgit/downloads/list "External Link: Portable Git"). Once you have the file, unzip its contents into a folder of your choice. I chose to put mine in `E:\Git`. 
 
 Now open the new Git folder. Inside you'll see a number of folders and files. Run the batch file named `git-bash.bat` and you should see a shell prompt screen. Type the following:
 
@@ -38,14 +38,14 @@ Where the path is the folder you just created, _relative to the folder in which 
 
 `echo $HOME`
 
-You should see the UNIX path you entered: this means Git is now using your new folder as its home folder. Now we'll set the global name and email address which will be associated with Git commits; in order to use [GitHub](https://github.com/), we also need to generate an SSL key pair for authentication. Enter the following two commands at the shell prompt to set the global variables:
+You should see the UNIX path you entered: this means Git is now using your new folder as its home folder. Now we'll set the global name and email address which will be associated with Git commits; in order to use [GitHub](https://github.com/ "External Link: GitHub"), we also need to generate an SSL key pair for authentication. Enter the following two commands at the shell prompt to set the global variables:
 
 `git config --global user.name "Your Name"`  
 `git config --global user.email you@yourdomain.com`
 
-Now that we have pointed Portable Git to the correct folder, you should be able to follow the excellent [GitHub Help guide to generating an SSL key pair](https://help.github.com/msysgit-key-setup/). Once you’ve done that, change to the new home folder and create an empty file named `profile` (no extension—the filename would normally be `.profile` under UNIX, but MSYS lets you omit the period to make things easier under Windows). 
+Now that we have pointed Portable Git to the correct folder, you should be able to follow the excellent [GitHub Help guide to generating an SSL key pair](https://help.github.com/msysgit-key-setup "External Link: SSL Setup Help (GitHub)"). Once you’ve done that, change to the new home folder and create an empty file named `profile` (no extension—the filename would normally be `.profile` under UNIX, but MSYS lets you omit the period to make things easier under Windows). 
 
-Open it up, paste in the following code from [this GitHub guide](https://help.github.com/working-with-key-passphrases/) and save:
+Open it up, paste in the following code from [this GitHub guide](https://help.github.com/working-with-key-passphrases/ "External Link: Working With Key Passphrases (GitHub)") and save:
 
     :::sh
     SSH_ENV="$HOME/.ssh/environment"

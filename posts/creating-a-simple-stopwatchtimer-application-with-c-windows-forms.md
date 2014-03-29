@@ -110,6 +110,6 @@ While working on a project today, I came across the need for a simple stopwatch/
 
 Because I wasn't interested in sub-second accuracy, I've used `System.Windows.Forms.Timer` for simplicity, but the principle is the same whichever timer class you use. 
 
-If you want to find out more about the differences between `System.Threading.Timer`, `System.Windows.Forms.Timer` and `System.Timers.Timer`, it's definitely worth reading [this article comparing the Timer classes in the .NET Framework class library](http://msdn.microsoft.com/en-us/magazine/cc164015.aspx).
+If you want to find out more about the differences between `System.Threading.Timer`, `System.Windows.Forms.Timer` and `System.Timers.Timer`, it's definitely worth reading [this article comparing the Timer classes in the .NET Framework class library](http://msdn.microsoft.com/en-us/magazine/cc164015.aspx "External Link: Comparing the Timer Classes in the .NET Framework Class Library (MSDN)").
 
-You can [view the full source here](https://github.com/markashleybell/mab_stopwatch_spike) and [download a complete working VS2010 Solution here](https://github.com/markashleybell/mab_stopwatch_spike/archive/1.0.zip).
+You can [view the full source here](https://github.com/markashleybell/mab_stopwatch_spike "External Link: Stopwatch Spike Github Repository") and [download a complete working VS2010 Solution here](https://github.com/markashleybell/mab_stopwatch_spike/archive/1.0.zip "External Link: Stopwatch Spike Source Download").
