@@ -15,7 +15,7 @@ $(function () {
     // Toggle mobile navigation visibility
     var nav = $('#nav');
     $('#nav-button').on('click', function(e) { 
-        nav.toggle(); 
+        nav.toggleClass('show'); 
     });
 
     var externalLinkQualifier = 'External Link: ';

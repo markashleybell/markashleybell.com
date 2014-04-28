@@ -232,6 +232,9 @@ a#logo {
                 padding: 5px 15px;
             }
         }
+        &.show {
+            display: block;
+        }
     }
     .container {
         padding-top: 20px;
