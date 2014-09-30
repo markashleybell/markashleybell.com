@@ -45,6 +45,7 @@ The `background` property points to a JavaScript file which contains the logic c
 This file contains our UI: a basic HTML form with title, url, summary and tag fields (so that we can edit and tag our bookmark before saving it).
 
     :::html
+    <!DOCTYPE html>
     <html>
         <head>
             <style>
@@ -155,9 +156,9 @@ This file contains JavaScript code to populate and save field values. You can [d
         document.getElementById('addbookmark').addEventListener('submit', addBookmark);
         // Get the event page
         chrome.runtime.getBackgroundPage(function(eventPage) {
-            // Call the getPageInfo function in the event page, passing in our 
-            // onPageDetailsReceived function as the callback. This injects content.js 
-            // into the current tab's HTML
+            // Call the getPageInfo function in the event page, passing in 
+            // our onPageDetailsReceived function as the callback. This injects 
+            // content.js into the current tab's HTML
             eventPage.getPageDetails(onPageDetailsReceived);
         });
     });
