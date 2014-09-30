@@ -1,7 +1,7 @@
 Title: Building a simple Google Chrome extension
 Abstract: In this example, I walk through creating a simple extension for Google Chrome which grabs the title, url and any selected text from the current page.
 Published: 2010-01-26 08:41
-Updated: 2014-03-12 06:10
+Updated: 2014-09-30 07:23
 
 I have a web app running on my home server to keep track of my bookmarks—it's a little like [Delicious](https://delicious.com/ "External Link: Delicious"), but simpler and with some personal customisations. Currently I save bookmarks to this app via a Javascript bookmarklet: clicking it gets the current page's title and url (and also any selected text, to use as a summary) and sends it to a popup form; submitting that form then saves the bookmark data to the server.
 
@@ -22,10 +22,10 @@ This is the glue that holds our extension together. It contains the basic meta d
         "manifest_version": 2,
         "name": "Bookmark Extension Example",
         "description": "POST details of the current page to a remote endpoint.",
-        "version": "0.1",
+        "version": "0.2",
         "background": {
-            "scripts": ["background.js"],
-            "persistent": true
+            "scripts": ["event.js"],
+            "persistent": false
         },
         "browser_action": {
             "default_icon": "icon.png",
@@ -33,8 +33,8 @@ This is the glue that holds our extension together. It contains the basic meta d
         },
         "permissions": [
             "tabs", 
-            "http://*/", 
-            "https://*/"
+            "http://*/*", 
+            "https://*/*"
         ]
     }
 
@@ -69,8 +69,8 @@ This file contains our UI: a basic HTML form with title, url, summary and tag fi
                 <input type="text" id="title" name="title" size="50" value="" /></p>
                 <p><label for="url">Url</label><br />
                 <input type="text" id="url" name="url" size="50" value="" /></p>
-                <p><label for="summary">Summary</label><br />
-                <textarea id="summary" name="summary" rows="6" cols="35"></textarea></p>
+                <p><label for="abstract">Abstract</label><br />
+                <textarea id="abstract" name="abstract" rows="6" cols="35"></textarea></p>
                 <p><label for="tags">Tags</label><br />
                 <input type="text" id="tags" name="tags" size="50" value="" /></p>
                 <p>
@@ -83,15 +83,15 @@ This file contains our UI: a basic HTML form with title, url, summary and tag fi
 
 ## popup.js
 
-This file contains JavaScript code to populate and save field values. You can [download the complete source here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.1.zip "External Link: Chrome Extension Source Download"), but for now the important part is the script itself:
+This file contains JavaScript code to populate and save field values. You can [download the complete source here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.2.zip "External Link: Chrome Extension Source Download"), but for now the important part is the script itself:
 
     :::javascript
     // This callback function is called when the content script has been 
     // injected and returned its results
-    function onPageInfo(o)  { 
-        document.getElementById('title').value = o.title; 
-        document.getElementById('url').value = o.url; 
-        document.getElementById('summary').innerText = o.summary; 
+    function onPageDetailsReceived(pageDetails)  { 
+        document.getElementById('title').value = pageDetails.title; 
+        document.getElementById('url').value = pageDetails.url; 
+        document.getElementById('abstract').innerText = pageDetails.abstract; 
     } 
 
     // Global reference to the status display SPAN
@@ -103,21 +103,21 @@ This file contains JavaScript code to populate and save field values. You can [d
         event.preventDefault();
 
         // The URL to POST our data to
-        var postUrl = 'http://post-test.markb.com';
+        var postUrl = 'http://post-test.local.com';
 
         // Set up an asynchronous AJAX POST request
         var xhr = new XMLHttpRequest();
         xhr.open('POST', postUrl, true);
         
-        // Prepare the data to be POSTed
+        // Prepare the data to be POSTed by URLEncoding each field's contents
         var title = encodeURIComponent(document.getElementById('title').value);
         var url = encodeURIComponent(document.getElementById('url').value);
-        var summary = encodeURIComponent(document.getElementById('summary').value);
+        var abstract = encodeURIComponent(document.getElementById('abstract').value);
         var tags = encodeURIComponent(document.getElementById('tags').value);
-
+        
         var params = 'title=' + title + 
                      '&url=' + url + 
-                     '&summary=' + summary +
+                     '&abstract=' + abstract +
                      '&tags=' + tags;
         
         // Replace any instances of the URLEncoded space char with +
@@ -149,65 +149,55 @@ This file contains JavaScript code to populate and save field values. You can [d
 
     // When the popup HTML has loaded
     window.addEventListener('load', function(evt) {
-        // Bind our addBookmark function to the form submit event
-        document.getElementById('addbookmark').addEventListener('submit', addBookmark);
         // Cache a reference to the status display SPAN
         statusDisplay = document.getElementById('status-display');
-        // Call the getPageInfo function in the background page, injecting
-        // content_script.js into the current HTML page and passing in our 
-        // onPageInfo function as the callback
-        chrome.extension.getBackgroundPage().getPageInfo(onPageInfo);
+        // Handle the bookmark form submit event with our addBookmark function
+        document.getElementById('addbookmark').addEventListener('submit', addBookmark);
+        // Get the event page
+        chrome.runtime.getBackgroundPage(function(eventPage) {
+            // Call the getPageInfo function in the event page, passing in our 
+            // onPageDetailsReceived function as the callback. This injects content.js 
+            // into the current tab's HTML
+            eventPage.getPageDetails(onPageDetailsReceived);
+        });
     });
 
 This may look a little confusing at first, but hopefully it will make more sense when you see the rest!
 
-## background.js
+## event.js
 
-Think of this file as the negotiator between the popup dialog and the content/DOM of the currently loaded web page. `getPageInfo` is the function we called when our popup loaded, and its parameter is the callback function which sets the values of the form fields in `popup.js`.
+Think of this file as the negotiator between the popup dialog and the content/DOM of the currently loaded web page. `getPageDetails` is the function we called when our popup loaded, and its parameter is the callback function which sets the values of the form fields in `popup.js`.
 
     :::javascript
-    // Array to hold callback functions
-    var callbacks = []; 
-
     // This function is called onload in the popup code
-    function getPageInfo(callback) { 
-        // Add the callback to the queue
-        callbacks.push(callback); 
+    function getPageDetails(callback) { 
         // Inject the content script into the current page 
-        chrome.tabs.executeScript(null, { file: 'content_script.js' }); 
-    }; 
-
-    // Perform the callback when a request is received from the content script
-    chrome.extension.onMessage.addListener(function(request)  { 
-        // Get the first callback in the callbacks array
-        // and remove it from the array
-        var callback = callbacks.shift();
-        // Call the callback function
-        callback(request); 
-    }); 
-
-
-When `getPageInfo` is called, it pushes the callback function onto a queue and then injects the content script (below) into the DOM of the current web page.
-
-## content_script.js
-
-The content script itself is pretty simple: it just gets the title, url and any selected text from the current page and fires them back to the background script.
-
-    :::javascript
-    // Object to hold information about the current page
-    var pageInfo = {
-        "title": document.title,
-        "url": window.location.href,
-        "summary": window.getSelection().toString()
+        chrome.tabs.executeScript(null, { file: 'content.js' }); 
+        // Perform the callback when a message is received from the content script
+        chrome.runtime.onMessage.addListener(function(message)  { 
+            // Call the callback function
+            callback(message); 
+        }); 
     };
 
-    // Send the information back to the extension
-    chrome.extension.sendRequest(pageInfo);
+When `getPageDetails` is called, it injects the content script (below) into the DOM of the current web page and executes it. It then sets up an event listener to listen for the `onMessage` event which will be triggered by the content script.
 
-The background page listener then gets the callback function from the queue (which, if you remember, is the `onPageInfo` function from the popup page) and calls it, passing in the information about the page so that it can populate the form field values.
+## content.js
+
+The content script itself is pretty simple: it just gets the title, url and any selected text from the current page and passes them back to the event script by calling `sendMessage`, which triggers the `onMessage` event we're listening for in `event.js`.
+
+    :::javascript
+    // Send a message containing the page details back to the event page
+    chrome.runtime.sendMessage({
+        'title': document.title,
+        'url': window.location.href,
+        'abstract': window.getSelection().toString()
+    });
+
+The event script listener then calls the callback function it was passed (which, if you remember, is the `onPageDetailsReceived` function from the popup page), passing in the information about the page so that it can populate the form field values.
 
 To test your extension, open the Chrome Extensions tab (Tools > Extensions), check 'Developer Mode' and click 'Load unpacked extension...'. Browse to your extension's folder and select it: you'll see the icon appear in your browser toolbar. Click it while viewing any normal web page and you should see a popup like the one in the screen shot at the beginning of this article, populated with the data from the current page.
 
-You can [download all the source code here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.1.zip "External Link: Chrome Extension Source Download") and modify it to suit your own purposes, or just use it to learn from. 
+You can [download all the source code here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.2.zip "External Link: Chrome Extension Source Download") and modify it to suit your own purposes, or just use it to learn from. If you find any mistakes or bugs, feel free to [add an issue or pull request on GitHub](https://github.com/markashleybell/mab_bookmark_extension  "External Link: Chrome Extension GitHub Repository").
 
-That's it! I'll explain more about Chrome extensions in future posts, but in the meantime, the [Google extension documentation](https://developer.chrome.com/extensions/getstarted.html "External Link: Google Chrome Extension Documentation") is comprehensive and very useful to learn from. I also picked up a lot of good information from [this thread on the Chromium Extensions Google Group](https://groups.google.com/forum/#!topic/chromium-extensions/6rhH8KMuwlw "External Link: Chromium Extensions Google Group").
+That's it! The [Google extension documentation](https://developer.chrome.com/extensions/getstarted.html "External Link: Google Chrome Extension Documentation") is comprehensive and very useful to learn from. I also picked up a lot of good information from [this thread on the Chromium Extensions Google Group](https://groups.google.com/forum/#!topic/chromium-extensions/6rhH8KMuwlw "External Link: Chromium Extensions Google Group").
