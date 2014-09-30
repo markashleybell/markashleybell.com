@@ -70,8 +70,8 @@ This file contains our UI: a basic HTML form with title, url, summary and tag fi
                 <input type="text" id="title" name="title" size="50" value="" /></p>
                 <p><label for="url">Url</label><br />
                 <input type="text" id="url" name="url" size="50" value="" /></p>
-                <p><label for="abstract">Abstract</label><br />
-                <textarea id="abstract" name="abstract" rows="6" cols="35"></textarea></p>
+                <p><label for="summary">Summary</label><br />
+                <textarea id="summary" name="summary" rows="6" cols="35"></textarea></p>
                 <p><label for="tags">Tags</label><br />
                 <input type="text" id="tags" name="tags" size="50" value="" /></p>
                 <p>
@@ -92,7 +92,7 @@ This file contains JavaScript code to populate and save field values. You can [d
     function onPageDetailsReceived(pageDetails)  { 
         document.getElementById('title').value = pageDetails.title; 
         document.getElementById('url').value = pageDetails.url; 
-        document.getElementById('abstract').innerText = pageDetails.abstract; 
+        document.getElementById('summary').innerText = pageDetails.summary; 
     } 
 
     // Global reference to the status display SPAN
@@ -113,12 +113,12 @@ This file contains JavaScript code to populate and save field values. You can [d
         // Prepare the data to be POSTed by URLEncoding each field's contents
         var title = encodeURIComponent(document.getElementById('title').value);
         var url = encodeURIComponent(document.getElementById('url').value);
-        var abstract = encodeURIComponent(document.getElementById('abstract').value);
+        var summary = encodeURIComponent(document.getElementById('summary').value);
         var tags = encodeURIComponent(document.getElementById('tags').value);
         
         var params = 'title=' + title + 
                      '&url=' + url + 
-                     '&abstract=' + abstract +
+                     '&summary=' + summary +
                      '&tags=' + tags;
         
         // Replace any instances of the URLEncoded space char with +
@@ -192,7 +192,7 @@ The content script itself is pretty simple: it just gets the title, url and any 
     chrome.runtime.sendMessage({
         'title': document.title,
         'url': window.location.href,
-        'abstract': window.getSelection().toString()
+        'summary': window.getSelection().toString()
     });
 
 The event script listener then calls the callback function it was passed (which, if you remember, is the `onPageDetailsReceived` function from the popup page), passing in the information about the page so that it can populate the form field values.
