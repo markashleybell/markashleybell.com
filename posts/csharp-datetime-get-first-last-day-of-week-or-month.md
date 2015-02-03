@@ -1,9 +1,9 @@
 Title: Getting the first/last day of the week or month with DateTime in C#
-Abstract: Some useful C# utility extension methods for getting the first and last day of the week or month a given date is in.
+Abstract: C# extension methods for getting the first and last day of the week or month a given date is in.
 Published: 2015-02-02 18:12
 Updated: 2015-02-02 18:12
 
-Recently I came across the need to find out the date of the first day of a particular week in C#. After browsing [this rather confusing collection of answers](http://stackoverflow.com/questions/38039/how-can-i-get-the-datetime-for-the-start-of-the-week "External Link: Stack Overflow"), I pieced together parts of various code snippets into this little collection of utility methods.
+Recently I found myself needing to get the date of the first day of a particular week in C#. After browsing [this rather confusing collection of answers](http://stackoverflow.com/questions/38039/how-can-i-get-the-datetime-for-the-start-of-the-week "External Link: Stack Overflow"), I pieced together parts of various code snippets into this little collection of utility methods.
 
     :::csharp
     public static partial class DateTimeExtensions
@@ -38,8 +38,9 @@ Recently I came across the need to find out the date of the first day of a parti
         }
     }
 
-So now you can easily get month and week boundaries for any given `DateTime`:
+As you can see, the `FirstDayOfWeek` method is culture-sensitive, so in the `en-GB` culture the first day will be a Monday, whereas in the `en-US` culture it will be a Sunday. So now you can easily get month and week boundaries for any given `DateTime`:
 
+    :::csharp
     var firstdayOfThisWeek = DateTime.Now.FirstDayOfWeek();
 
-Hopefully someone else will find these useful!
+Hopefully someone else out there will find these useful!
