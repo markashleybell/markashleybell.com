@@ -1,9 +1,27 @@
 ErrorDocument 404 /404.html
 
 RewriteEngine On
+
+# Redirect alt domains
+RewriteCond %{HTTP_HOST} ^markashleybell.com
+RewriteRule (.*) http://markb.co.uk/$1 [R=301,L]
+
 RewriteCond %{HTTP_HOST} ^www.markashleybell.com
-RewriteRule (.*) http://markashleybell.com/$1 [R=301,L]
-RewriteRule ^articles/([^/]+)/?$ http://markashleybell.com/$1.html [R=301,NC,L]
+RewriteRule (.*) http://markb.co.uk/$1 [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^markb.uk
+RewriteRule (.*) http://markb.co.uk/$1 [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^www.markb.uk
+RewriteRule (.*) http://markb.co.uk/$1 [R=301,L]
+
+# Redirect www to naked for .co.uk domain
+RewriteCond %{HTTP_HOST} ^www.markb.co.uk
+RewriteRule (.*) http://markb.co.uk/$1 [R=301,L]
+
+# Redirect old articles links
+RewriteRule ^articles/([^/]+)/?$ http://markb.co.uk/$1.html [R=301,NC,L]
+
 AddDefaultCharset UTF-8
 AddType 'text/html; charset=UTF-8' .html
 AddLanguage en-GB .html .htm .css .js
