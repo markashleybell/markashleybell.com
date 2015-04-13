@@ -84,7 +84,7 @@ This file contains our UI: a basic HTML form with title, url, summary and tag fi
 
 ## popup.js
 
-This file contains JavaScript code to populate and save field values. You can [download the complete source here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.2.zip "External Link: Chrome Extension Source Download"), but for now the important part is the script itself:
+This file contains JavaScript code to populate and save field values. You can [download the complete source here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.3.zip "External Link: Chrome Extension Source Download"), but for now the important part is the script itself:
 
     :::javascript
     // This callback function is called when the content script has been 
@@ -199,6 +199,6 @@ The event script listener then calls the callback function it was passed (which,
 
 To test your extension, open the Chrome Extensions tab (Tools > Extensions), check 'Developer Mode' and click 'Load unpacked extension...'. Browse to your extension's folder and select it: you'll see the icon appear in your browser toolbar. Click it while viewing any normal web page and you should see a popup like the one in the screen shot at the beginning of this article, populated with the data from the current page.
 
-You can [download all the source code here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.2.zip "External Link: Chrome Extension Source Download") and modify it to suit your own purposes, or just use it to learn from. If you find any mistakes or bugs, feel free to [add an issue or pull request on GitHub](https://github.com/markashleybell/mab_bookmark_extension  "External Link: Chrome Extension GitHub Repository").
+You can [download all the source code here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.3.zip "External Link: Chrome Extension Source Download") and modify it to suit your own purposes, or just use it to learn from. If you find any mistakes or bugs, feel free to [add an issue or pull request on GitHub](https://github.com/markashleybell/mab_bookmark_extension  "External Link: Chrome Extension GitHub Repository").
 
 That's it! The [Google extension documentation](https://developer.chrome.com/extensions/getstarted.html "External Link: Google Chrome Extension Documentation") is comprehensive and very useful to learn from. I also picked up a lot of good information from [this thread on the Chromium Extensions Google Group](https://groups.google.com/forum/#!topic/chromium-extensions/6rhH8KMuwlw "External Link: Chromium Extensions Google Group").
