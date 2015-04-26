@@ -6,7 +6,7 @@ from jinja2 import Template, Environment, FileSystemLoader
 # Parse headers (date and title) from post file content
 def get_post_data(content, markdown_file, html_file):
     # Fields are empty by default
-    metadata = { 'title': None, 'published': None, 'updated': None, 'body': None, 'abstract': None, 'abstract_plain': None, 'abstract_nolink': None, 'pagetype': None, 'markdown_file': markdown_file, 'html_file': html_file }
+    metadata = { 'title': None, 'published': None, 'updated': None, 'body': None, 'abstract': None, 'abstract_plain': None, 'abstract_nolink': None, 'pagetype': None, 'thumbnail': None, 'markdown_file': markdown_file, 'html_file': html_file }
     # Try and get the title
     titlere = re.compile("(^Title: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = titlere.search(content)
@@ -38,7 +38,7 @@ def get_post_data(content, markdown_file, html_file):
     thumbmnailre = re.compile("(^Thumbnail: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = thumbmnailre.search(content)
     if match:
-        metadata['thumbmnail'] = match.group(2).strip()
+        metadata['thumbnail'] = match.group(2).strip()
     # Remove the header lines if they were present
     content_no_metadata = titlere.sub('', content)
     content_no_metadata = publishedre.sub('', content_no_metadata)
