@@ -4,6 +4,11 @@
         <title>{{ meta_title }}</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta property="og:title" content="{{ og_title }}">
+        <meta property="og:image" content="http://markb.co.uk/img/post/{{ og_image }}">
+        <meta property="og:url" content="http://markb.co.uk/{{ og_url }}"/>
+        <meta property="og:site_name" content="markb.co.uk">
+        <meta property="og:description" content="{{ og_abstract }}">
         <link rel="alternate" type="application/rss+xml" title="The latest articles from markb.co.uk" href="/rss.xml" />
         <link rel="shortcut icon" href="/img/favicon.ico" />
         <link rel="stylesheet" type="text/css" media="screen" href="{{ cdn1 }}/css/all.min.v{{ asset_version }}.css" />

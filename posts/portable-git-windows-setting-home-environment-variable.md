@@ -1,5 +1,6 @@
 Title: Portable Git for Windows: setting the $HOME environment variable to allow complete portability (including SSL keys and configuration for use with GitHub)
 Abstract: There are a couple of issues which make Portable Git not quite as portable as it could be. In this article I’m going to explain the gotchas and walk you through creating a tweaked Portable Git for Windows install which is truly self contained.
+Thumbnail: git-version.gif
 Published: 2010-11-17 08:17
 Updated: 2010-11-17 08:17
 

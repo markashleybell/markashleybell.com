@@ -1,5 +1,6 @@
 Title: Revo SuperConnect Review
 Abstract: A review of the Revo SuperConnect DAB/Internet radio.
+Thumbnail: superconnect.jpg
 Published: 2015-03-25 12:30
 Updated: 2015-03-25 12:30
 

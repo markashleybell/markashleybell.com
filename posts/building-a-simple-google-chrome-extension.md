@@ -1,5 +1,6 @@
 Title: Building a simple Google Chrome extension
 Abstract: In this example, I walk through creating a simple extension for Google Chrome which grabs the title, url and any selected text from the current page.
+Thumbnail: chrome-extension-screenshot.gif
 Published: 2010-01-26 08:41
 Updated: 2014-09-30 07:23
 

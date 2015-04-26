@@ -6,7 +6,7 @@ from jinja2 import Template, Environment, FileSystemLoader
 # Parse headers (date and title) from post file content
 def get_post_data(content, markdown_file, html_file):
     # Fields are empty by default
-    metadata = { 'title': None, 'published': None, 'updated': None, 'body': None, 'abstract': None, 'abstract_nolink': None, 'pagetype': None, 'markdown_file': markdown_file, 'html_file': html_file }
+    metadata = { 'title': None, 'published': None, 'updated': None, 'body': None, 'abstract': None, 'abstract_plain': None, 'abstract_nolink': None, 'pagetype': None, 'markdown_file': markdown_file, 'html_file': html_file }
     # Try and get the title
     titlere = re.compile("(^Title: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = titlere.search(content)
@@ -26,6 +26,7 @@ def get_post_data(content, markdown_file, html_file):
     abstractre = re.compile("(^Abstract: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
     match = abstractre.search(content)
     if match:
+        metadata['abstract_plain'] = re.sub(r"(\$\{cdn2\})", cdn2, match.group(2).strip())
         metadata['abstract_nolink'] = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, match.group(2).strip()))
         metadata['abstract'] = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, match.group(2).strip() + ' <a class="more-link" href="' + html_file + '">&rarr;</a>'))
     # Try and get the type
@@ -33,12 +34,18 @@ def get_post_data(content, markdown_file, html_file):
     match = pagetypere.search(content)
     if match:
         metadata['pagetype'] = match.group(2).strip()
+    # Try and get the thumbnail image
+    thumbmnailre = re.compile("(^Thumbnail: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
+    match = thumbmnailre.search(content)
+    if match:
+        metadata['thumbmnail'] = match.group(2).strip()
     # Remove the header lines if they were present
     content_no_metadata = titlere.sub('', content)
     content_no_metadata = publishedre.sub('', content_no_metadata)
     content_no_metadata = updatedre.sub('', content_no_metadata)
     content_no_metadata = abstractre.sub('', content_no_metadata)
     content_no_metadata = pagetypere.sub('', content_no_metadata)
+    content_no_metadata = thumbmnailre.sub('', content_no_metadata)
     # Populate the body field
     metadata['body'] = markdown.markdown(re.sub(r"(\$\{cdn2\})", cdn2, content_no_metadata), extensions=['extra', 'codehilite'])
     return metadata
@@ -128,6 +135,10 @@ for inputfile in file_list:
         body = inputfile['body'], 
         nav_items = nav_items, 
         meta_title = inputfile['title'] + ' - Mark Ashley Bell', 
+        og_title = inputfile['title'],
+        og_abstract = inputfile['abstract_plain'],
+        og_image = inputfile['thumbnail'] if 'thumbnail' in inputfile else 'index.png',
+        og_url = inputfile['html_file'],
         comments = comments, 
         asset_version = asset_version,
         cdn1 = cdn1, 
