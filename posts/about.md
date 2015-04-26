@@ -1,4 +1,5 @@
 Title: About Me
+Abstract: Hi! My name's Mark. I build websites and web applications.
 Published: 2013-09-24 13:05
 Updated: 2013-09-24 13:05
 PageType: static
