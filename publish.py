@@ -137,7 +137,7 @@ for inputfile in file_list:
         meta_title = inputfile['title'] + ' - Mark Ashley Bell', 
         og_title = inputfile['title'],
         og_abstract = inputfile['abstract_plain'],
-        og_image = inputfile['thumbnail'] if inputfile['thumbnail'] is not None else 'index.png',
+        og_image = inputfile['thumbnail'] if inputfile['thumbnail'] is not None else 'site.png',
         og_url = inputfile['html_file'],
         comments = comments, 
         asset_version = asset_version,
