@@ -177,6 +177,7 @@ rss_feed = rss.RSSFeed(
         atomLink = "http://" + hostname + "/rss.xml",
         items = rss_posts
     )
+
 # Write out the RSS XML to a file
 f = codecs.open(web_root + '/rss.xml', 'w', 'utf-8')
 rss_feed.get_xml().writexml(f)
