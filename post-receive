@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 GIT_WORK_TREE=/home/markb/tmp/markb_co_uk/source git checkout -f
 GIT_WORK_TREE=/home/markb/tmp/markb_co_uk/source git reset --hard
 cp /home/markb/tmp/markb_co_uk/config.cfg /home/markb/tmp/markb_co_uk/source/config.cfg
