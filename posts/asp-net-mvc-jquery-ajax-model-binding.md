@@ -17,19 +17,18 @@ In a normal jQuery AJAX POST request, an object literal is usually assigned to t
 
 But when we want to POST the object literal _itself_, we need to convert it into a string representation first. `JSON.stringify` will do this for us.
 
-## Example
-
 Here's an incredibly simple example:
 
-### Model
+## C# Model
 
+    ::csharp
     public class UserModel
     {
         public int ID { get; set; }
         public string Email { get; set; }
     }
 
-### Client
+## AJAX request
 
     ::javascript
     $.ajax({
@@ -39,7 +38,7 @@ Here's an incredibly simple example:
         type: 'POST'
     });
 
-### Server
+## Controller Action Method
 
     ::csharp
     [HttpPost]
