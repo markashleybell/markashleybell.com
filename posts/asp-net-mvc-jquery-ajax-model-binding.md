@@ -3,7 +3,7 @@ Abstract: Can't get model binding working when POSTing object literals via AJAX?
 Published: 2016-04-08 07:48
 Updated: 2016-04-08 07:48
 
-Binding JavaScript object literals POSTed via AJAX to ASP.NET MVC models often raises issues. There are a couple of gotchas which I always forget about:
+Binding JavaScript object literals POSTed via AJAX to ASP.NET MVC models often raises issues. It's actually very simple, but there are a couple of gotchas which I always forget about:
 
 ## Make sure you set the correct content type for the request
 
