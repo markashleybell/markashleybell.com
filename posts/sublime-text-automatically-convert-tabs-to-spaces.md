@@ -12,7 +12,7 @@ Although there is of course a great deal of [controversy](http://programmers.sta
         def on_load(self, view):
             expand_tabs = view.settings().get("expand_tabs_on_load", False)
             if expand_tabs and view.find("\t", 0):
-                view.run_command("expand_tabs")
+                view.run_command("expand_tabs", {"set_translate_tabs": True})
                 tab_size = view.settings().get("tab_size", 0)
                 message = "Converted tab characters to {0} spaces".format(tab_size)
                 sublime.status_message(message)
