@@ -107,7 +107,7 @@ file_list = sorted(file_list, key=lambda k: k['updated'], reverse = True)
 
 # Just delete all existing HTML files to avoid orphans
 for f in glob.glob(web_root + '/*.html'):
-   os.unlink (f)
+    os.unlink (f)
 
 # Build a list of nav links to individual posts 
 # (we are ordered by created date descending, so we're adding in the correct order)
