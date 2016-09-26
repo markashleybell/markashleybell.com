@@ -31,9 +31,9 @@ Another common culprit when it comes to lengthy lines is the ternary expression.
 
 In the case above, it might be even clearer to rewrite the ternary expression as an if/else statement.
 
-## Use implicitly typed variableswhere possible
+## Use implicitly typed variables where possible
 
-Use the `var` keyword when initialising variables to reduce noise. There's no need for this:
+Use the `var` keyword to reduce noise when initialising variables. There's no need for this:
 
     :::csharp
     RatherLengthyClassName myObject = new RatherLengthyClassName();
