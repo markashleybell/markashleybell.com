@@ -171,10 +171,10 @@ o.close()
 # Generate the RSS feed XML
 rss_feed = rss.RSSFeed(
         title = "Mark Ashley Bell",
-        link = "http://" + hostname,
+        link = "https://" + hostname,
         description = "The latest articles from " + hostname,
         lastBuildDate = datetime.datetime.now(),
-        atomLink = "http://" + hostname + "/rss.xml",
+        atomLink = "https://" + hostname + "/rss.xml",
         items = rss_posts
     )
 
