@@ -7,7 +7,7 @@ Today I'd like to share a few tips for writing readable, concise C# code, reduci
 
 ## White space and indentation
 
-Indentation and white space help readers to parse related code blocks, so keep them consistent. Mismatched indentation can make your code much, much more difficult to understand. Following on from this…
+Indentation and white space help readers to parse related code blocks, so *keep them consistent*. Mismatched indentation can make your code much, much more difficult to understand. Following on from this…
 
 ## Reduce line length
 
