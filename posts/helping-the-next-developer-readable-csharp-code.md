@@ -7,7 +7,7 @@ Today I'd like to share a few tips for writing readable, concise C# code, reduci
 
 ## White space and indentation
 
-Indentation and white space help readers to parse related code blocks, so *keep them consistent*. Mismatched indentation can make your code much, much more difficult to understand. Following on from this…
+Indentation and white space help readers to parse related code blocks, so *keep them consistent*. Mismatched indentation can make your code *much* more difficult to understand. Following on from this…
 
 ## Reduce line length
 
@@ -27,7 +27,7 @@ Another common culprit when it comes to lengthy lines is the ternary expression.
     var intVar = (myVal == 1) ? Convert.ToInt32(ConfigurationManager.AppSettings["Flag"])
                               : new DynamicConfiguration(myVal).GetValue();
 
-In the case above, it might be even clearer to rewrite the ternary expression as an if/else statement.
+In the above case, it might be even clearer to rewrite the expression as an if/else statement.
 
 ## Use implicitly typed variables where possible
 
