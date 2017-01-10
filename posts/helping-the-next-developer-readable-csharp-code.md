@@ -3,13 +3,11 @@ Abstract: A few tips for writing C# code which explains itself clearly.
 Published: 2016-09-26 17:00
 Updated: 2016-09-26 17:00
 
-Today I'd like to share a few tips for writing C# code which explains itself clearly. This in turn will reduce the cognitive load for anyone maintaining your code.
-
-These are not hard rules—I've definitely broken them on more than a few occasions—but it's worth keeping them in mind.
+Today I'd like to share a few tips for writing readable, concise C# code, reducing the cognitive load for future maintainers. You shouldn't consider these “hard” rules, but it's definitely worth keeping them in mind.
 
 ## White space and indentation
 
-Indentation and white space help readers to parse related code blocks, so keep them consistent. Mismatched indentation can make your code much, much more difficult to understand. Following on from this...
+Indentation and white space help readers to parse related code blocks, so keep them consistent. Mismatched indentation can make your code much, much more difficult to understand. Following on from this…
 
 ## Reduce line length
 
@@ -48,7 +46,7 @@ The exception to this rule is when it isn't at all clear what the type will be f
     :::csharp
     Animal dog = GetThing(true);
 
-This contrived example contains a deliberately terrible method name, but we've all seen similar in real codebases...
+This contrived example contains a deliberately terrible method name, but we've all seen similar in real codebases…
 
 ## Named method parameters
 
