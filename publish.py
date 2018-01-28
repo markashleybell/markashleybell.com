@@ -11,17 +11,30 @@ import markdown
 from jinja2 import Environment, FileSystemLoader
 from rss import create_rss_xml
 
+def get_config():
+    """Load configuration from files."""
+    parser = configparser.RawConfigParser()
+    parser.read('config.cfg')
+    parser.read('versions.cfg')
 
-HEADER_REGEX_FLAGS = re.IGNORECASE | re.MULTILINE
+    return {
+        'hostname': parser.get('Site', 'hostname'),
+        'cdn1': parser.get('Site', 'cdn1'),
+        'cdn2': parser.get('Site', 'cdn2'),
+        'analytics_id': parser.get('Site', 'analytics_id'),
+        'disqus_id': parser.get('Site', 'disqus_id'),
+        'asset_version': parser.get('Versions', 'asset_version'),
+        'output_folder': 'public'
+    }
 
-HEADER_REGEX = {
-    'title': re.compile("(^Title: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
-    'published': re.compile("(^Published: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
-    'updated': re.compile("(^Updated: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
-    'abstract': re.compile("(^Abstract: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
-    'pagetype': re.compile("(^PageType: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
-    'thumbnail': re.compile("(^Thumbnail: (.*)[\r\n]+)", HEADER_REGEX_FLAGS)
-}
+def load_templates():
+    """Load Jinja templates"""
+    environment = Environment(loader=FileSystemLoader('templates/'))
+
+    return {
+        'index': environment.get_template('index.html'),
+        'post': environment.get_template('post.html')
+    }
 
 def parse_iso8601_date(date_string):
     """Parse an ISO 8601 date string and return a date object."""
@@ -47,40 +60,28 @@ def strip_post_metadata(header_regex, content):
     no_metadata = header_regex['thumbnail'].sub('', no_metadata)
     return no_metadata
 
-def get_post_data(header_regex, content, source_filename, output_filename):
+def get_post_data(header_regex, content, source_filename, output_filename, cdn_url):
     """Parse headers (date and title) from post file content."""
-    metadata = {
+    abstract_text = get_header_string(header_regex['abstract'], content)
+
+    more_link = ' <a class="more-link" href="' + output_filename + '">&rarr;</a>'
+
+    content_no_metadata = strip_post_metadata(header_regex, content)
+    body = re.sub(r"(\$\{cdn2\})", cdn_url, content_no_metadata)
+
+    return {
         'title': get_header_string(header_regex['title'], content),
         'published': get_header_date(header_regex['published'], content),
         'updated': get_header_date(header_regex['updated'], content),
-        'body': None,
-        'abstract': None,
-        'abstract_plain': None,
-        'abstract_nolink': None,
+        'body': markdown.markdown(body, extensions=['extra', 'codehilite']),
+        'abstract': markdown.markdown(abstract_text + more_link) if abstract_text else None,
+        'abstract_plain': abstract_text if abstract_text else None,
+        'abstract_nolink': markdown.markdown(abstract_text) if abstract_text else None,
         'pagetype': get_header_string(header_regex['pagetype'], content),
         'thumbnail': get_header_string(header_regex['thumbnail'], content),
         'markdown_file': source_filename,
         'html_file': output_filename
     }
-    cdn2_regex = r"(\$\{cdn2\})"
-
-    abstract_text = get_header_string(header_regex['abstract'], content)
-
-    if abstract_text:
-        more_link = ' <a class="more-link" href="' + output_filename + '">&rarr;</a>'
-        abstract_text_with_link = abstract_text + more_link
-        metadata['abstract_plain'] = re.sub(cdn2_regex, CDN2, abstract_text)
-        metadata['abstract_nolink'] = markdown.markdown(re.sub(cdn2_regex, CDN2, abstract_text))
-        metadata['abstract'] = markdown.markdown(re.sub(cdn2_regex, CDN2, abstract_text_with_link))
-
-    # Get a copy of the content with all headers removed
-    content_no_metadata = strip_post_metadata(header_regex, content)
-    body = re.sub(cdn2_regex, CDN2, content_no_metadata)
-
-    metadata['body'] = markdown.markdown(body, extensions=['extra', 'codehilite'])
-
-    return metadata
-
 
 def write_file_utf8(output_filename, content):
     """Write content to the specified file with UTF-8 encoding."""
@@ -100,34 +101,29 @@ def concatenate_files(file_spec, output_file_name):
         for line in fileinput.input(files):
             fout.write(line)
 
-# Load config
-CONFIG = configparser.RawConfigParser()
-CONFIG.read('config.cfg')
-CONFIG.read('versions.cfg')
 
-HOSTNAME = CONFIG.get('Site', 'hostname')
-CDN1 = CONFIG.get('Site', 'cdn1')
-CDN2 = CONFIG.get('Site', 'cdn2')
-ANALYTICS_ID = CONFIG.get('Site', 'analytics_id')
-DISQUS_ID = CONFIG.get('Site', 'disqus_id')
-# Asset file version (for breaking cache)
-ASSET_VERSION = CONFIG.get('Versions', 'asset_version')
-# Define web root (html output) folder
-WEB_ROOT = 'public'
+HEADER_REGEX_FLAGS = re.IGNORECASE | re.MULTILINE
 
-# Load the templates
-ENV = Environment(loader=FileSystemLoader('templates/'))
-INDEX_TEMPLATE = ENV.get_template('index.html')
-POST_TEMPLATE = ENV.get_template('post.html')
+HEADER_REGEX = {
+    'title': re.compile("(^Title: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'published': re.compile("(^Published: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'updated': re.compile("(^Updated: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'abstract': re.compile("(^Abstract: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'pagetype': re.compile("(^PageType: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'thumbnail': re.compile("(^Thumbnail: (.*)[\r\n]+)", HEADER_REGEX_FLAGS)
+}
 
-# Remove old files
-delete_files(WEB_ROOT + '/css/*.css')
-delete_files(WEB_ROOT + '/js/*.js')
-delete_files(WEB_ROOT + '/*.html')
+CONFIG = get_config()
 
-# Concatenate all minified CSS and JS files
-concatenate_files('css/*.min.css', WEB_ROOT + '/css/all.min.v' + ASSET_VERSION + '.css')
-concatenate_files('js/*.min.js', WEB_ROOT + '/js/all.min.v' + ASSET_VERSION + '.js')
+TEMPLATES = load_templates()
+
+delete_files(CONFIG["output_folder"] + '/css/*.css')
+delete_files(CONFIG["output_folder"] + '/js/*.js')
+delete_files(CONFIG["output_folder"] + '/*.html')
+
+# Concatenate minified CSS and JS files
+concatenate_files('css/*.min.css', CONFIG["output_folder"] + '/css/all.min.v' + CONFIG["asset_version"] + '.css')
+concatenate_files('js/*.min.js', CONFIG["output_folder"] + '/js/all.min.v' + CONFIG["asset_version"] + '.js')
 
 # Build a sortable list of file information
 FILE_LIST = []
@@ -140,7 +136,7 @@ for f in glob.glob('posts/*.md'):
     html_file = re.sub(r"(?si)^(.*\.)(md)$", r"\1html", markdown_file)
     # Open the Markdown file and get the first line (heading)
     md = codecs.open(f, 'r', 'utf-8')
-    post_data = get_post_data(HEADER_REGEX, md.read(), markdown_file, html_file)
+    post_data = get_post_data(HEADER_REGEX, md.read(), markdown_file, html_file, CONFIG["cdn2"])
     FILE_LIST.append(post_data)
 
 # Sort the file list by post date descending
@@ -166,7 +162,7 @@ for inputfile in FILE_LIST:
     # Populate the post template with the post data
     comments = None if inputfile['pagetype'] == 'static' else 1
 
-    post_content = POST_TEMPLATE.render(
+    post_content = TEMPLATES["post"].render(
         published=inputfile['published'],
         updated=inputfile['updated'],
         title=inputfile['title'],
@@ -179,19 +175,19 @@ for inputfile in FILE_LIST:
         og_image=inputfile['thumbnail'] if inputfile['thumbnail'] is not None else 'site.png',
         og_url=inputfile['html_file'],
         comments=comments,
-        asset_version=ASSET_VERSION,
-        cdn1=CDN1,
-        cdn2=CDN2,
-        analytics_id=ANALYTICS_ID,
-        disqus_id=DISQUS_ID
+        asset_version=CONFIG["asset_version"],
+        cdn1=CONFIG["cdn1"],
+        cdn2=CONFIG["cdn2"],
+        analytics_id=CONFIG["analytics_id"],
+        disqus_id=CONFIG["disqus_id"]
     )
 
-    write_file_utf8(WEB_ROOT + '/' + inputfile['html_file'], post_content)
+    write_file_utf8(CONFIG["output_folder"] + '/' + inputfile['html_file'], post_content)
 
 BASE_TITLE = 'Mark Ashley Bell, Freelance Web Designer/Developer'
 
 # Create the index page, passing in the joined HTML for the homepage posts
-OUTPUT = INDEX_TEMPLATE.render(
+OUTPUT = TEMPLATES["index"].render(
     posts=HOMEPAGE_POSTS,
     nav_items=NAV_ITEMS,
     meta_title=BASE_TITLE + ' - C# ASP.NET, jQuery, JavaScript and Python web development',
@@ -199,25 +195,25 @@ OUTPUT = INDEX_TEMPLATE.render(
     og_abstract='C# ASP.NET, jQuery, JavaScript and Python web development',
     og_image='site.png',
     og_url='',
-    asset_version=ASSET_VERSION,
-    cdn1=CDN1,
-    cdn2=CDN2,
-    analytics_id=ANALYTICS_ID,
-    disqus_id=DISQUS_ID
+    asset_version=CONFIG["asset_version"],
+    cdn1=CONFIG["cdn1"],
+    cdn2=CONFIG["cdn2"],
+    analytics_id=CONFIG["analytics_id"],
+    disqus_id=CONFIG["disqus_id"]
 )
 
-write_file_utf8(WEB_ROOT + '/index.html', OUTPUT)
+write_file_utf8(CONFIG["output_folder"] + '/index.html', OUTPUT)
 
 # Generate the RSS feed XML
 RSS_XML = create_rss_xml(
     title="Mark Ashley Bell",
-    link="https://" + HOSTNAME,
-    description="The latest articles from " + HOSTNAME,
+    link="https://" + CONFIG["hostname"],
+    description="The latest articles from " + CONFIG["hostname"],
     last_build_date=datetime.datetime.now(),
-    rss_url="https://" + HOSTNAME + "/rss.xml",
+    rss_url="https://" + CONFIG["hostname"] + "/rss.xml",
     items=RSS_POSTS
 )
 
-write_file_utf8(WEB_ROOT + '/rss.xml', RSS_XML)
+write_file_utf8(CONFIG["output_folder"] + '/rss.xml', RSS_XML)
 
 print('File generation complete')
