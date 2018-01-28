@@ -9,7 +9,7 @@ import os
 import re
 import markdown
 from jinja2 import Environment, FileSystemLoader
-import rss
+from rss import create_rss_xml
 
 
 def get_post_data(content, source_filename, output_filename):
@@ -199,18 +199,18 @@ O.write(OUTPUT)
 O.close()
 
 # Generate the RSS feed XML
-RSS_FEED = rss.RSSFeed(
+RSS_XML = create_rss_xml(
     title="Mark Ashley Bell",
     link="https://" + HOSTNAME,
     description="The latest articles from " + HOSTNAME,
-    lastBuildDate=datetime.datetime.now(),
-    atomLink="https://" + HOSTNAME + "/rss.xml",
+    last_build_date=datetime.datetime.now(),
+    rss_url="https://" + HOSTNAME + "/rss.xml",
     items=RSS_POSTS
 )
 
 # Write out the RSS XML to a file
 F = codecs.open(WEB_ROOT + '/rss.xml', 'w', 'utf-8')
-RSS_FEED.get_xml().writexml(F)
+RSS_XML.writexml(F)
 F.close()
 
 print('File generation complete')
