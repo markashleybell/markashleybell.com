@@ -28,7 +28,7 @@ def get_config():
     }
 
 def load_templates():
-    """Load Jinja templates"""
+    """Load Jinja templates."""
     environment = Environment(loader=FileSystemLoader('templates/'))
 
     return {
@@ -39,6 +39,10 @@ def load_templates():
 def parse_iso8601_date(date_string):
     """Parse an ISO 8601 date string and return a date object."""
     return datetime.datetime.strptime(date_string, '%Y-%m-%d %H:%M')
+
+def is_static_page(page_metadata):
+    """Returns true if the page is a static page (not a post)."""
+    return page_metadata['pagetype'] == 'static'
 
 def get_header_string(header_regex, content):
     """Get the value retrieved from the specified header."""
@@ -60,8 +64,8 @@ def strip_post_metadata(header_regex, content):
     no_metadata = header_regex['thumbnail'].sub('', no_metadata)
     return no_metadata
 
-def get_post_data(header_regex, content, source_filename, output_filename, cdn_url):
-    """Parse headers (date and title) from post file content."""
+def parse_page_data(header_regex, content, source_filename, output_filename, cdn_url):
+    """Parse headers (date and title) from page file content."""
     abstract_text = get_header_string(header_regex['abstract'], content)
 
     more_link = ' <a class="more-link" href="' + output_filename + '">&rarr;</a>'
@@ -79,8 +83,8 @@ def get_post_data(header_regex, content, source_filename, output_filename, cdn_u
         'abstract_nolink': markdown.markdown(abstract_text) if abstract_text else None,
         'pagetype': get_header_string(header_regex['pagetype'], content),
         'thumbnail': get_header_string(header_regex['thumbnail'], content),
-        'markdown_file': source_filename,
-        'html_file': output_filename
+        'source_filename': source_filename,
+        'output_filename': output_filename
     }
 
 def write_file_utf8(output_filename, content):
@@ -101,6 +105,74 @@ def concatenate_files(file_spec, output_file_name):
         for line in fileinput.input(files):
             fout.write(line)
 
+def get_page_metadata(source_file_spec, header_regex):
+    """Build a sorted list of page metadata."""
+    page_metadata = []
+
+    for path in glob.glob(source_file_spec):
+        # Get the filename portion of the path
+        source_filename = os.path.split(path)[1]
+        # Replace the .md extension with .html to get the output filename
+        output_filename = re.sub(r"(?si)^(.*\.)(md)$", r"\1html", source_filename)
+        markdown_source = codecs.open(path, 'r', 'utf-8')
+        post_data = parse_page_data(
+            header_regex,
+            markdown_source.read(),
+            source_filename,
+            output_filename,
+            CONFIG["cdn2"]
+        )
+        page_metadata.append(post_data)
+
+    # Sort the file list by updated date descending
+    return sorted(page_metadata, key=lambda k: k['updated'], reverse=True)
+
+def get_most_recent(count, page_data_list):
+    """Get the most recent N items from a list of page metadata."""
+    most_recent = []
+    for page_metadata in page_data_list:
+        if len(most_recent) < count and not is_static_page(page_metadata):
+            most_recent.append(page_metadata)
+    return most_recent
+
+def render_page(template, data, nav_items, config, base_title):
+    """Render a page template using the specified data."""
+    return template.render(
+        published=data['published'],
+        updated=data['updated'],
+        title=data['title'],
+        permalink=data['output_filename'],
+        body=data['body'],
+        nav_items=nav_items,
+        meta_title=data['title'] + base_title,
+        og_title=data['title'],
+        og_abstract=data['abstract_plain'],
+        og_image=data['thumbnail'] if data['thumbnail'] is not None else 'site.png',
+        og_url=data['output_filename'],
+        comments=None if is_static_page(data) else 1,
+        asset_version=config["asset_version"],
+        cdn1=config["cdn1"],
+        cdn2=config["cdn2"],
+        analytics_id=config["analytics_id"],
+        disqus_id=config["disqus_id"]
+    )
+
+def render_index(template, data, nav_items, config, base_title):
+    """Render an index template using the specified data."""
+    return template.render(
+        posts=data,
+        nav_items=nav_items,
+        meta_title=base_title + ' - C# ASP.NET, jQuery, JavaScript and Python web development',
+        og_title=base_title,
+        og_abstract='C# ASP.NET, jQuery, JavaScript and Python web development',
+        og_image='site.png',
+        og_url='',
+        asset_version=config["asset_version"],
+        cdn1=config["cdn1"],
+        cdn2=config["cdn2"],
+        analytics_id=config["analytics_id"],
+        disqus_id=config["disqus_id"]
+    )
 
 HEADER_REGEX_FLAGS = re.IGNORECASE | re.MULTILINE
 
@@ -121,97 +193,33 @@ delete_files(CONFIG["output_folder"] + '/css/*.css')
 delete_files(CONFIG["output_folder"] + '/js/*.js')
 delete_files(CONFIG["output_folder"] + '/*.html')
 
-# Concatenate minified CSS and JS files
 concatenate_files('css/*.min.css', CONFIG["output_folder"] + '/css/all.min.v' + CONFIG["asset_version"] + '.css')
 concatenate_files('js/*.min.js', CONFIG["output_folder"] + '/js/all.min.v' + CONFIG["asset_version"] + '.js')
 
-# Build a sortable list of file information
-FILE_LIST = []
-
-# Loop through all Markdown files in the posts folder
-for f in glob.glob('posts/*.md'):
-    # Get the filename portion of the path
-    markdown_file = os.path.split(f)[1]
-    # Replace the .md extension with .html to get the output filename
-    html_file = re.sub(r"(?si)^(.*\.)(md)$", r"\1html", markdown_file)
-    # Open the Markdown file and get the first line (heading)
-    md = codecs.open(f, 'r', 'utf-8')
-    post_data = get_post_data(HEADER_REGEX, md.read(), markdown_file, html_file, CONFIG["cdn2"])
-    FILE_LIST.append(post_data)
-
-# Sort the file list by post date descending
-FILE_LIST = sorted(FILE_LIST, key=lambda k: k['updated'], reverse=True)
+PAGE_DATA_LIST = get_page_metadata('posts/*.md', HEADER_REGEX)
 
 # Build a list of nav links to individual posts (which are already
 # ordered by created date desc, so we're adding in the correct order)
-NAV_ITEMS = [f for f in FILE_LIST if f['pagetype'] != 'static']
+NAV_ITEMS = [p for p in PAGE_DATA_LIST if not is_static_page(p)]
 
-# Collect the first n posts to display on the home page
-HOMEPAGE_POSTS = []
-HOMEPAGE_POST_COUNT = 5
-RSS_POSTS = []
-RSS_POST_COUNT = 10
-
-for inputfile in FILE_LIST:
-    # If there are less than 5 posts in the homepage list, add this one
-    if len(HOMEPAGE_POSTS) < HOMEPAGE_POST_COUNT and inputfile['pagetype'] != 'static':
-        HOMEPAGE_POSTS.append(inputfile)
-    # Add the raw post details to the RSS feed
-    if len(RSS_POSTS) < RSS_POST_COUNT and inputfile['pagetype'] != 'static':
-        RSS_POSTS.append(inputfile)
-    # Populate the post template with the post data
-    comments = None if inputfile['pagetype'] == 'static' else 1
-
-    post_content = TEMPLATES["post"].render(
-        published=inputfile['published'],
-        updated=inputfile['updated'],
-        title=inputfile['title'],
-        permalink=inputfile['html_file'],
-        body=inputfile['body'],
-        nav_items=NAV_ITEMS,
-        meta_title=inputfile['title'] + ' - Mark Ashley Bell',
-        og_title=inputfile['title'],
-        og_abstract=inputfile['abstract_plain'],
-        og_image=inputfile['thumbnail'] if inputfile['thumbnail'] is not None else 'site.png',
-        og_url=inputfile['html_file'],
-        comments=comments,
-        asset_version=CONFIG["asset_version"],
-        cdn1=CONFIG["cdn1"],
-        cdn2=CONFIG["cdn2"],
-        analytics_id=CONFIG["analytics_id"],
-        disqus_id=CONFIG["disqus_id"]
-    )
-
-    write_file_utf8(CONFIG["output_folder"] + '/' + inputfile['html_file'], post_content)
+for page_data in PAGE_DATA_LIST:
+    base_page_title = ' - Mark Ashley Bell'
+    page_content = render_page(TEMPLATES["post"], page_data, NAV_ITEMS, CONFIG, base_page_title)
+    write_file_utf8(CONFIG["output_folder"] + '/' + page_data['output_filename'], page_content)
 
 BASE_TITLE = 'Mark Ashley Bell, Freelance Web Designer/Developer'
 
-# Create the index page, passing in the joined HTML for the homepage posts
-OUTPUT = TEMPLATES["index"].render(
-    posts=HOMEPAGE_POSTS,
-    nav_items=NAV_ITEMS,
-    meta_title=BASE_TITLE + ' - C# ASP.NET, jQuery, JavaScript and Python web development',
-    og_title=BASE_TITLE,
-    og_abstract='C# ASP.NET, jQuery, JavaScript and Python web development',
-    og_image='site.png',
-    og_url='',
-    asset_version=CONFIG["asset_version"],
-    cdn1=CONFIG["cdn1"],
-    cdn2=CONFIG["cdn2"],
-    analytics_id=CONFIG["analytics_id"],
-    disqus_id=CONFIG["disqus_id"]
-)
+INDEX = render_index(TEMPLATES["index"], get_most_recent(5, PAGE_DATA_LIST), NAV_ITEMS, CONFIG, BASE_TITLE)
 
-write_file_utf8(CONFIG["output_folder"] + '/index.html', OUTPUT)
+write_file_utf8(CONFIG["output_folder"] + '/index.html', INDEX)
 
-# Generate the RSS feed XML
 RSS_XML = create_rss_xml(
     title="Mark Ashley Bell",
     link="https://" + CONFIG["hostname"],
     description="The latest articles from " + CONFIG["hostname"],
     last_build_date=datetime.datetime.now(),
     rss_url="https://" + CONFIG["hostname"] + "/rss.xml",
-    items=RSS_POSTS
+    items=get_most_recent(10, PAGE_DATA_LIST)
 )
 
 write_file_utf8(CONFIG["output_folder"] + '/rss.xml', RSS_XML)

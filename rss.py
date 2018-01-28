@@ -36,7 +36,7 @@ def create_rss_item_xml(xml, base_url, item_data):
     item_element = create_xml_element(xml, 'item')
 
     title_element = create_xml_element(xml, 'title', item_data['title'])
-    link_element = create_xml_element(xml, 'link', base_url + '/' + item_data['html_file'])
+    link_element = create_xml_element(xml, 'link', base_url + '/' + item_data['output_filename'])
 
     description_html = markdown.markdown(item_data['abstract_nolink'], extensions=['extra'])
     description_element = create_xml_element(xml, 'description', description_html)
@@ -44,7 +44,7 @@ def create_rss_item_xml(xml, base_url, item_data):
     # Manually updating the 'updated' header value for a post
     # will cause readers to re-download the item
     time_stamp = "{0:d}".format(unix_timestamp(item_data['updated']))
-    guid = base_url + '/' + item_data['html_file'] + '?d=' + time_stamp
+    guid = base_url + '/' + item_data['output_filename'] + '?d=' + time_stamp
     guid_element = create_xml_element(xml, 'guid', guid)
     guid_element.setAttribute('isPermaLink', 'false')
 
