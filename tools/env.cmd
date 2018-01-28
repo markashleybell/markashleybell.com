@@ -1,3 +1,3 @@
 @echo off
-..\scripts\activate
+venv\scripts\activate
 cls
