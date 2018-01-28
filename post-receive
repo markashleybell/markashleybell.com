@@ -1,9 +1,0 @@
-#!/bin/bash
-GIT_WORK_TREE=/home/markb/tmp/markb_co_uk/source git checkout -f
-GIT_WORK_TREE=/home/markb/tmp/markb_co_uk/source git reset --hard
-cp /home/markb/tmp/markb_co_uk/config.cfg /home/markb/tmp/markb_co_uk/source/config.cfg
-cd /home/markb/tmp/markb_co_uk/source/
-python2.7 publish.py
-rm -rf /home/markb/webapps/markb_co_uk/*
-cp -r /home/markb/tmp/markb_co_uk/source/public/* /home/markb/webapps/markb_co_uk/
-cp /home/markb/tmp/markb_co_uk/source/public/.htaccess /home/markb/webapps/markb_co_uk/.htaccess
