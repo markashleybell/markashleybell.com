@@ -12,65 +12,93 @@ from jinja2 import Environment, FileSystemLoader
 from rss import create_rss_xml
 
 
-def get_post_data(content, source_filename, output_filename):
+HEADER_REGEX_FLAGS = re.IGNORECASE | re.MULTILINE
+
+HEADER_REGEX = {
+    'title': re.compile("(^Title: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'published': re.compile("(^Published: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'updated': re.compile("(^Updated: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'abstract': re.compile("(^Abstract: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'pagetype': re.compile("(^PageType: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    'thumbnail': re.compile("(^Thumbnail: (.*)[\r\n]+)", HEADER_REGEX_FLAGS)
+}
+
+def parse_iso8601_date(date_string):
+    """Parse an ISO 8601 date string and return a date object."""
+    return datetime.datetime.strptime(date_string, '%Y-%m-%d %H:%M')
+
+def get_header_string(header_regex, content):
+    """Get the value retrieved from the specified header."""
+    match = header_regex.search(content)
+    return match.group(2).strip() if match else None
+
+def get_header_date(header_regex, content):
+    """Get the value retrieved from the specified header."""
+    header_string = get_header_string(header_regex, content)
+    return parse_iso8601_date(header_string) if header_string else None
+
+def strip_post_metadata(header_regex, content):
+    """Strip the headers from the content of a post."""
+    no_metadata = header_regex['title'].sub('', content)
+    no_metadata = header_regex['published'].sub('', no_metadata)
+    no_metadata = header_regex['updated'].sub('', no_metadata)
+    no_metadata = header_regex['abstract'].sub('', no_metadata)
+    no_metadata = header_regex['pagetype'].sub('', no_metadata)
+    no_metadata = header_regex['thumbnail'].sub('', no_metadata)
+    return no_metadata
+
+def get_post_data(header_regex, content, source_filename, output_filename):
     """Parse headers (date and title) from post file content."""
     metadata = {
-        'title': None,
-        'published': None,
-        'updated': None,
+        'title': get_header_string(header_regex['title'], content),
+        'published': get_header_date(header_regex['published'], content),
+        'updated': get_header_date(header_regex['updated'], content),
         'body': None,
         'abstract': None,
         'abstract_plain': None,
         'abstract_nolink': None,
-        'pagetype': None,
-        'thumbnail': None,
+        'pagetype': get_header_string(header_regex['pagetype'], content),
+        'thumbnail': get_header_string(header_regex['thumbnail'], content),
         'markdown_file': source_filename,
         'html_file': output_filename
     }
     cdn2_regex = r"(\$\{cdn2\})"
-    regex = {
-        'title': re.compile("(^Title: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE),
-        'published': re.compile("(^Published: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE),
-        'updated': re.compile("(^Updated: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE),
-        'abstract': re.compile("(^Abstract: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE),
-        'pagetype': re.compile("(^PageType: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE),
-        'thumbnail': re.compile("(^Thumbnail: (.*)[\r\n]+)", re.IGNORECASE | re.MULTILINE)
-    }
-    match = regex['title'].search(content)
-    if match:
-        metadata['title'] = match.group(2).strip()
-    match = regex['published'].search(content)
-    if match:
-        metadata['published'] = datetime.datetime.strptime(match.group(2).strip(), '%Y-%m-%d %H:%M')
-    match = regex['updated'].search(content)
-    if match:
-        metadata['updated'] = datetime.datetime.strptime(match.group(2).strip(), '%Y-%m-%d %H:%M')
-    match = regex['abstract'].search(content)
-    if match:
-        abstract_text = match.group(2).strip()
+
+    abstract_text = get_header_string(header_regex['abstract'], content)
+
+    if abstract_text:
         more_link = ' <a class="more-link" href="' + output_filename + '">&rarr;</a>'
         abstract_text_with_link = abstract_text + more_link
         metadata['abstract_plain'] = re.sub(cdn2_regex, CDN2, abstract_text)
         metadata['abstract_nolink'] = markdown.markdown(re.sub(cdn2_regex, CDN2, abstract_text))
         metadata['abstract'] = markdown.markdown(re.sub(cdn2_regex, CDN2, abstract_text_with_link))
-    match = regex['pagetype'].search(content)
-    if match:
-        metadata['pagetype'] = match.group(2).strip()
-    match = regex['thumbnail'].search(content)
-    if match:
-        metadata['thumbnail'] = match.group(2).strip()
-    # Remove the header lines if they were present
-    content_no_metadata = regex['title'].sub('', content)
-    content_no_metadata = regex['published'].sub('', content_no_metadata)
-    content_no_metadata = regex['updated'].sub('', content_no_metadata)
-    content_no_metadata = regex['abstract'].sub('', content_no_metadata)
-    content_no_metadata = regex['pagetype'].sub('', content_no_metadata)
-    content_no_metadata = regex['thumbnail'].sub('', content_no_metadata)
-    # Populate the body field
+
+    # Get a copy of the content with all headers removed
+    content_no_metadata = strip_post_metadata(header_regex, content)
     body = re.sub(cdn2_regex, CDN2, content_no_metadata)
+
     metadata['body'] = markdown.markdown(body, extensions=['extra', 'codehilite'])
+
     return metadata
 
+
+def write_file_utf8(output_filename, content):
+    """Write content to the specified file with UTF-8 encoding."""
+    codec = codecs.open(output_filename, 'w', 'utf-8')
+    codec.write(content)
+    codec.close()
+
+def delete_files(file_spec):
+    """Delete all files matching file_spec glob pattern."""
+    for file_name in glob.glob(file_spec):
+        os.remove(file_name)
+
+def concatenate_files(file_spec, output_file_name):
+    """Concatenate all files matching file_spec glob pattern."""
+    files = [f for f in glob.glob(file_spec)]
+    with open(output_file_name, 'w') as fout:
+        for line in fileinput.input(files):
+            fout.write(line)
 
 # Load config
 CONFIG = configparser.RawConfigParser()
@@ -93,24 +121,13 @@ INDEX_TEMPLATE = ENV.get_template('index.html')
 POST_TEMPLATE = ENV.get_template('post.html')
 
 # Remove old files
-for f in glob.glob(WEB_ROOT + '/css/*.css'):
-    os.remove(f)
-for f in glob.glob(WEB_ROOT + '/js/*.js'):
-    os.remove(f)
-for f in glob.glob(WEB_ROOT + '/*.html'):
-    os.remove(f)
+delete_files(WEB_ROOT + '/css/*.css')
+delete_files(WEB_ROOT + '/js/*.js')
+delete_files(WEB_ROOT + '/*.html')
 
-# Concatenate all minified CSS files
-CSS_FILES = [f for f in glob.glob('css/*.min.css')]
-with open(WEB_ROOT + '/css/all.min.v' + ASSET_VERSION + '.css', 'w') as fout:
-    for line in fileinput.input(CSS_FILES):
-        fout.write(line)
-
-# Concatenate all minified JS files
-JS_FILES = [f for f in glob.glob('js/*.min.js')]
-with open(WEB_ROOT + '/js/all.min.v' + ASSET_VERSION + '.js', 'w') as fout:
-    for line in fileinput.input(JS_FILES):
-        fout.write(line)
+# Concatenate all minified CSS and JS files
+concatenate_files('css/*.min.css', WEB_ROOT + '/css/all.min.v' + ASSET_VERSION + '.css')
+concatenate_files('js/*.min.js', WEB_ROOT + '/js/all.min.v' + ASSET_VERSION + '.js')
 
 # Build a sortable list of file information
 FILE_LIST = []
@@ -123,18 +140,14 @@ for f in glob.glob('posts/*.md'):
     html_file = re.sub(r"(?si)^(.*\.)(md)$", r"\1html", markdown_file)
     # Open the Markdown file and get the first line (heading)
     md = codecs.open(f, 'r', 'utf-8')
-    post_data = get_post_data(md.read(), markdown_file, html_file)
+    post_data = get_post_data(HEADER_REGEX, md.read(), markdown_file, html_file)
     FILE_LIST.append(post_data)
 
 # Sort the file list by post date descending
 FILE_LIST = sorted(FILE_LIST, key=lambda k: k['updated'], reverse=True)
 
-# Just delete all existing HTML files to avoid orphans
-for f in glob.glob(WEB_ROOT + '/*.html'):
-    os.unlink(f)
-
-# Build a list of nav links to individual posts
-# (we are ordered by created date descending, so we're adding in the correct order)
+# Build a list of nav links to individual posts (which are already
+# ordered by created date desc, so we're adding in the correct order)
 NAV_ITEMS = [f for f in FILE_LIST if f['pagetype'] != 'static']
 
 # Collect the first n posts to display on the home page
@@ -152,7 +165,8 @@ for inputfile in FILE_LIST:
         RSS_POSTS.append(inputfile)
     # Populate the post template with the post data
     comments = None if inputfile['pagetype'] == 'static' else 1
-    output = POST_TEMPLATE.render(
+
+    post_content = POST_TEMPLATE.render(
         published=inputfile['published'],
         updated=inputfile['updated'],
         title=inputfile['title'],
@@ -171,10 +185,8 @@ for inputfile in FILE_LIST:
         analytics_id=ANALYTICS_ID,
         disqus_id=DISQUS_ID
     )
-    # Write out the processed HTML file for this post
-    o = codecs.open(WEB_ROOT + '/' + inputfile['html_file'], 'w', 'utf-8')
-    o.write(output)
-    o.close()
+
+    write_file_utf8(WEB_ROOT + '/' + inputfile['html_file'], post_content)
 
 BASE_TITLE = 'Mark Ashley Bell, Freelance Web Designer/Developer'
 
@@ -193,10 +205,8 @@ OUTPUT = INDEX_TEMPLATE.render(
     analytics_id=ANALYTICS_ID,
     disqus_id=DISQUS_ID
 )
-# Write out the processed HTML file for the index page
-O = codecs.open(WEB_ROOT + '/index.html', 'w', 'utf-8')
-O.write(OUTPUT)
-O.close()
+
+write_file_utf8(WEB_ROOT + '/index.html', OUTPUT)
 
 # Generate the RSS feed XML
 RSS_XML = create_rss_xml(
@@ -208,9 +218,6 @@ RSS_XML = create_rss_xml(
     items=RSS_POSTS
 )
 
-# Write out the RSS XML to a file
-F = codecs.open(WEB_ROOT + '/rss.xml', 'w', 'utf-8')
-RSS_XML.writexml(F)
-F.close()
+write_file_utf8(WEB_ROOT + '/rss.xml', RSS_XML)
 
 print('File generation complete')

@@ -90,4 +90,4 @@ def create_rss_xml(title, link, description, last_build_date, rss_url, items):
 
     xml.appendChild(rss_element)
 
-    return xml
+    return xml.toxml()
