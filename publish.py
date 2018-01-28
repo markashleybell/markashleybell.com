@@ -1,5 +1,5 @@
 # This Python file uses the following encoding: utf-8
-import argparse, markdown, datetime, codecs, re, os, fileinput, glob, time, re, ConfigParser, rss
+import argparse, markdown, datetime, codecs, re, os, fileinput, glob, time, re, configparser, rss
 from jinja2 import Template, Environment, FileSystemLoader
 
 
@@ -52,7 +52,7 @@ def get_post_data(content, markdown_file, html_file):
 
 
 # Load config
-config = ConfigParser.RawConfigParser()
+config = configparser.RawConfigParser()
 config.read('config.cfg')
 config.read('versions.cfg')
 
@@ -183,4 +183,4 @@ f = codecs.open(web_root + '/rss.xml', 'w', 'utf-8')
 rss_feed.get_xml().writexml(f)
 f.close()
 
-print 'File generation complete'
+print('File generation complete')
