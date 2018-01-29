@@ -1,8 +1,8 @@
-Rebuild of my personal site using static file generation.
+# Static site generator for markb.co.uk
 
-Run `python publish.py [--publish|-p]` to generate site files, including the publish argument to upload the files via FTP.
+Run `python publish.py` to generate site HTML in `/public`.
 
-## Bootstrap components used:
+## Bootstrap components used
 
 ### Common CSS
 
