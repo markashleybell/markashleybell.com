@@ -13,7 +13,7 @@ def get_config():
     parser.read("versions.cfg")
 
     return {
-        "hostname": parser.get("Site", "hostname"),
+        "site_url": parser.get("Site", "site_url"),
         "cdn1": parser.get("Site", "cdn1"),
         "cdn2": parser.get("Site", "cdn2"),
         "analytics_id": parser.get("Site", "analytics_id"),

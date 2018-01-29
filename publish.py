@@ -58,10 +58,10 @@ write_file_utf8(CONFIG["output_folder"] + "/index.html", INDEX)
 
 RSS_TEMPLATE_DATA = {
     "title": "Mark Ashley Bell",
-    "link": "https://" + CONFIG["hostname"],
-    "description": "The latest articles from " + CONFIG["hostname"],
+    "link": CONFIG["site_url"],
+    "description": "The latest articles from markb.co.uk",
     "last_build_date": datetime.datetime.now(),
-    "rss_url": "https://" + CONFIG["hostname"] + "/rss.xml"
+    "rss_url": CONFIG["site_url"] + "/rss.xml"
 }
 
 RSS_XML = create_rss_xml(RSS_TEMPLATE_DATA, get_most_recent(10, PAGE_DATA_LIST))
