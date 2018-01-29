@@ -32,24 +32,17 @@ NAV_ITEMS = [p for p in PAGE_DATA_LIST if not is_static_page(p)]
 PAGE_TEMPLATE_DATA = {
     "template": TEMPLATES["post"],
     "config": CONFIG,
-    "nav_items": NAV_ITEMS,
-    "base_title": " - Mark Ashley Bell"
+    "nav_items": NAV_ITEMS
 }
 
 for page_data in PAGE_DATA_LIST:
     page_content = render_page(PAGE_TEMPLATE_DATA, page_data)
     write_file_utf8(CONFIG["output_folder"] + "/" + page_data["output_filename"], page_content)
 
-INDEX_TITLE = "Mark Ashley Bell, Freelance Web Designer/Developer"
-INDEX_ABSTRACT = "C# ASP.NET, jQuery, JavaScript and Python web development"
-
 INDEX_TEMPLATE_DATA = {
     "template": TEMPLATES["index"],
     "config": CONFIG,
-    "nav_items": NAV_ITEMS,
-    "title": INDEX_TITLE,
-    "meta_title": "{} - {}".format(INDEX_TITLE, INDEX_ABSTRACT),
-    "abstract": INDEX_ABSTRACT
+    "nav_items": NAV_ITEMS
 }
 
 INDEX = render_index(INDEX_TEMPLATE_DATA, get_most_recent(5, PAGE_DATA_LIST))
@@ -57,9 +50,9 @@ INDEX = render_index(INDEX_TEMPLATE_DATA, get_most_recent(5, PAGE_DATA_LIST))
 write_file_utf8(CONFIG["output_folder"] + "/index.html", INDEX)
 
 RSS_TEMPLATE_DATA = {
-    "title": "Mark Ashley Bell",
+    "title":  CONFIG["site_name"],
     "link": CONFIG["site_url"],
-    "description": "The latest articles from markb.co.uk",
+    "description": CONFIG["rss_description"],
     "last_build_date": datetime.datetime.now(),
     "rss_url": CONFIG["site_url"] + "/rss.xml"
 }

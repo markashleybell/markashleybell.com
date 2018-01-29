@@ -91,6 +91,7 @@ def get_most_recent(count, page_data_list):
 def render_page(template_data, data):
     """Render a page template using the specified data."""
     config = template_data["config"]
+    meta_title = "{} - {}".format(data["title"], config["site_name"])
     return template_data["template"].render(
         published=data["published"],
         updated=data["updated"],
@@ -98,7 +99,7 @@ def render_page(template_data, data):
         permalink=data["output_filename"],
         body=data["body"],
         nav_items=template_data["nav_items"],
-        meta_title=data["title"] + template_data["base_title"],
+        meta_title=meta_title,
         og_title=data["title"],
         og_abstract=data["abstract_plain"],
         og_image=data["thumbnail"] if data["thumbnail"] is not None else "site.png",
@@ -114,12 +115,13 @@ def render_page(template_data, data):
 def render_index(template_data, data):
     """Render an index template using the specified data."""
     config = template_data["config"]
+    meta_title = "{} - {}".format(config["index_title"], config["index_abstract"])
     return template_data["template"].render(
         posts=data,
         nav_items=template_data["nav_items"],
-        meta_title=template_data["meta_title"],
-        og_title=template_data["title"],
-        og_abstract=template_data["abstract"],
+        meta_title=meta_title,
+        og_title=config["index_title"],
+        og_abstract=config["index_abstract"],
         og_image="site.png",
         og_url="",
         site_url=config["site_url"],

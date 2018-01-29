@@ -10,14 +10,17 @@ def get_config():
     """Load configuration from files."""
     parser = configparser.RawConfigParser()
     parser.read("config.cfg")
-    parser.read("versions.cfg")
 
     return {
+        "site_name": parser.get("Site", "site_name"),
         "site_url": parser.get("Site", "site_url"),
         "cdn1": parser.get("Site", "cdn1"),
         "cdn2": parser.get("Site", "cdn2"),
         "analytics_id": parser.get("Site", "analytics_id"),
         "disqus_id": parser.get("Site", "disqus_id"),
+        "index_title": parser.get("Site", "index_title"),
+        "index_abstract": parser.get("Site", "index_abstract"),
+        "rss_description": parser.get("Site", "rss_description"),
         "output_folder": "public"
     }
 
