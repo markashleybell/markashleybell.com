@@ -1,0 +1,24 @@
+{
+  "name": "markb.co.uk",
+  "version": "1.0.0",
+  "description": "Run `python publish.py` to generate site HTML in `/public`.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markashleybell/markb.co.uk.git"
+  },
+  "author": "Mark Ashley Bell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/markashleybell/markb.co.uk/issues"
+  },
+  "homepage": "https://github.com/markashleybell/markb.co.uk#readme",
+  "devDependencies": {
+    "gulp": "3.9.1",
+    "gulp-sass": "3.1.0",
+    "node-sass": "4.7.2"
+  }
+}

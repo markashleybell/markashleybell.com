@@ -9,4 +9,6 @@ __pycache__
 rss.xml
 *.sublime-workspace
 venv/
+node_modules/
 *.min.*
+css/styles.css
