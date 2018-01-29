@@ -18,7 +18,6 @@ def get_config():
         "cdn2": parser.get("Site", "cdn2"),
         "analytics_id": parser.get("Site", "analytics_id"),
         "disqus_id": parser.get("Site", "disqus_id"),
-        "asset_version": parser.get("Versions", "asset_version"),
         "output_folder": "public"
     }
 
