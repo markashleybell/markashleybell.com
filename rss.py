@@ -1,4 +1,4 @@
-"""RSS utilities"""
+"""RSS utility functions."""
 
 from datetime import datetime
 from xml.dom.minidom import Document
@@ -58,8 +58,10 @@ def create_rss_item_xml(xml, base_url, item_data):
 
     return item_element
 
-def create_rss_xml(title, link, description, last_build_date, rss_url, items):
+def create_rss_xml(template_data, items):
     """Generate RSS feed XML from metadata."""
+    last_build_date = rfc822_date(template_data["last_build_date"])
+
     xml = Document()
 
     rss_element = create_xml_element(xml, "rss")
@@ -67,13 +69,13 @@ def create_rss_xml(title, link, description, last_build_date, rss_url, items):
     rss_element.setAttribute("xmlns:atom", "http://www.w3.org/2005/Atom")
 
     channel_element = create_xml_element(xml, "channel")
-    title_element = create_xml_element(xml, "title", title)
-    link_element = create_xml_element(xml, "link", link)
-    description_element = create_xml_element(xml, "description", description)
-    last_build_date_element = create_xml_element(xml, "lastBuildDate", rfc822_date(last_build_date))
+    title_element = create_xml_element(xml, "title", template_data["title"])
+    link_element = create_xml_element(xml, "link", template_data["link"])
+    description_element = create_xml_element(xml, "description", template_data["description"])
+    last_build_date_element = create_xml_element(xml, "lastBuildDate", last_build_date)
 
     atom_link_element = create_xml_element(xml, "atom:link")
-    atom_link_element.setAttribute("href", rss_url)
+    atom_link_element.setAttribute("href", template_data["rss_url"])
     atom_link_element.setAttribute("rel", "self")
     atom_link_element.setAttribute("type", "application/rss+xml")
 
@@ -84,7 +86,7 @@ def create_rss_xml(title, link, description, last_build_date, rss_url, items):
     channel_element.appendChild(atom_link_element)
 
     for i in items:
-        channel_element.appendChild(create_rss_item_xml(xml, link, i))
+        channel_element.appendChild(create_rss_item_xml(xml, template_data["link"], i))
 
     rss_element.appendChild(channel_element)
 
