@@ -3,7 +3,7 @@
 import datetime
 import re
 from generator import get_page_metadata, is_static_page, render_index, render_page, get_most_recent
-from ioutils import get_config, load_templates, delete_files, concatenate_files, write_file_utf8
+from ioutils import get_config, load_templates, delete_files, write_file_utf8
 from rss import create_rss_xml
 
 HEADER_REGEX_FLAGS = re.IGNORECASE | re.MULTILINE
@@ -21,12 +21,7 @@ CONFIG = get_config()
 
 TEMPLATES = load_templates()
 
-delete_files(CONFIG["output_folder"] + "/css/*.css")
-delete_files(CONFIG["output_folder"] + "/js/*.js")
 delete_files(CONFIG["output_folder"] + "/*.html")
-
-concatenate_files("css/*.min.css", CONFIG["output_folder"] + "/css/all.min.v" + CONFIG["asset_version"] + ".css")
-concatenate_files("js/*.min.js", CONFIG["output_folder"] + "/js/all.min.v" + CONFIG["asset_version"] + ".js")
 
 PAGE_DATA_LIST = get_page_metadata("posts/*.md", HEADER_REGEX, CONFIG["cdn2"])
 
@@ -66,7 +61,7 @@ RSS_TEMPLATE_DATA = {
     "link": "https://" + CONFIG["hostname"],
     "description": "The latest articles from " + CONFIG["hostname"],
     "last_build_date": datetime.datetime.now(),
-    "rss_url": "https://" + CONFIG["hostname"] + "/rss.xml",
+    "rss_url": "https://" + CONFIG["hostname"] + "/rss.xml"
 }
 
 RSS_XML = create_rss_xml(RSS_TEMPLATE_DATA, get_most_recent(10, PAGE_DATA_LIST))

@@ -2,7 +2,6 @@
 
 import codecs
 import configparser
-import fileinput
 import glob
 import os
 from jinja2 import Environment, FileSystemLoader
@@ -42,10 +41,3 @@ def delete_files(file_spec):
     """Delete all files matching file_spec glob pattern."""
     for file_name in glob.glob(file_spec):
         os.remove(file_name)
-
-def concatenate_files(file_spec, output_file_name):
-    """Concatenate all files matching file_spec glob pattern."""
-    files = [f for f in glob.glob(file_spec)]
-    with open(output_file_name, "w") as fout:
-        for line in fileinput.input(files):
-            fout.write(line)
