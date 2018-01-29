@@ -5,14 +5,14 @@
     "tasks": [
         {
             "type": "gulp",
-            "task": "sass",
+            "task": "watch-typescript",
             "problemMatcher": [
-                "$node-sass"
+                "$tslint5"
             ]
         },
         {
             "type": "gulp",
-            "task": "watch",
+            "task": "watch-sass",
             "problemMatcher": [
                 "$node-sass"
             ]

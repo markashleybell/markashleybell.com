@@ -12,3 +12,4 @@ venv/
 node_modules/
 *.min.*
 css/styles.css
+js/main.js
