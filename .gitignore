@@ -11,5 +11,5 @@ rss.xml
 venv/
 node_modules/
 *.min.*
-css/styles.css
+css/main.css
 js/main.js
