@@ -1,57 +1,43 @@
-var gulp = require('gulp'),
-    sass = require('gulp-sass'),
-    typescript = require('gulp-typescript'),
-    cleanCSS = require('gulp-clean-css'),
-    uglify = require('gulp-uglify'),
-    concat = require('gulp-concat'),
-    rename = require('gulp-rename');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const typescript = require('gulp-typescript');
+const cleanCSS = require('gulp-clean-css');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
+const rename = require('gulp-rename');
 
-var sources = {
+const tsProject = typescript.createProject('tsconfig.json');
+
+const sources = {
     scss: './css/*.scss',
     css: './css/*.css',
     ts: './js/*.ts',
     js: './js/*.js'
 };
 
-var output = {
+const output = {
     css: './public/css',
     js: './public/js'
 };
 
-gulp.task('compile-sass', function() {
-    return gulp.src(sources.scss)
-               .pipe(sass())
-               .pipe(gulp.dest(function(f) {
-                   return f.base;
-               }));
-});
+const scss = gulp.src(sources.scss);
+const css = gulp.src(sources.css);
+const ts = gulp.src(sources.ts);
+const js = gulp.src(sources.js);
 
-gulp.task('compile-typescript', function () {
-    return gulp.src(sources.ts)
-               .pipe(typescript())
-               .pipe(gulp.dest(function(f) {
-                   return f.base;
-               }));
-});
+const toSameFolder = gulp.dest(filename => filename.base);
 
-gulp.task('pack-js', ['compile-typescript'], function () {
-    return gulp.src(sources.js)
-               .pipe(uglify())
-               .pipe(concat('bundle.js'))
-               .pipe(gulp.dest(output.js));
-});
+const compileScss = () => scss.pipe(sass()).pipe(toSameFolder);
+const compileTs = () => ts.pipe(tsProject()).pipe(toSameFolder);
 
-gulp.task('pack-css', ['compile-sass'], function () {
-    return gulp.src(sources.css)
-               .pipe(cleanCSS())
-               .pipe(concat('bundle.css'))
-               .pipe(gulp.dest(output.css));
-});
+const packCss = () => css.pipe(cleanCSS()).pipe(concat('bundle.css')).pipe(gulp.dest(output.css));
+const packJs = () => js.pipe(uglify()).pipe(concat('bundle.js')).pipe(gulp.dest(output.js));
 
-gulp.task('watch-typescript', function() {
-    gulp.watch(sources.ts, ['pack-js']);
-});
+gulp.task('compile-scss', compileScss);
+gulp.task('compile-typescript', compileTs);
 
-gulp.task('watch-sass', function() {
-    gulp.watch(sources.scss, ['pack-css']);
-});
+gulp.task('pack-css', ['compile-scss'], packCss);
+gulp.task('pack-js', ['compile-typescript'], packJs);
+
+gulp.task('watch-typescript', () => gulp.watch(sources.ts, ['pack-js']));
+gulp.task('watch-scss', () => gulp.watch(sources.scss, ['pack-css']));

@@ -12,7 +12,7 @@
         },
         {
             "type": "gulp",
-            "task": "watch-sass",
+            "task": "watch-scss",
             "problemMatcher": [
                 "$node-sass"
             ]

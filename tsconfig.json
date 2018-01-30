@@ -1,7 +1,9 @@
 {
+    "files": [
+        "js/**/*.ts"
+    ],
     "compilerOptions": {
         "target": "es5",
-        "sourceMap": false,
         "noImplicitAny": true,
         "noEmitOnError": true,
         "lib": [
@@ -9,9 +11,5 @@
             "es5",
             "es2015.iterable"
         ]
-    },
-    "exclude": [
-        "node_modules",
-        "**/*.d.ts"
-    ]
+    }
 }
