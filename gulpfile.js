@@ -19,33 +19,33 @@ var output = {
 };
 
 gulp.task('compile-sass', function() {
-    gulp.src(sources.scss)
-        .pipe(sass())
-        .pipe(gulp.dest(function(f) {
-            return f.base;
-        }));
+    return gulp.src(sources.scss)
+               .pipe(sass())
+               .pipe(gulp.dest(function(f) {
+                   return f.base;
+               }));
 });
 
 gulp.task('compile-typescript', function () {
-    gulp.src(sources.ts)
-        .pipe(typescript())
-        .pipe(gulp.dest(function(f) {
-            return f.base;
-        }));
+    return gulp.src(sources.ts)
+               .pipe(typescript())
+               .pipe(gulp.dest(function(f) {
+                   return f.base;
+               }));
 });
 
 gulp.task('pack-js', ['compile-typescript'], function () {
-    gulp.src(sources.js)
-        .pipe(uglify())
-        .pipe(concat('bundle.js'))
-        .pipe(gulp.dest(output.js));
+    return gulp.src(sources.js)
+               .pipe(uglify())
+               .pipe(concat('bundle.js'))
+               .pipe(gulp.dest(output.js));
 });
 
 gulp.task('pack-css', ['compile-sass'], function () {
-    gulp.src(sources.css)
-        .pipe(cleanCSS())
-        .pipe(concat('bundle.css'))
-        .pipe(gulp.dest(output.css));
+    return gulp.src(sources.css)
+               .pipe(cleanCSS())
+               .pipe(concat('bundle.css'))
+               .pipe(gulp.dest(output.css));
 });
 
 gulp.task('watch-typescript', function() {
