@@ -5,17 +5,8 @@
     "tasks": [
         {
             "type": "gulp",
-            "task": "watch-typescript",
-            "problemMatcher": [
-                "$tslint5"
-            ]
-        },
-        {
-            "type": "gulp",
-            "task": "watch-scss",
-            "problemMatcher": [
-                "$node-sass"
-            ]
+            "task": "compile-css",
+            "problemMatcher": []
         }
     ]
 }
