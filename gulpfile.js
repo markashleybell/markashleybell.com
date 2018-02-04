@@ -26,11 +26,9 @@ const tsProject = typescript.createProject('tsconfig.json');
 const tsFilter = filter('**/*.ts', { restore: true });
 
 const compileJs = () => {
-    gulp.src(['./js/vendor/*.js', './js/*.ts'])
+    gulp.src(['./js/*.ts'])
     .pipe(sourcemaps.init())
-    .pipe(tsFilter)
     .pipe(tsProject())
-    .pipe(tsFilter.restore)
     .pipe(uglify())
     .pipe(concat('bundle.js'))
     .pipe(sourcemaps.write('.'))
