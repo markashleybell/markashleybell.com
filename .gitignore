@@ -10,6 +10,3 @@ rss.xml
 *.sublime-workspace
 venv/
 node_modules/
-*.min.*
-css/main.css
-js/main.js

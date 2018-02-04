@@ -5,8 +5,31 @@
     "tasks": [
         {
             "type": "gulp",
+            "task": "compile-js",
+            "problemMatcher": [
+                "$tsc"
+            ]
+        },
+        {
+            "type": "gulp",
             "task": "compile-css",
-            "problemMatcher": []
+            "problemMatcher": [
+                "$node-sass"
+            ]
+        },
+        {
+            "type": "gulp",
+            "task": "watch-js",
+            "problemMatcher": [
+                "$tsc"
+            ]
+        },
+        {
+            "type": "gulp",
+            "task": "watch-css",
+            "problemMatcher": [
+                "$node-sass"
+            ]
         }
     ]
 }

@@ -1,5 +1,7 @@
-let YAY = ((() => {
+var YAY = (function() {
     return {
-        init: () => console.log('YAY')
+        init: function() { 
+            console.log('YAY'); 
+        }
     };
-})());
+})();
