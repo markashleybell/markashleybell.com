@@ -8,31 +8,30 @@ const concat = require('gulp-concat');
 const rename = require('gulp-rename');
 const filter = require('gulp-filter');
 
-const scssFilter = filter('**/*.scss', { restore: true });
-
 const compileCss = () => {
-    gulp.src(['./css/vendor/*.css', './css/*.scss'])
-    .pipe(sourcemaps.init())
-    .pipe(scssFilter)
-    .pipe(sass())
-    .pipe(scssFilter.restore)
-    .pipe(cleanCSS())
-    .pipe(concat('bundle.css'))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('./public/css'));
+    const scssFilter = filter('**/*.scss', { restore: true });
+
+    return gulp.src(['./css/vendor/*.css', './css/*.scss'])
+               .pipe(sourcemaps.init())
+               .pipe(scssFilter)
+               .pipe(sass())
+               .pipe(scssFilter.restore)
+               .pipe(cleanCSS())
+               .pipe(concat('bundle.css'))
+               .pipe(sourcemaps.write('.'))
+               .pipe(gulp.dest('./public/css'));
 }
 
 const tsProject = typescript.createProject('tsconfig.json');
-const tsFilter = filter('**/*.ts', { restore: true });
 
 const compileJs = () => {
-    gulp.src(['./js/*.ts'])
-    .pipe(sourcemaps.init())
-    .pipe(tsProject())
-    .pipe(uglify())
-    .pipe(concat('bundle.js'))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('./public/js'));
+    return gulp.src(['./js/*.ts'])
+               .pipe(sourcemaps.init())
+               .pipe(tsProject())
+               .pipe(uglify())
+               .pipe(concat('bundle.js'))
+               .pipe(sourcemaps.write('.'))
+               .pipe(gulp.dest('./public/js'));
 }
 
 gulp.task('compile-css', compileCss);
