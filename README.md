@@ -1,12 +1,25 @@
 # Static site generator for markb.co.uk
 
-Run `dev env` from a shell at project root to start the `venv` environment.
+## Prerequisites
 
-Then run `publish` to generate site HTML in `/public`.
+- Python 3
 
-Dev server can be started with `dev server`.
+## Development helpers
 
-## Bootstrap components used
+Open a shell at the project root. The following commands are available (currently Windows only):
+
+- `dev env`  
+  Starts the Python `venv` environment
+- `publish`  
+   Generate site HTML files in `/public`; will only work within the environment set up by `dev env`
+- `dev server`  
+  Start a web server pointing at the `public` folder (port is defined in `tools\https-dev-server.py`)
+- `dev gen-css [style-name]`  
+  Generate a stylesheet named `[style-name].css` in `css\vendor`, which contains CSS rules for the corresponding Pygments style
+- `dev list-styles`  
+  List all built-in Pygments styles
+
+## Bootstrap components
 
 ### Common CSS
 
