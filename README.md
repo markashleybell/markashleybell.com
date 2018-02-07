@@ -18,14 +18,3 @@ Open a shell at the project root. The following commands are available (currentl
   Generate a stylesheet named `[style-name].css` in `css\vendor`, which contains CSS rules for the corresponding Pygments style
 - `dev list-styles`  
   List all built-in Pygments styles
-
-## Bootstrap components
-
-### Common CSS
-
-* Grid system
-* Tables
-
-### Utilities
-
-* Responsive utilities

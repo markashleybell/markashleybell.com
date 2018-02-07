@@ -11,6 +11,7 @@
         <meta property="og:description" content="{{ og_abstract }}">
         <link rel="alternate" type="application/rss+xml" title="The latest articles from markb.co.uk" href="/rss.xml" />
         <link rel="shortcut icon" href="/img/favicon.ico" />
+        <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ cdn1 }}/css/bundle.css" />
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -25,57 +26,33 @@
     </head>
     <body>
         <div class="container">
-            <div class="row" id="header">
-                <div class="col-sm-2 meta-column">
-                    <a id="logo" href="/"><img src="{{ cdn2 }}/img/logo.png" /></a>
-                </div>
-                <div class="col-sm-5">
-                    <p id="strapline"><a href="/">Mark Ashley Bell, Freelance Web Designer/Developer</a></p>
-                </div>
-                <div class="col-sm-5 meta-column">
-                    <ul id="nav">
-                        <li><a href="/about.html"><span>About / Contact</span></a></li>
-                        <li><a href="https://github.com/markashleybell" title="External Link: GitHub Profile"><span>GitHub</span></a></li>
-                        <li><a href="http://stackoverflow.com/users/43140/mark-bell" title="External Link: Stack Overflow Profile"><span>Stack Overflow</span></a></li>
-                    </ul>
-                </div>
-            </div>
+            <a href="/">Mark Ashley Bell, Freelance Web Designer/Developer</a>
             {% block content %}{% endblock %}
             {% if comments %}
-            <div class="row" id="comments">
-                <div class="col-sm-10 col-sm-offset-2">
-                    <div id="disqus_thread"></div>
-                    <script>
-                        var disqus_config = function () {
-                            this.page.url = '{{ site_url }}/{{ permalink }}';
-                            this.page.identifier = '{{ permalink }}';
-                        };
+            <div id="disqus_thread"></div>
+            <script>
+                var disqus_config = function () {
+                    this.page.url = '{{ site_url }}/{{ permalink }}';
+                    this.page.identifier = '{{ permalink }}';
+                };
 
-                        (function() {
-                            var d = document, s = d.createElement('script');
-                            s.src = '//{{ disqus_id }}.disqus.com/embed.js';
-                            s.setAttribute('data-timestamp', +new Date());
-                            (d.head || d.body).appendChild(s);
-                        })();
-                    </script>
-                    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-                </div>
-            </div>
+                (function() {
+                    var d = document, s = d.createElement('script');
+                    s.src = '//{{ disqus_id }}.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
             {% endif %}
-            <div class="row" id="footer">
-                <div class="col-sm-10 col-sm-offset-2">
-                    <h2>Previous articles:</h2>
-                    <ul>
-                        {% for item in nav_items %}
-                        <li><a href="{{ item['output_filename'] }}">{{ item['title'] }}</a></li>
-                        {% endfor %}
-                    </ul>
-                    <p id="credit">&copy; <a href="https://twitter.com/markashleybell" title="External Link: Twitter Profile">Mark Ashley Bell</a> 2013</p>
-                </div>
-            </footer>
-            <div id="nav-button"></div>
+            <h2>Previous articles</h2>
+            <ul>
+                {% for item in nav_items %}
+                <li><a href="{{ item['output_filename'] }}">{{ item['title'] }}</a></li>
+                {% endfor %}
+            </ul>
+            <p id="credit">&copy; <a href="https://twitter.com/markashleybell" title="External Link: Twitter Profile">Mark Ashley Bell</a> 2018</p>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script type="text/javascript" src="{{ cdn2 }}/js/bundle.js"></script>
     </body>
 </html>
