@@ -23,7 +23,7 @@ def get_header_string(header_regex, content):
 def get_header_date(header_regex, content):
     """Get the value retrieved from the specified header."""
     header_string = get_header_string(header_regex, content)
-    return parse_iso8601_date(header_string) if header_string else None
+    return parse_iso8601_date(header_string) if header_string else datetime.datetime.now()
 
 def strip_post_metadata(header_regex, content):
     """Strip the headers from the content of a post."""
