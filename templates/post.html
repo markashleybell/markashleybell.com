@@ -1,10 +1,10 @@
 {% extends "master.html" %}
 {% block content %}
+<p class="post-updated">{{ updated.strftime('%d %b %Y') }}</p>
 <h1><a href="{{ permalink }}">{{ title }}</a></h1>
-<p class="post-updated">{{ updated.strftime('%d %b, %Y') }}</p>
 {{ body }}
 {% if updated > published %}
-<p class="publish-note">Originally published on {{ published.strftime('%d %b, %Y') }}; updated on {{ updated.strftime('%d %b, %Y') }}.</p>
+<p class="publish-note">Originally published on {{ published.strftime('%d %b %Y') }}; updated on {{ updated.strftime('%d %b %Y') }}.</p>
 {% endif %}
 {% endblock %}
 {% block recent_articles %}

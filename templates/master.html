@@ -13,7 +13,7 @@
         <link rel="shortcut icon" href="/img/favicon.ico" />
         <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ cdn1 }}/css/bundle.css" />
-        <script>
+        <!-- <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -22,15 +22,15 @@
             ga('create', '{{ analytics_id }}', 'markb.co.uk');
             ga('require', 'linkid', 'linkid.js');
             ga('send', 'pageview');
-        </script>
+        </script> -->
     </head>
     <body>
         <div class="container">
-            <a href="/">Mark Ashley Bell, Freelance Web Designer/Developer</a>
+            <a class="header" href="/">Mark Ashley Bell</a>
             {% block content %}{% endblock %}
             {% if comments %}
             <div id="disqus_thread"></div>
-            <script>
+            <!-- <script>
                 var disqus_config = function () {
                     this.page.url = '{{ site_url }}/{{ permalink }}';
                     this.page.identifier = '{{ permalink }}';
@@ -43,10 +43,10 @@
                     (d.head || d.body).appendChild(s);
                 })();
             </script>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript> -->
             {% endif %}
-            <p id="credit">&copy; <a href="https://twitter.com/markashleybell" title="External Link: Twitter Profile">Mark Ashley Bell</a> 2018</p>
             {% block recent_articles %}{% endblock %}
+            <p class="credit">&copy; <a href="https://twitter.com/markashleybell" title="External Link: Twitter Profile">Mark Ashley Bell</a> 2018</p>
         </div>
         <script type="text/javascript" src="{{ cdn2 }}/js/bundle.js"></script>
     </body>
