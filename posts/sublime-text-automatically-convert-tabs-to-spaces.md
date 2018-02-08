@@ -21,7 +21,7 @@ Add a key named `expand_tabs_on_load` with a value of `true` to your global, use
 
     :::javascript
     {
-         "expand_tabs_on_load": true
+        "expand_tabs_on_load": true
     }
 
 I prefer replacing the tabs on load, because it allows a quick visual check of the file before committing to the tab replacement, as opposed to silently performing the replacement on save like most of the similar plugins I've encountered. If you _do_ want to silently replace tabs on save, [this solution](https://coderwall.com/p/zvyg7a) by Paulo Rodrigues Pinto works nicely.
