@@ -18,8 +18,6 @@ def get_config():
         "cdn2": parser.get("Site", "cdn2"),
         "analytics_id": parser.get("Site", "analytics_id"),
         "disqus_id": parser.get("Site", "disqus_id"),
-        "index_title": parser.get("Site", "index_title"),
-        "index_abstract": parser.get("Site", "index_abstract"),
         "rss_description": parser.get("Site", "rss_description"),
         "output_folder": "public"
     }
@@ -29,7 +27,9 @@ def load_templates():
     environment = Environment(loader=FileSystemLoader("templates/"))
 
     return {
-        "index": environment.get_template("index.html"),
+        "home": environment.get_template("home.html"),
+        "articleindex": environment.get_template("articleindex.html"),
+        "basic": environment.get_template("basic.html"),
         "post": environment.get_template("post.html")
     }
 

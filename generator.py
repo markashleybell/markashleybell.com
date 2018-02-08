@@ -101,33 +101,15 @@ def render_page(templates, template_data, data):
         title=data["title"],
         permalink=data["output_filename"],
         body=data["body"],
-        nav_items=template_data["nav_items"],
+        post_list=template_data["post_list"],
         meta_title=meta_title,
         og_title=data["title"],
         og_abstract=data["abstract_plain"],
         og_image=data["thumbnail"] if data["thumbnail"] is not None else "site.png",
-        og_url=data["output_filename"],
+        og_url=data["output_filename"] if data["output_filename"] != "index.html" else "",
         site_url=config["site_url"],
+        rss_description=config["rss_description"],
         comments=None if is_static_page(data) else 1,
-        cdn1=config["cdn1"],
-        cdn2=config["cdn2"],
-        analytics_id=config["analytics_id"],
-        disqus_id=config["disqus_id"]
-    )
-
-def render_index(template_data, data):
-    """Render an index template using the specified data."""
-    config = template_data["config"]
-    meta_title = "{} - {}".format(config["index_title"], config["index_abstract"])
-    return template_data["template"].render(
-        posts=data,
-        nav_items=template_data["nav_items"],
-        meta_title=meta_title,
-        og_title=config["index_title"],
-        og_abstract=config["index_abstract"],
-        og_image="site.png",
-        og_url="",
-        site_url=config["site_url"],
         cdn1=config["cdn1"],
         cdn2=config["cdn2"],
         analytics_id=config["analytics_id"],

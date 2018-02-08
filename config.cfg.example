@@ -5,6 +5,4 @@ cdn1: http://localhost:8000
 cdn2: http://localhost:8000
 analytics_id: ANALYTICS_ID
 disqus_id: DISQUS_ID
-index_title: Mark Ashley Bell, Freelance Web Designer/Developer
-index_abstract: C# ASP.NET, jQuery, JavaScript and Python web development
-rss_description: The latest articles from markb.co.uk
+rss_description: The latest programming and web development articles from markb.co.uk

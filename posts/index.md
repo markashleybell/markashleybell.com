@@ -1,8 +1,8 @@
-Title: About Me
-Abstract: Hi! My name's Mark. I build websites and web applications.
-Published: 2013-09-24 13:05
-Updated: 2013-09-24 13:05
+Title: Mark Ashley Bell, Freelance Web Designer/Developer
+Abstract: C# ASP.NET, jQuery, JavaScript and Python web development
+Thumbnail: site.png
 PageType: static
+Template: home
 
 # Hi! My name's Mark. I build websites and web applications.
 

@@ -9,7 +9,7 @@
         <meta property="og:url" content="{{ site_url }}/{{ og_url }}"/>
         <meta property="og:site_name" content="markb.co.uk">
         <meta property="og:description" content="{{ og_abstract }}">
-        <link rel="alternate" type="application/rss+xml" title="The latest articles from markb.co.uk" href="/rss.xml" />
+        <link rel="alternate" type="application/rss+xml" title="{{ rss_description }}" href="/rss.xml" />
         <link rel="shortcut icon" href="/img/favicon.ico" />
         <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ cdn1 }}/css/bundle.css" />
@@ -45,13 +45,8 @@
             </script>
             <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
             {% endif %}
-            <h2>Previous articles</h2>
-            <ul>
-                {% for item in nav_items %}
-                <li><a href="{{ item['output_filename'] }}">{{ item['title'] }}</a></li>
-                {% endfor %}
-            </ul>
             <p id="credit">&copy; <a href="https://twitter.com/markashleybell" title="External Link: Twitter Profile">Mark Ashley Bell</a> 2018</p>
+            {% block recent_articles %}{% endblock %}
         </div>
         <script type="text/javascript" src="{{ cdn2 }}/js/bundle.js"></script>
     </body>

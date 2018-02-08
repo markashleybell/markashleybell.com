@@ -7,3 +7,11 @@
 <p class="publish-note">Originally published on {{ published.strftime('%d %b, %Y') }}; updated on {{ updated.strftime('%d %b, %Y') }}.</p>
 {% endif %}
 {% endblock %}
+{% block recent_articles %}
+<h2>More articles</h2>
+<ul class="post-list">
+    {% for item in post_list %}
+    <li><a href="{{ item['output_filename'] }}">{{ item['title'] }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

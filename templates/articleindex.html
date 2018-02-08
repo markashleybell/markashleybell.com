@@ -1,0 +1,9 @@
+{% extends "master.html" %}
+{% block content %}
+{{ body }}
+{% for post in post_list %}
+<p class="post-updated">{{ post.updated.strftime('%d %b %Y') }}</p>
+<h1><a href="{{ post.output_filename }}">{{ post.title }}</a></h1>
+{{ post.abstract if post.abstract else post.body }}
+{% endfor %}
+{% endblock %}
