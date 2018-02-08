@@ -33,6 +33,7 @@ def strip_post_metadata(header_regex, content):
     no_metadata = header_regex["abstract"].sub("", no_metadata)
     no_metadata = header_regex["pagetype"].sub("", no_metadata)
     no_metadata = header_regex["thumbnail"].sub("", no_metadata)
+    no_metadata = header_regex["template"].sub("", no_metadata)
     return no_metadata
 
 def parse_page_data(header_regex, content, source_filename, output_filename, cdn_url):
@@ -54,6 +55,7 @@ def parse_page_data(header_regex, content, source_filename, output_filename, cdn
         "abstract_nolink": markdown.markdown(abstract_text) if abstract_text else None,
         "pagetype": get_header_string(header_regex["pagetype"], content),
         "thumbnail": get_header_string(header_regex["thumbnail"], content),
+        "template": get_header_string(header_regex["template"], content),
         "source_filename": source_filename,
         "output_filename": output_filename
     }
@@ -88,11 +90,12 @@ def get_most_recent(count, page_data_list):
             most_recent.append(page_metadata)
     return most_recent
 
-def render_page(template_data, data):
+def render_page(templates, template_data, data):
     """Render a page template using the specified data."""
     config = template_data["config"]
     meta_title = "{} - {}".format(data["title"], config["site_name"])
-    return template_data["template"].render(
+    template_name = data["template"] if data["template"] is not None else "post"
+    return templates[template_name].render(
         published=data["published"],
         updated=data["updated"],
         title=data["title"],
