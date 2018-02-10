@@ -1,4 +1,4 @@
-Title: Mark Ashley Bell
+Title: C#, F#, JavaScript and Python programming
 Abstract: C# ASP.NET, jQuery, JavaScript and Python web development
 Thumbnail: site.png
 PageType: static
