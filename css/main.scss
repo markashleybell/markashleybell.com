@@ -13,6 +13,10 @@ h1 {
     font-size: 1.75em;
 }
 
+h2 {
+    font-size: 1.2em;
+}
+
 img {
     max-width: 100%;
     display: inline-block;
@@ -60,7 +64,7 @@ code {
 
 .codehilite {
     border-radius: 4px;
-    margin-bottom: $vertical-whitespace;
+    margin-bottom: $vertical-whitespace + 5px;
     font-size: 0.9em;
     pre {
         margin-bottom: 0;
@@ -119,5 +123,6 @@ code {
 }
 
 #disqus_thread {
+    padding-top: $vertical-whitespace * 2;
     margin-bottom: $horizontal-whitespace;
 }
