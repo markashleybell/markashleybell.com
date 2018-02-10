@@ -1,4 +1,4 @@
-Title: Creating a simple Stopwatch/Timer application with C# / Windows Forms
+Title: Creating a simple Stopwatch/Timer application with C# and Windows Forms
 Abstract: A basic pattern for creating a stopwatch/timer application in C#, which is slightly trickier than it sounds…
 Published: 2011-02-04 09:26
 Updated: 2011-02-04 09:26
@@ -17,23 +17,17 @@ While working on a project today, I came across the need for a simple stopwatch/
             // will be a System.Windows.Forms.Timer instance
             private Timer _timer;
 
-            // The last time the timer was started
             private DateTime _startTime = DateTime.MinValue;
-
-            // Time between now and when the timer was started last
             private TimeSpan _currentElapsedTime = TimeSpan.Zero;
-
-            // Time between now and the first time timer was started after a reset
             private TimeSpan _totalElapsedTime = TimeSpan.Zero;
 
-            // Whether or not the timer is currently running
             private bool _timerRunning = false;
 
             public StopwatchSpikeForm()
             {
                 InitializeComponent();
 
-                // Set up a timer and fire the Tick event once per second (1000 ms)
+                // Set up a timer and fire the Tick event every second (1000 ms)
                 _timer = new Timer();
                 _timer.Interval = 1000;
                 _timer.Tick += new EventHandler(_timer_Tick);
@@ -46,16 +40,17 @@ While working on a project today, I came across the need for a simple stopwatch/
             /// <param name="e">EventArgs object</param>
             void _timer_Tick(object sender, EventArgs e)
             {
-                // We do this to chop off any stray milliseconds resulting from
-                // the Timer's inherent inaccuracy, with the bonus that the
-                // TimeSpan.ToString() method will now show correct HH:MM:SS format
+                // We do this to 'chop off' any stray milliseconds
+                // resulting from the Timer's inherent inaccuracy,
+                // with the bonus that the TimeSpan.ToString() method
+                // will now show the correct HH:MM:SS format
                 var timeSinceStartTime = DateTime.Now - _startTime;
                 timeSinceStartTime = new TimeSpan(timeSinceStartTime.Hours,
                                                   timeSinceStartTime.Minutes,
                                                   timeSinceStartTime.Seconds);
 
-                // The current elapsed time is the time since the start button was
-                // clicked, plus the total time elapsed since the last reset
+                // The current elapsed time is the time since the start button
+                // was clicked, plus the total time elapsed since the last reset
                 _currentElapsedTime = timeSinceStartTime + _totalElapsedTime;
 
                 // These are just two Label controls which display the current

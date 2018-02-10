@@ -16,8 +16,8 @@ In order to keep my indentation consistent, I've written a [Sublime Text](http:/
             if expand_tabs and view.find("\t", 0):
                 view.run_command("expand_tabs", {"set_translate_tabs": True})
                 tab_size = view.settings().get("tab_size", 0)
-                message = "Converted tab characters to {0} spaces".format(tab_size)
-                sublime.status_message(message)
+                message = "Converted tab characters to {0} spaces"
+                sublime.status_message(message.format(tab_size))
 
 Add a key named `expand_tabs_on_load` with a value of `true` to your global, user, project or syntax-specific `.sublime-settings` file to enable the plugin:
 

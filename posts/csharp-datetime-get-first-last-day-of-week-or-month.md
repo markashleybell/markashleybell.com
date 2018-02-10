@@ -1,5 +1,5 @@
-Title: Getting the first/last day of the week or month with DateTime in C#
-Abstract: Extension methods for getting the first and last day of the week or month a given date is in.
+Title: Getting the first and last day of a week or month with C#
+Abstract: Extension methods for determining the first and last day of the week or month a specific date is within.
 Published: 2015-02-02 18:12
 Updated: 2015-02-02 18:12
 

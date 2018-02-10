@@ -48,39 +48,48 @@ This file contains our UI: a basic HTML form with title, url, summary and tag fi
     :::html
     <!DOCTYPE html>
     <html>
-        <head>
-            <style>
-                body {
-                    min-width: 420px;
-                    overflow-x: hidden;
-                    font-family: Arial, sans-serif;
-                    font-size: 12px;
-                }
-                input, textarea {
-                    width: 420px;
-                }
-                input#save {
-                    font-weight: bold; width: auto;
-                }
-            </style>
-            <script src="popup.js"></script>
-        </head>
-        <body>
-            <form id="addbookmark">
-                <p><label for="title">Title</label><br />
-                <input type="text" id="title" name="title" size="50" value="" /></p>
-                <p><label for="url">Url</label><br />
-                <input type="text" id="url" name="url" size="50" value="" /></p>
-                <p><label for="summary">Summary</label><br />
-                <textarea id="summary" name="summary" rows="6" cols="35"></textarea></p>
-                <p><label for="tags">Tags</label><br />
-                <input type="text" id="tags" name="tags" size="50" value="" /></p>
-                <p>
-                    <input id="save" type="submit" value="Save Bookmark" />
-                    <span id="status-display"></span>
-                </p>
-            </form>
-        </body>
+    <head>
+        <style>
+            body {
+                min-width: 420px;
+                overflow-x: hidden;
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+            }
+            input, textarea {
+                width: 420px;
+            }
+            input#save {
+                font-weight: bold; width: auto;
+            }
+        </style>
+        <script src="popup.js"></script>
+    </head>
+    <body>
+        <form id="addbookmark">
+            <p>
+                <label for="title">Title</label><br />
+                <input type="text" id="title" name="title" size="50" value="" />
+            </p>
+            <p>
+                <label for="url">Url</label><br />
+                <input type="text" id="url" name="url" size="50" value="" />
+            </p>
+            <p>
+                <label for="summary">Summary</label><br />
+                <textarea id="summary" name="summary" rows="6" cols="35">
+                </textarea>
+            </p>
+            <p>
+                <label for="tags">Tags</label><br />
+                <input type="text" id="tags" name="tags" size="50" value="" />
+            </p>
+            <p>
+                <input id="save" type="submit" value="Save Bookmark" />
+                <span id="status-display"></span>
+            </p>
+        </form>
+    </body>
     </html>
 
 ## popup.js
@@ -112,21 +121,22 @@ This file contains JavaScript code to populate and save field values. You can [d
         xhr.open('POST', postUrl, true);
 
         // Prepare the data to be POSTed by URLEncoding each field's contents
-        var title = encodeURIComponent(document.getElementById('title').value);
-        var url = encodeURIComponent(document.getElementById('url').value);
-        var summary = encodeURIComponent(document.getElementById('summary').value);
-        var tags = encodeURIComponent(document.getElementById('tags').value);
+        var title = document.getElementById('title');
+        var url = document.getElementById('url');
+        var summary = document.getElementById('summary');
+        var tags = document.getElementById('tags');
 
-        var params = 'title=' + title +
-                     '&url=' + url +
-                     '&summary=' + summary +
-                     '&tags=' + tags;
+        var params = 'title=' + encodeURIComponent(title.value) +
+                     '&url=' + encodeURIComponent(url.value) +
+                     '&summary=' + encodeURIComponent(summary.value) +
+                     '&tags=' + encodeURIComponent(tags.value);
 
         // Replace any instances of the URLEncoded space char with +
         params = params.replace(/%20/g, '+');
 
         // Set correct header for form data
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        var formContentType = 'application/x-www-form-urlencoded';
+        xhr.setRequestHeader('Content-type', formContentType);
 
         // Handle request state change events
         xhr.onreadystatechange = function() {
@@ -154,12 +164,13 @@ This file contains JavaScript code to populate and save field values. You can [d
         // Cache a reference to the status display SPAN
         statusDisplay = document.getElementById('status-display');
         // Handle the bookmark form submit event with our addBookmark function
-        document.getElementById('addbookmark').addEventListener('submit', addBookmark);
+        document.getElementById('addbookmark')
+                .addEventListener('submit', addBookmark);
         // Get the event page
         chrome.runtime.getBackgroundPage(function(eventPage) {
             // Call the getPageInfo function in the event page, passing in
-            // our onPageDetailsReceived function as the callback. This injects
-            // content.js into the current tab's HTML
+            // our onPageDetailsReceived function as the callback. This
+            // injects content.js into the current tab's HTML
             eventPage.getPageDetails(onPageDetailsReceived);
         });
     });
@@ -175,7 +186,7 @@ Think of this file as the negotiator between the popup dialog and the content/DO
     function getPageDetails(callback) {
         // Inject the content script into the current page
         chrome.tabs.executeScript(null, { file: 'content.js' });
-        // Perform the callback when a message is received from the content script
+        // When a message is received from the content script
         chrome.runtime.onMessage.addListener(function(message) {
             // Call the callback function
             callback(message);
