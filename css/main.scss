@@ -1,25 +1,36 @@
 $vertical-whitespace: 10px;
 $horizontal-whitespace: 20px;
 
-h1, h2, h3, h4, .header, .post-updated {
+body { 
+    background-color: #f6f6f6;
+}
+
+h1, h2, h3, h4, .header, .post-updated, .hero p {
     font-family: 'Bitter', serif;
+}
+
+h1 {
+    font-size: 1.75em;
 }
 
 img {
     max-width: 100%;
+    display: inline-block;
+    border: solid 1px #e0e0e0;
+    border-radius: 3px;
 }
 
 code {
     background-color: #e0e0e0;
     border-radius: 3px;
     padding: 2px 6px;
-    font-size: 14px;
+    font-size: 0.9em;
 }
 
 .container {
     margin: 0 auto;
     padding: 0 $horizontal-whitespace;
-    max-width: 800px;
+    max-width: 732px;
 }
 
 .header {
@@ -50,13 +61,63 @@ code {
 .codehilite {
     border-radius: 4px;
     margin-bottom: $vertical-whitespace;
+    font-size: 0.9em;
     pre {
         margin-bottom: 0;
         padding: $vertical-whitespace $horizontal-whitespace;
     }
 }
 
+.publish-note {
+    font-size: 0.9em;
+    color: #999999;
+}
+
 .credit {
     padding-top: $vertical-whitespace * 2;
+    margin-bottom: $vertical-whitespace * 4;
     font-size: 11px;
+}
+
+.html-index {
+    height: 100%;
+    body {
+        height: 100%;
+    }
+    .container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.hero {
+    h1, p {
+        font-size: 1.7em;
+        font-weight: bold;
+        text-align: center;
+        margin: 15px auto;
+    }
+    h1 {
+        margin-top: 0;
+        max-width: 520px;
+    }
+    p {
+        max-width: 620px;
+        &:last-child {
+            max-width: 400px;
+        }
+    }
+}
+
+.html-articles {
+    h1 {
+        font-size: 1.4em;
+        margin-bottom: 0;
+    }
+}
+
+#disqus_thread {
+    margin-bottom: $horizontal-whitespace;
 }
