@@ -1,4 +1,4 @@
-Title: Helping The Next Developer: Readable C# Code
+Title: Helping The Next Developer: Readable C#
 Abstract: A few tips for writing C# code which explains itself clearly.
 Published: 2016-09-26 17:00
 Updated: 2016-09-26 17:00
