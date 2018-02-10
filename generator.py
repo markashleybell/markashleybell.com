@@ -34,6 +34,7 @@ def strip_post_metadata(header_regex, content):
     no_metadata = header_regex["page_type"].sub("", no_metadata)
     no_metadata = header_regex["thumbnail"].sub("", no_metadata)
     no_metadata = header_regex["template"].sub("", no_metadata)
+    no_metadata = header_regex["document_class"].sub("", no_metadata)
     return no_metadata
 
 def parse_page_data(header_regex, content, source_filename, output_filename, cdn_url):
@@ -57,7 +58,8 @@ def parse_page_data(header_regex, content, source_filename, output_filename, cdn
         "thumbnail": get_header_string(header_regex["thumbnail"], content),
         "template": get_header_string(header_regex["template"], content),
         "source_filename": source_filename,
-        "output_filename": output_filename
+        "output_filename": output_filename,
+        "document_class": get_header_string(header_regex["document_class"], content)
     }
 
 def get_page_metadata(source_file_spec, header_regex, cdn_url):
@@ -113,5 +115,6 @@ def render_page(templates, template_data, data):
         cdn1=config["cdn1"],
         cdn2=config["cdn2"],
         analytics_id=config["analytics_id"],
-        disqus_id=config["disqus_id"]
+        disqus_id=config["disqus_id"],
+        document_class=data["document_class"] if data["document_class"] is not None else "html-base"
     )

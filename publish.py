@@ -15,7 +15,8 @@ HEADER_REGEX = {
     "abstract": re.compile("(^Abstract: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
     "page_type": re.compile("(^PageType: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
     "thumbnail": re.compile("(^Thumbnail: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
-    "template": re.compile("(^Template: (.*)[\r\n]+)", HEADER_REGEX_FLAGS)
+    "template": re.compile("(^Template: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    "document_class": re.compile("(^DocumentClass: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
 }
 
 CONFIG = get_config()

@@ -3,6 +3,7 @@ Abstract: C# ASP.NET, jQuery, JavaScript and Python web development
 Thumbnail: site.png
 PageType: static
 Template: home
+DocumentClass: html-index
 
 # Hi! My name's Mark. I build websites and web applications.
 
