@@ -3,7 +3,7 @@ Abstract: A few tips for writing C# code which explains itself clearly.
 Published: 2016-09-26 17:00
 Updated: 2016-09-26 17:00
 
-I'd like to share a few tips for writing concise, readable C# code. It's worth keeping them in mind if you want to make things easier for anyone maintaining your code.
+I'd like to share a few tips for writing concise, readable C#. It's worth keeping them in mind if you want to make things easier for anyone maintaining your code.
 
 ## White space and indentation
 
