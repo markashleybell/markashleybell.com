@@ -7,7 +7,7 @@ I'd like to share a few tips for writing concise, readable C#. It's worth keepin
 
 ## White space and indentation
 
-Indentation and white space help the reader to parse related code blocks, so *keep them consistent*. Mismatched indentation can make your code much more difficult to understand.
+Indentation and white space help the reader to parse related code blocks, so *keep them consistent*. Mismatched indentation can make your code much trickier to understand.
 
 ## Reduce line length
 
@@ -27,7 +27,7 @@ Another common culprit when it comes to lengthy lines is the ternary expression.
     var intVar = (myVal == 1) ? Convert.ToInt32(longVariableName.GetValue())
                               : new DynamicConfiguration(myVal).GetValue();
 
-In the case above, it might even be clearer to rewrite the expression as an if/else statement.
+In the case above, it might even be clearer to rewrite using `if`/`else`.
 
 ## Use implicitly typed variables where possible
 
@@ -41,7 +41,7 @@ When you can do this, with no loss of clarity:
     :::csharp
     var myObject = new RatherLengthyClassName();
 
-The exception to this rule is when it isn't at all clear what the type will be from the assignment:
+The exception to this rule is when it isn't clear what the type will be from the assignment:
 
     :::csharp
     Animal dog = GetThing(true);
