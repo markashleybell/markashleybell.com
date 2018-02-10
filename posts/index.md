@@ -1,14 +1,13 @@
-Title: Mark Ashley Bell, Freelance Web Designer/Developer
+Title: Mark Ashley Bell
 Abstract: C# ASP.NET, jQuery, JavaScript and Python web development
 Thumbnail: site.png
 PageType: static
 Template: home
 DocumentClass: html-index
 
-# Hi! My name's Mark. I build websites and web applications.
+# Hi, I'm Mark. I build web sites, apps and development tools at [Webselect](https://www.webselect.net/ "External Link: Webselect"). 
 
-Computers like me. Well, most of them, anyway—and even if we don’t get on at first, I usually win them over. I speak C#, F#, JavaScript and Python, plus some conversational PHP.
+I write code in C#, F#, JavaScript and Python,  
+and [sometimes I write about programming](/articles.html). I also maintain several [open source projects](https://github.com/markashleybell "External Link: GitHub Profile").
 
-You can see what I'm working on at [GitHub](https://github.com/markashleybell "External Link: GitHub Profile") and ask me questions (or answer mine) at [Stack Overflow](http://stackoverflow.com/users/43140/mark-bell "External Link: Stack Overflow Profile"). I'm also on [LinkedIn](http://www.linkedin.com/in/markashleybell "External Link: LinkedIn Profile"), and if you like a bit of bluesy rock, check out my band [Flood](http://floodband.uk "External Link: Flood").
-
-You can contact me via email at <span id="e">[Turn On Javascript To View Email Address]</span>, or on [Twitter](https://twitter.com/markashleybell "External Link: Twitter Profile").
+If you'd like to get in touch, email <span id="e">[Turn On Javascript To View Email Address]</span>.
