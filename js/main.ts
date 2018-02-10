@@ -1,3 +1,5 @@
+declare var gtag: Function;
+
 namespace markb {
     const externalLinkQualifier: string = "External Link: ";
 
@@ -14,12 +16,11 @@ namespace markb {
         const link: HTMLElement = e.currentTarget as HTMLElement;
         const href: string = link.getAttribute("href");
         const title: string = link.getAttribute("title").substring(externalLinkQualifier.length);
-        ga("send", {
-            "hitType": "event",
-            "eventCategory": "External Link",
-            "eventAction": "Click",
-            "eventLabel": title,
-            "hitCallback": () => window.location.href = href
+        gtag("event", "Click", {
+            "event_category": "External Link",
+            "event_label": title,
+            "transport_type": "beacon",
+            "event_callback": () => document.location.href = href
         });
     }
 
