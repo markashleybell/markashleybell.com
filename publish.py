@@ -13,7 +13,7 @@ HEADER_REGEX = {
     "published": re.compile("(^Published: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
     "updated": re.compile("(^Updated: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
     "abstract": re.compile("(^Abstract: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
-    "pagetype": re.compile("(^PageType: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
+    "page_type": re.compile("(^PageType: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
     "thumbnail": re.compile("(^Thumbnail: (.*)[\r\n]+)", HEADER_REGEX_FLAGS),
     "template": re.compile("(^Template: (.*)[\r\n]+)", HEADER_REGEX_FLAGS)
 }

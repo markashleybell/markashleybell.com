@@ -13,7 +13,7 @@ def parse_iso8601_date(date_string):
 
 def is_static_page(page_metadata):
     """Returns true if the page is a static page (not a post)."""
-    return page_metadata["pagetype"] == "static"
+    return page_metadata["page_type"] == "static"
 
 def get_header_string(header_regex, content):
     """Get the value retrieved from the specified header."""
@@ -31,7 +31,7 @@ def strip_post_metadata(header_regex, content):
     no_metadata = header_regex["published"].sub("", no_metadata)
     no_metadata = header_regex["updated"].sub("", no_metadata)
     no_metadata = header_regex["abstract"].sub("", no_metadata)
-    no_metadata = header_regex["pagetype"].sub("", no_metadata)
+    no_metadata = header_regex["page_type"].sub("", no_metadata)
     no_metadata = header_regex["thumbnail"].sub("", no_metadata)
     no_metadata = header_regex["template"].sub("", no_metadata)
     return no_metadata
@@ -53,7 +53,7 @@ def parse_page_data(header_regex, content, source_filename, output_filename, cdn
         "abstract": markdown.markdown(abstract_text + more_link) if abstract_text else None,
         "abstract_plain": abstract_text if abstract_text else None,
         "abstract_nolink": markdown.markdown(abstract_text) if abstract_text else None,
-        "pagetype": get_header_string(header_regex["pagetype"], content),
+        "page_type": get_header_string(header_regex["page_type"], content),
         "thumbnail": get_header_string(header_regex["thumbnail"], content),
         "template": get_header_string(header_regex["template"], content),
         "source_filename": source_filename,
