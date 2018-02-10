@@ -38,7 +38,7 @@ def create_rss_item_xml(xml, base_url, item_data):
     title_element = create_xml_element(xml, "title", item_data["title"])
     link_element = create_xml_element(xml, "link", base_url + "/" + item_data["output_filename"])
 
-    description_html = markdown.markdown(item_data["abstract_nolink"], extensions=["extra"])
+    description_html = markdown.markdown(item_data["abstract"], extensions=["extra"])
     description_element = create_xml_element(xml, "description", description_html)
 
     # Manually updating the "updated" header value for a post

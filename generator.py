@@ -41,8 +41,6 @@ def parse_page_data(header_regex, content, source_filename, output_filename, cdn
     """Parse headers (date and title) from page file content."""
     abstract_text = get_header_string(header_regex["abstract"], content)
 
-    more_link = " <a class=\"more-link\" href=\"{0}\">&rarr;</a>".format(output_filename)
-
     content_no_metadata = strip_post_metadata(header_regex, content)
     body = re.sub(r"(\$\{cdn2\})", cdn_url, content_no_metadata)
 
@@ -51,9 +49,7 @@ def parse_page_data(header_regex, content, source_filename, output_filename, cdn
         "published": get_header_date(header_regex["published"], content),
         "updated": get_header_date(header_regex["updated"], content),
         "body": markdown.markdown(body, extensions=["extra", "codehilite"]),
-        "abstract": markdown.markdown(abstract_text + more_link) if abstract_text else None,
-        "abstract_plain": abstract_text if abstract_text else None,
-        "abstract_nolink": markdown.markdown(abstract_text) if abstract_text else None,
+        "abstract": abstract_text if abstract_text else None,
         "page_type": get_header_string(header_regex["page_type"], content),
         "thumbnail": get_header_string(header_regex["thumbnail"], content),
         "template": get_header_string(header_regex["template"], content),
@@ -106,7 +102,7 @@ def render_page(templates, template_data, data):
         post_list=template_data["post_list"],
         meta_title=meta_title,
         og_title=data["title"],
-        og_abstract=data["abstract_plain"],
+        og_abstract=data["abstract"],
         og_image=data["thumbnail"] if data["thumbnail"] is not None else "site.png",
         og_url=data["output_filename"] if data["output_filename"] != "index.html" else "",
         site_url=config["site_url"],
