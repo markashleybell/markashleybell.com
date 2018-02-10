@@ -42,8 +42,6 @@ As this is a developer blog, I'll mention a few technical bits and pieces: I use
 
 The order in which the illustrations appear *does not* indicate my voting preference, or my support for any one party over the others*. I can assure you that these illustrations have not been artificially manipulated, but if you'd like to check that, feel free to [download my code](https://github.com/markashleybell/manifesto-miner) along with the manifestos and give it a try yourself.
 
-**These results are not in *any way* scientific**, or arguably even very useful. Nor do they accurately reflect the parties' policies—although I think we can see where Plaid Cymru are going with theirs fairly unambiguously.
-
-They are, however, quite interesting.
+**These results are not in *any way* scientific**, or arguably even very useful. Nor do they accurately reflect the parties' policies (although I think we can see pretty clearly where Plaid Cymru are going with theirs). They are, however, quite interesting.
 
 <small>*UKIP are a bunch of idiots, though.</small>
