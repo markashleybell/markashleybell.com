@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/markashleybell/markb.co.uk#readme",
   "devDependencies": {
+    "@types/google.analytics": "0.0.37",
     "gulp": "3.9.1",
     "gulp-sass": "3.1.0",
     "node-sass": "4.7.2",

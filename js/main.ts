@@ -1,10 +1,26 @@
 namespace markb {
+    const externalLinkQualifier: string = "External Link: ";
+
     export function ready(callback: EventListener): void {
         if (document.readyState === "interactive" || document.readyState === "complete") {
             callback(new Event("DOMContentLoaded"));
         } else {
             document.addEventListener("DOMContentLoaded", callback);
         }
+    }
+
+    function externalLinkClickHandler(e: Event): void {
+        e.preventDefault();
+        const link: HTMLElement = e.currentTarget as HTMLElement;
+        const href: string = link.getAttribute("href");
+        const title: string = link.getAttribute("title").substring(externalLinkQualifier.length);
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": "External Link",
+            "eventAction": "Click",
+            "eventLabel": title,
+            "hitCallback": () => window.location.href = href
+        });
     }
 
     export function init(): void {
@@ -16,6 +32,12 @@ namespace markb {
             const t: string = v.map(cc => String.fromCharCode(parseInt(cc, 10))).join("");
             e.innerHTML = `<a class="email-link" href="${mt}${t}">${t}</a>`;
         }
+
+        const externalLinks: Element[] =
+           Array.prototype.slice.call(document.querySelectorAll(`a[title^="${externalLinkQualifier}"]`));
+
+        externalLinks.forEach(link => link.addEventListener("click", externalLinkClickHandler));
+
     }
 }
 
