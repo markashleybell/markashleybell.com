@@ -24,6 +24,11 @@ img {
     border-radius: 3px;
 }
 
+ul {
+    padding-left: $horizontal-whitespace;
+    padding-top: $vertical-whitespace;
+}
+
 code {
     background-color: #e0e0e0;
     border-radius: 3px;
