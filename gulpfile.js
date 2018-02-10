@@ -7,7 +7,6 @@ const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const rename = require('gulp-rename');
 const filter = require('gulp-filter');
-const util = require('gulp-util');
 
 const compileCss = () => {
     const scssFilter = filter('**/*.scss', { restore: true });
@@ -16,7 +15,7 @@ const compileCss = () => {
                .pipe(sourcemaps.init())
                .pipe(scssFilter)
                .pipe(sass())
-               .on('error', util.log)
+               .on('error', console.log)
                .pipe(scssFilter.restore)
                .pipe(cleanCSS())
                .pipe(concat('bundle.css'))
@@ -30,7 +29,7 @@ const compileJs = () => {
     return gulp.src(['./js/*.ts'])
                .pipe(sourcemaps.init())
                .pipe(tsProject())
-               .on('error', util.log)
+               .on('error', console.log)
                .pipe(uglify())
                .pipe(concat('bundle.js'))
                .pipe(sourcemaps.write('.'))
