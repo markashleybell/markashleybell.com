@@ -4,10 +4,10 @@ Thumbnail: manifesto-mining-liberal-democrat-sml.png
 Published: 2015-03-26 16:39
 Updated: 2015-03-26 16:39
 
-With the 2015 General Election just over a week away, I thought I'd read through the manifestos of the various parties, to try and help me make up my mind who should get my vote.
+With the 2015 General Election just over a week away, I thought I'd read through the manifestos of the various parties, to try and help me decide who should get my vote.
 
 After an embarrassingly short period of time, I got bored and decided to make them into pretty pictures instead. Click on any image below to see the full size version.
- 
+
 ## Liberal Democrats
 
 [![Liberal Democrats](${cdn2}/img/post/manifesto-mining-liberal-democrat-sml.png "Liberal Democrats")](${cdn2}/img/post/manifesto-mining-liberal-democrat-lge.png)
@@ -40,10 +40,10 @@ As this is a developer blog, I'll mention a few technical bits and pieces: I use
 
 [![UKIP](${cdn2}/img/post/manifesto-mining-ukip-sml.png "UKIP")](${cdn2}/img/post/manifesto-mining-ukip-lge.png)
 
-The order in which the illustrations appear *does not* indicate my voting preference or support for any one party over the others*. I can assure you that the illustrations have not been artificially manipulated, but if you'd like to check that, feel free to [download my code](https://github.com/markashleybell/manifesto-miner) along with the manifestos (just Google them) and give it a try yourself.
+The order in which the illustrations appear *does not* indicate my voting preference, or my support for any one party over the others*. I can assure you that these illustrations have not been artificially manipulated, but if you'd like to check that, feel free to [download my code](https://github.com/markashleybell/manifesto-miner) along with the manifestos and give it a try yourself.
 
-**These results are not in *any way* scientific** (or even very useful, arguably); nor do they accurately reflect the parties' policies—although I think we can see where Plaid Cymru are going with theirs fairly unambiguously. 
+**These results are not in *any way* scientific**, or arguably even very useful. Nor do they accurately reflect the parties' policies—although I think we can see where Plaid Cymru are going with theirs fairly unambiguously.
 
 They are, however, quite interesting.
- 
+
 <small>*UKIP are a bunch of idiots, though.</small>

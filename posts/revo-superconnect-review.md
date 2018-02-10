@@ -46,6 +46,6 @@ After a month of daily use, here's my list of pros and cons:
 
 * Accessing the sleep function takes several button presses in order to navigate the menu system. This is my biggest issue with the unit: as (I'd imagine) one of the most commonly used functions of a bedside radio, why can't there be a dedicated button for this?
 
-Overall though, I wholeheartedly recommend the SuperConnect. It's pricey (at nearly £250), but it's definitely worth the money if you'd like a radio which will make just about any kind of input you throw at it sound great. I bought a refurbished one directly from Revo on Amazon, which knocked about £30 off the price. 
+Overall though, I wholeheartedly recommend the SuperConnect. It's pricey (at nearly £250), but it's definitely worth the money if you'd like a radio which will make just about any kind of input you throw at it sound great. I bought a refurbished one directly from Revo on Amazon, which knocked about £30 off the price.
 
 If you're the curious type and would like more detail, I'd suggest checking out [the manual](http://revo.co.uk/assets/2012/11/SuperConnect_Manual_Web_EN.pdf "External Link: Revo SuperConnect Manual") on the Revo site before you make a purchase.

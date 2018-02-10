@@ -3,7 +3,7 @@ Abstract: An issue with some older Cisco VPN client software means IntelliJ IDEA
 Published: 2012-12-21 13:37
 Updated: 2012-12-21 13:37
 
-I'm making my first tentative steps with [Scala](http://www.scala-lang.org/ "External Link: Scala"), and according to many sources (including Mikio Braun's excellent [getting started article](http://blog.mikiobraun.de/2011/04/getting-started-in-scala.html "External Link: Getting Started In Scala")), the IDE of choice is [IntelliJ IDEA](http://www.jetbrains.com/idea/ "External Link: IntelliJ IDEA"). 
+I'm making my first tentative steps with [Scala](http://www.scala-lang.org/ "External Link: Scala"), and according to many sources (including Mikio Braun's excellent [getting started article](http://blog.mikiobraun.de/2011/04/getting-started-in-scala.html "External Link: Getting Started In Scala")), the IDE of choice is [IntelliJ IDEA](http://www.jetbrains.com/idea/ "External Link: IntelliJ IDEA").
 
 However, having downloaded and installed the Community Edition, I found I was unable to install the Scala plugin; when I clicked the `Browse Repositories` button under the Plugins dialog, IDEA threw up a `Permission denied: connect`
 exception.
@@ -14,8 +14,7 @@ The obvious workaround is to close the VPN client, but as I need this constantly
 
  1. Open the IntelliJ IDEA `bin` folder—in my case, `C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 12.0.1\bin`
  2. Open the `idea.exe.vmoptions` and `idea64.exe.vmoptions` files
- 3. Add the following on a new line at the end of each file:  
-`-Djava.net.preferIPv4Stack=true`
+ 3. Add `-Djava.net.preferIPv4Stack=true` on a new line at the end of each file
  4. Save the files and restart IntelliJ IDEA
 
 You should now find IDEA can connect to online endpoints successfully.

@@ -1,13 +1,13 @@
 Title: Helping The Next Developer: Readable C# Code
-Abstract: A few tips for writing C# code which explains itself clearly. 
+Abstract: A few tips for writing C# code which explains itself clearly.
 Published: 2016-09-26 17:00
 Updated: 2016-09-26 17:00
 
-Today I'd like to share a few tips for writing readable, concise C# code, reducing the cognitive load for future maintainers. You shouldn't consider these “hard” rules, but it's definitely worth keeping them in mind.
+I'd like to share a few tips for writing concise, readable C# code. It's worth keeping them in mind if you want to make things easier for anyone maintaining your code.
 
 ## White space and indentation
 
-Indentation and white space help readers to parse related code blocks, so *keep them consistent*. Mismatched indentation can make your code *much* more difficult to understand. Following on from this…
+Indentation and white space help the reader to parse related code blocks, so *keep them consistent*. Mismatched indentation can make your code much more difficult to understand.
 
 ## Reduce line length
 
@@ -21,17 +21,17 @@ See what I did there? You can indent fluent interface calls (e.g. LINQ extension
                           .Distinct()
                           .ToList();
 
-Another common culprit when it comes to lengthy lines is the ternary expression. I find it helpful to break longer expressions onto two lines:
+Another common culprit when it comes to lengthy lines is the ternary expression. I find it helpful to break long expressions into two lines:
 
     :::csharp
-    var intVar = (myVal == 1) ? Convert.ToInt32(ConfigurationManager.AppSettings["Flag"])
+    var intVar = (myVal == 1) ? Convert.ToInt32(longVariableName.GetValue())
                               : new DynamicConfiguration(myVal).GetValue();
 
-In the above case, it might be even clearer to rewrite the expression as an if/else statement.
+In the case above, it might even be clearer to rewrite the expression as an if/else statement.
 
 ## Use implicitly typed variables where possible
 
-Use the `var` keyword to reduce noise when initialising variables. There's no need for this:
+Use of the `var` keyword reduces noise. There's no need for this:
 
     :::csharp
     RatherLengthyClassName myObject = new RatherLengthyClassName();
@@ -46,18 +46,20 @@ The exception to this rule is when it isn't at all clear what the type will be f
     :::csharp
     Animal dog = GetThing(true);
 
-This contrived example contains a deliberately terrible method name, but we've all seen similar in real codebases…
+This contrived example contains a deliberately terrible method name, but I'm sure we've all seen similar code in real codebases…
 
-## Named method parameters
+## Named arguments
 
-Doubtless you will have encountered lines like the following:
+I'm sure you'll also have seen code like this:
 
     :::csharp
     var myObject1 = new ComplicatedThing(true, 3, true, false, true);
 
     myObject2.PerformAction(Action.Update, 12, "Joe Bloggs", true);
 
-But what do all those parameter values represent? Using named method parameters can make things much clearer for maintainers:
+What do all of those parameter values represent?
+
+By using named arguments, we can make things much clearer:
 
     :::csharp
     var myObject1 = new ComplicatedThing(
@@ -75,22 +77,23 @@ But what do all those parameter values represent? Using named method parameters 
         subscribe: true
     );
 
-You don't *have* to pass in names for all the parameters, so you can omit them where the meaning is obvious:
+You don't *have* to specify the name of every parameter, so you can omit them where the meaning is obvious:
 
     :::csharp
     myObject3.AddNewItem(itemData, redirect: true);
 
 ## Commenting: remember “WHY, not WHAT”
 
-As a general rule of thumb, don't use comments to describe *what* a piece of code does. If it's not clear from reading the code itself, you should try to simplify it until the meaning *is* obvious.
+As a general rule of thumb, don't use comments to describe *what* a piece of code does. If you can't tell this by reading the code, you should figure out a simpler approach.
 
 Add comments when you want to explain *why* you did something. That way, maintainers won't have to spend time trying to figure out what you were thinking when you wrote it.
 
 ## Remove old code
 
-*Don't* just comment out old, unused code and leave it there “just in case”. Having to scan past large blocks of unnecessary commented-out code just increases cognitive load.
+*Don't* just comment out old code and leave it there “just in case”. Having to scan large blocks of commented-out code increases cognitive load for future readers.
 
-If code is no longer used, *delete it and make a commit explaining why you did so*. You can always retrieve it from your version control system if you discover you need it again later.
+If code is no longer used, *delete it and make a commit explaining why you did so*. If you later discover you need it after all, retrieve it from your version control system—that's what it's for!
 
-<br><br>
-I hope you find these tips useful! As always, your comments are welcome.
+## That's it for now
+
+I hope you find some of these tips useful. Comments are welcome, as always.

@@ -4,7 +4,7 @@ Thumbnail: chrome-extension-screenshot.gif
 Published: 2010-01-26 08:41
 Updated: 2014-09-30 07:23
 
-I have a web app running on my home server to keep track of my bookmarks—it's a little like [Delicious](https://delicious.com/ "External Link: Delicious"), but simpler and with some personal customisations. Currently I save bookmarks to this app via a Javascript bookmarklet: clicking it gets the current page's title and url (and also any selected text, to use as a summary) and sends it to a popup form; submitting that form then saves the bookmark data to the server.
+I have a web app running on my home server to keep track of my bookmarks—it's a little like [Delicious](https://delicious.com/ "External Link: Delicious"), but much simpler and with some personal customisations. I currently save bookmarks to this app via a Javascript bookmarklet: clicking it gets the current page's title and url (and also any selected text, to use as a summary) and sends it to a popup form; submitting that form then POSTs the bookmark data to the server.
 
 Although this system works well enough, it looks a bit untidy and takes up space in the bookmarks bar. With the advent of [Extensions for Chrome](http://www.theregister.co.uk/2010/01/25/google_chrome_4_stable/ "External Link: Google Chrome"), I thought I'd have a go at writing an extension to nicely integrate my custom page bookmarking button into the Chrome browser.
 
@@ -12,7 +12,7 @@ Although this system works well enough, it looks a bit untidy and takes up space
 
 It's clear from the start that Chrome's extension structure is a lot simpler than that of [Firefox extensions](http://kb.mozillazine.org/Getting_started_with_extension_development "External Link: Firefox Extensions"). Chrome extensions are just a collection of plain HTML and JavaScript files—no odd folder hierarchies or XUL to deal with here. There are advantages to Mozilla's approach (ease of internationalisation, UI consistency), but I can't help feeling that building Chrome extensions will be much more accessible to amateur developers; I'm betting that this is exactly what Google was aiming for.
 
-So let's get stuck in! First create a new folder for your extension code—it doesn't matter where for now. My basic Chrome extension consists of just a few files:
+So let's get stuck in! First, create a new folder for your extension code—for now it doesn't matter where. My basic Chrome extension consists of just a few files:
 
 ## manifest.json
 
@@ -33,8 +33,8 @@ This is the glue that holds our extension together. It contains the basic meta d
             "default_popup": "popup.html"
         },
         "permissions": [
-            "tabs", 
-            "http://*/*", 
+            "tabs",
+            "http://*/*",
             "https://*/*"
         ]
     }
@@ -50,17 +50,17 @@ This file contains our UI: a basic HTML form with title, url, summary and tag fi
     <html>
         <head>
             <style>
-                body { 
-                    min-width: 420px; 
-                    overflow-x: hidden; 
-                    font-family: Arial, sans-serif; 
-                    font-size: 12px; 
+                body {
+                    min-width: 420px;
+                    overflow-x: hidden;
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
                 }
-                input, textarea { 
-                    width: 420px; 
+                input, textarea {
+                    width: 420px;
                 }
-                input#save { 
-                    font-weight: bold; width: auto; 
+                input#save {
+                    font-weight: bold; width: auto;
                 }
             </style>
             <script src="popup.js"></script>
@@ -88,13 +88,13 @@ This file contains our UI: a basic HTML form with title, url, summary and tag fi
 This file contains JavaScript code to populate and save field values. You can [download the complete source here](https://github.com/markashleybell/mab_bookmark_extension/archive/0.3.zip "External Link: Chrome Extension Source Download"), but for now the important part is the script itself:
 
     :::javascript
-    // This callback function is called when the content script has been 
+    // This callback function is called when the content script has been
     // injected and returned its results
-    function onPageDetailsReceived(pageDetails)  { 
-        document.getElementById('title').value = pageDetails.title; 
-        document.getElementById('url').value = pageDetails.url; 
-        document.getElementById('summary').innerText = pageDetails.summary; 
-    } 
+    function onPageDetailsReceived(pageDetails) {
+        document.getElementById('title').value = pageDetails.title;
+        document.getElementById('url').value = pageDetails.url;
+        document.getElementById('summary').innerText = pageDetails.summary;
+    }
 
     // Global reference to the status display SPAN
     var statusDisplay = null;
@@ -110,26 +110,26 @@ This file contains JavaScript code to populate and save field values. You can [d
         // Set up an asynchronous AJAX POST request
         var xhr = new XMLHttpRequest();
         xhr.open('POST', postUrl, true);
-        
+
         // Prepare the data to be POSTed by URLEncoding each field's contents
         var title = encodeURIComponent(document.getElementById('title').value);
         var url = encodeURIComponent(document.getElementById('url').value);
         var summary = encodeURIComponent(document.getElementById('summary').value);
         var tags = encodeURIComponent(document.getElementById('tags').value);
-        
-        var params = 'title=' + title + 
-                     '&url=' + url + 
+
+        var params = 'title=' + title +
+                     '&url=' + url +
                      '&summary=' + summary +
                      '&tags=' + tags;
-        
+
         // Replace any instances of the URLEncoded space char with +
         params = params.replace(/%20/g, '+');
 
-        // Set correct header for form data 
+        // Set correct header for form data
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
         // Handle request state change events
-        xhr.onreadystatechange = function() { 
+        xhr.onreadystatechange = function() {
             // If the request completed
             if (xhr.readyState == 4) {
                 statusDisplay.innerHTML = '';
@@ -157,8 +157,8 @@ This file contains JavaScript code to populate and save field values. You can [d
         document.getElementById('addbookmark').addEventListener('submit', addBookmark);
         // Get the event page
         chrome.runtime.getBackgroundPage(function(eventPage) {
-            // Call the getPageInfo function in the event page, passing in 
-            // our onPageDetailsReceived function as the callback. This injects 
+            // Call the getPageInfo function in the event page, passing in
+            // our onPageDetailsReceived function as the callback. This injects
             // content.js into the current tab's HTML
             eventPage.getPageDetails(onPageDetailsReceived);
         });
@@ -172,14 +172,14 @@ Think of this file as the negotiator between the popup dialog and the content/DO
 
     :::javascript
     // This function is called onload in the popup code
-    function getPageDetails(callback) { 
-        // Inject the content script into the current page 
-        chrome.tabs.executeScript(null, { file: 'content.js' }); 
+    function getPageDetails(callback) {
+        // Inject the content script into the current page
+        chrome.tabs.executeScript(null, { file: 'content.js' });
         // Perform the callback when a message is received from the content script
-        chrome.runtime.onMessage.addListener(function(message)  { 
+        chrome.runtime.onMessage.addListener(function(message) {
             // Call the callback function
-            callback(message); 
-        }); 
+            callback(message);
+        });
     };
 
 When `getPageDetails` is called, it injects the content script (below) into the DOM of the current web page and executes it. It then sets up an event listener to listen for the `onMessage` event which will be triggered by the content script.
