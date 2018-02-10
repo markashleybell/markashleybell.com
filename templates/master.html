@@ -26,7 +26,9 @@
     </head>
     <body>
         <div class="container">
+            {% block header %}
             <a class="header" href="/">Mark Ashley Bell</a>
+            {% endblock %}
             {% block content %}{% endblock %}
             {% if comments %}
             <div id="disqus_thread"></div>
