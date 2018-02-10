@@ -1,6 +1,6 @@
-Title: Web development and programming articles
-Abstract: Web development and programming articles.
+Title: Programming and web development articles
+Abstract: Programming and web development article archive.
 PageType: static
 Template: articleindex
 
-Here are all my web development and programming articles:
+All my programming and web development articles:
