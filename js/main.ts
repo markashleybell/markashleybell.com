@@ -8,13 +8,13 @@ namespace markb {
     }
 
     export function init(): void {
-        let e: HTMLElement = document.getElementById("e");
+        const e: HTMLElement = document.getElementById("e");
 
         if (e) {
-            let mt: string = String.fromCharCode(109, 97, 105, 108, 116, 111, 58);
-            let v: string[] = "109#101#64#109#97#114#107#98#46#99#111#46#117#107".split("#");
-            let t: string = v.map(cc => String.fromCharCode(parseInt(cc, 10))).join("");
-            e.innerHTML = `<a class=\"email-link\" href=\"${mt}${t}\">${t}</a>`;
+            const mt: string = String.fromCharCode(109, 97, 105, 108, 116, 111, 58);
+            const v: string[] = "109#101#64#109#97#114#107#98#46#99#111#46#117#107".split("#");
+            const t: string = v.map(cc => String.fromCharCode(parseInt(cc, 10))).join("");
+            e.innerHTML = `<a class="email-link" href="${mt}${t}">${t}</a>`;
         }
     }
 }
