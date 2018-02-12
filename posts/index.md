@@ -1,5 +1,5 @@
 Title: C#, F#, JavaScript and Python programming
-Abstract: C# ASP.NET, jQuery, JavaScript and Python web development
+Abstract: Programming and web development articles by Mark Ashley Bell
 Thumbnail: site.png
 PageType: static
 Template: home
