@@ -4,11 +4,37 @@
         <title>{{ meta_title }}</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta property="og:title" content="{{ og_title }}">
-        <meta property="og:image" content="{{ site_url }}/img/post/{{ og_image }}">
-        <meta property="og:url" content="{{ site_url }}/{{ og_url }}"/>
-        <meta property="og:site_name" content="markb.co.uk">
-        <meta property="og:description" content="{{ og_abstract }}">
+        <!-- BEGIN META DATA -->
+        <!-- Search Engine -->
+        <meta name="description" content="{{ og_abstract }}">
+        <meta name="image" content="{{ site_url }}/img/post/site.png">
+        <!-- Schema.org -->
+        <meta itemprop="name" content="{{ og_title }}">
+        <meta itemprop="description" content="{{ og_abstract }}">
+        <meta itemprop="image" content="{{ site_url }}/img/post/site.png">
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="{{ og_title }}">
+        <meta name="twitter:description" content="{{ og_abstract }}">
+        <meta name="twitter:site" content="@markashleybell">
+        <meta name="twitter:creator" content="@markashleybell">
+        <meta name="twitter:image:src" content="{{ site_url }}/img/post/{{ og_image }}">
+        <!-- Open Graph: General -->
+        <meta name="og:title" content="{{ og_title }}">
+        <meta name="og:description" content="{{ og_abstract }}">
+        <meta name="og:image" content="{{ site_url }}/img/post/{{ og_image }}">
+        <meta name="og:url" content="{{ site_url }}/{{ og_url }}">
+        <meta name="og:site_name" content="markb.co.uk">
+        <meta name="og:locale" content="en_GB">
+        <meta name="og:type" content="article">
+        {% if article %}
+        <!-- Open Graph: Article -->
+        <meta name="article:section" content="Articles">
+        <meta name="article:published_time" content="{{ published }}">
+        <meta name="article:author" content="Mark Ashley Bell">
+        <meta name="article:modified_time" content="{{ updated }}">
+        {% endif %}
+        <!-- END META DATA -->
         <link rel="alternate" type="application/rss+xml" title="{{ rss_description }}" href="/rss.xml" />
         <link rel="shortcut icon" href="/img/favicon.ico" />
         <link href="https://fonts.googleapis.com/css?family=Bitter:700" rel="stylesheet">
