@@ -112,5 +112,6 @@ def render_page(templates, template_data, data):
         cdn2=config["cdn2"],
         analytics_id=config["analytics_id"],
         disqus_id=config["disqus_id"],
-        document_class=data["document_class"] if data["document_class"] is not None else "html-base"
+        document_class=data["document_class"] if data["document_class"] is not None else "html-base",
+        article=True if data["page_type"] != "static" else False
     )
