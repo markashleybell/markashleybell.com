@@ -18,6 +18,14 @@
                     </conditions>
                     <action type="Redirect" url="https://{HTTP_HOST}/{R:1}" redirectType="Permanent" />
                 </rule>
+                <rule name="Old Article Redirects" stopProcessing="true">
+                    <match url="articles/([^/]+)/?$" />
+                    <action type="Redirect" url="{R:1}.html" />
+                </rule>
+                <rule name="Article Index" stopProcessing="true">
+                    <match url="articles/?$" />
+                    <action type="Redirect" url="articles.html" />
+                </rule>
             </rules>
         </rewrite>
     </system.webServer>
