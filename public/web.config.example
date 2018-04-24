@@ -35,14 +35,21 @@
                 </rule>
             </rules>
         <outboundRules>
-                <rule name="HTTPS Strict-Transport-Security" enabled="true">
-                    <match serverVariable="RESPONSE_Strict_Transport_Security" pattern=".*" />
-                    <conditions>
-                        <add input="{HTTPS}" pattern="on" ignoreCase="true" />
-                    </conditions>
-                    <action type="Rewrite" value="max-age=604800" />
-                </rule>
-            </outboundRules>
+            <rule name="HTTPS Strict-Transport-Security" enabled="true">
+                <match serverVariable="RESPONSE_Strict_Transport_Security" pattern=".*" />
+                <conditions>
+                    <add input="{HTTPS}" pattern="on" ignoreCase="true" />
+                </conditions>
+                <action type="Rewrite" value="max-age=10886400" />
+            </rule>
+            <rule name="X-Content-Type-Options for CSS/JS" enabled="true">
+                <match serverVariable="RESPONSE_X-Content-Type-Options" pattern=".*" />
+                <conditions>
+                        <add input="{URL}" pattern="\.(js|css)$" />
+                </conditions>
+                <action type="Rewrite" value="nosniff" />
+            </rule>
+        </outboundRules>
         </rewrite>
         <httpErrors>
             <remove statusCode="404" subStatusCode="-1" />
