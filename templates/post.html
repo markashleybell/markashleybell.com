@@ -9,7 +9,7 @@
 {% endblock %}
 {% block recent_articles %}
 <h2>More articles</h2>
-<ul class="post-list">
+<ul class="post-list" role="navigation">
     {% for item in post_list %}
     <li><a href="{{ item['output_filename'] }}">{{ item['title'] }}</a></li>
     {% endfor %}
